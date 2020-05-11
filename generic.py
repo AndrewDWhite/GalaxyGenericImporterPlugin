@@ -158,10 +158,12 @@ class GenericEmulatorPlugin(Plugin):
         executionCommand="\""+self.myGameToLaunch["execution"].replace("%ROM_RAW%", self.myGameToLaunch["filename"]).replace("\\\\","\\").replace("\\","\\\\")+"\""
         logging.info("starting")
         logging.info(executionCommand)
-        print(executionCommand)
+        #print(executionCommand)
         returnedValue = os.system(executionCommand)
-        print(returnedValue)
-        #process = subprocess.Popen([self.myGameToLaunch["execution"].replace("%ROM_RAW%", self.myGameToLaunch["filename"]) ])
+        logging.info("returned")
+        logging.info(returnedValue)
+        #print(returnedValue)
+        #process = subprocess.Popen([executionCommand])
             
     
 def main():

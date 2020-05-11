@@ -5,6 +5,7 @@ Created on May 9, 2020
 '''
 from galaxyutils.config_parser import get_config_options, Option
 import logging
+import os
 
 #TODO implement or remove 
 
@@ -26,5 +27,5 @@ class Default_Config():
         logging.info(self.outputFile)
         logging.info(self.outputUserFile)
         #TODO fix the above
-        self.outputFile="C:\\Users\\andyn\\AppData\\Local\\GOG.com\\Galaxy\\plugins\\installed\\importer_97543122-7785-4444-2254-711233556699\\listgames.txt"
-        self.outputUserFile="C:\\Users\\andyn\\AppData\\Local\\GOG.com\\Galaxy\\plugins\\installed\\importer_97543122-7785-4444-2254-711233556699\\listuser.txt"
+        self.outputFile=os.environ['localappdata']+"\\GOG.com\\Galaxy\\plugins\\installed\\importer_97543122-7785-4444-2254-711233556699\\listgames.txt"
+        self.outputUserFile=os.environ['localappdata']+"\\GOG.com\\Galaxy\\plugins\\installed\\importer_97543122-7785-4444-2254-711233556699\\listuser.txt"
