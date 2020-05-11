@@ -1,0 +1,11 @@
+{
+    "name": "importer",
+    "platform": "test",
+    "guid": "97543122-7785-4444-2254-711233556699",
+    "version": "0.1",
+    "description": "Generic Emulator Plugin",
+    "author": "Andrew David White",
+    "email": "none@localhost",
+    "url": "https://github.com/user/galaxy-plugin-example",
+    "script": "generic.py"
+}
