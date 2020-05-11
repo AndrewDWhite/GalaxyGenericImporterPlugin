@@ -98,9 +98,9 @@ class GenericEmulatorPlugin(Plugin):
             #print(new_dict.keys())
             if ("hash_digest" in local_game) and (local_game["hash_digest"] in (new_dict.keys() - old_dict.keys())):
                 logging.info("added")
-                self.update_local_game_status(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
                 self.add_game(Game(local_game["hash_digest"], local_game["filename_short"], None, LicenseInfo(LicenseType.SinglePurchase)))
-    
+                self.update_local_game_status(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
+                    
         # state changed
         for myId in new_dict.keys() & old_dict.keys():
             if new_dict[myId] != old_dict[myId]:
@@ -129,12 +129,16 @@ class GenericEmulatorPlugin(Plugin):
         #    self.update_local_game_status(local_game_notify["local"])
 
     async def get_local_games(self):
-        return self.local_game_cache
+        localgames = []
+        for local_game in self.local_game_cache :
+            localgames.append(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
+        
+        return localgames
     
-    def tick(self):
+    #def tick(self):
         #self.local_game_cache = {currentEntry.game_id: 0 for currentEntry in self.local_games_list()}
             
-        self.create_task(self.update_local_games(), 'Update local games')    
+    #    self.create_task(self.update_local_games(), 'Update local games')    
 
     async def launch_game(self, game_id):
         logging.info("launch")
