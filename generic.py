@@ -182,6 +182,20 @@ class GenericEmulatorPlugin(Plugin):
     def runMySelectedGameHere(self, executionCommand):
         os.system(executionCommand)
 
+    def getExeCommand(self, game_id,local_game_cache):
+        myGameToLaunch={}
+        for currentGameChecking in local_game_cache:
+            if (currentGameChecking["hash_digest"] == game_id):
+                myGameToLaunch =  currentGameChecking
+                break      
+        print (myGameToLaunch)
+        executionCommand = ""
+        if "execution" in myGameToLaunch.keys():
+            executionCommand="\""+myGameToLaunch["execution"].replace("%ROM_RAW%", myGameToLaunch["filename"])+"\""
+            logging.info("starting")
+            logging.info(executionCommand)
+        return executionCommand
+
     async def launch_game(self, game_id):
         logging.info("launch")
         # define an empty list
@@ -197,13 +211,7 @@ class GenericEmulatorPlugin(Plugin):
         #        myPreLoadedGames.append(currentGame)
         
         #for currentGameChecking in myPreLoadedGames:
-        for currentGameChecking in self.local_game_cache:
-            if (currentGameChecking["hash_digest"] == game_id):
-                self.myGameToLaunch =  currentGameChecking
-                break      
-        executionCommand="\""+self.myGameToLaunch["execution"].replace("%ROM_RAW%", self.myGameToLaunch["filename"]).replace("\\\\","\\").replace("\\","\\\\")+"\""
-        logging.info("starting")
-        logging.info(executionCommand)
+        executionCommand = self.getExeCommand(game_id, self.local_game_cache)
         #print(executionCommand)
         loop = asyncio.get_running_loop()
         await loop.run_in_executor(None, self.runMySelectedGameHere,executionCommand)
