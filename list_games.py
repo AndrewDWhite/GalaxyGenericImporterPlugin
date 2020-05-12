@@ -28,6 +28,7 @@ class List_Games():
         logging.info(len(self.loaded_systems_configuration))
         
     def listAllRecursively(self):
+        logging.info("listing")
         self.mylist=[]
         #how to access
         for emulated_system in self.loaded_systems_configuration:
