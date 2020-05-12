@@ -49,10 +49,16 @@ jobs:
       with:
         name: importer_ ${{ github.sha }}
         path: importer_97543122-7785-4444-2254-711233556699.zip
-    - name: Release
-      uses: fnkr/github-action-ghr@v1
-      if: startsWith(github.ref, 'refs/tags/')
-      env:
-        GHR_COMPRESS: zip
-        GHR_PATH: importer_97543122-7785-4444-2254-711233556699.zip
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Automatic Releases
+      uses: marvinpinto/action-automatic-releases@v1.0.0
+      with:
+        # GitHub secret token
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        # Git tag (for automatic releases)
+        automatic_release_tag: Prototype
+        # Should this release be marked as a pre-release?
+        prerelease: True
+        # Release title (for automatic releases)
+        title: Prototype
+        # Assets to upload to the release
+        files: importer_97543122-7785-4444-2254-711233556699.zip
