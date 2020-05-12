@@ -100,8 +100,10 @@ class GenericEmulatorPlugin(Plugin):
             if ("local_game_state" in list(currentEntry.keys()) and "hash_digest" in list(currentEntry.keys()) ):
                 new_dict[currentEntry["hash_digest"]] = currentEntry["local_game_state"]
         
-        #result = []
+        result = {"old":old_dict,"new":new_dict}
+        return result
 
+    def sendThoseChanges(self,old_list, new_list, old_dict,new_dict):
         # removed games
         for myId in (old_dict.keys() - new_dict.keys()):
             logging.info("removed")
@@ -125,7 +127,7 @@ class GenericEmulatorPlugin(Plugin):
                 logging.info("changed")
                 self.update_local_game_status(LocalGame(myId, new_dict[myId]))
         #return result
-        logging.info("done updates")
+        logging.info("done updates")    
 
     async def update_games(self):
         if not self.updatedMyGamesOnce:
@@ -143,7 +145,8 @@ class GenericEmulatorPlugin(Plugin):
                 entry["local_game_state"]=LocalGameState.Installed
 
         #notify_list = 
-        self.get_state_changes(self.local_game_cache, new_local_games_list)
+        stateChanges = self.get_state_changes(self.local_game_cache, new_local_games_list)
+        self.sendThoseChanges(self.local_game_cache, new_local_games_list, stateChanges["old"], stateChanges["new"])
         self.local_game_cache = new_local_games_list
         #await asyncio.sleep(60)
 

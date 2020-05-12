@@ -39,18 +39,59 @@ class unittestproject(unittest.TestCase):
         #TODO implement tests
         self.assertTrue(True)
         
-    #def test_comp(self):
-    #    systems = List_Games()
-    #    newLocal = systems.listAllRecursively()
-    #    for entry in newLocal:
-    #        #print("Check")
-    #        if("local_game_state" not in entry):
-    #            #print("should")
-    #            entry["local_game_state"]=LocalGameState.Installed
-    #    myresult = GenericEmulatorPlugin.get_state_changes(self,[],newLocal)
-    #    print(myresult)
-    #    #TODO implement tests
-    #    self.assertTrue(True)
+    def test_comp(self):
+        systems = List_Games()
+        newLocal = systems.listAllRecursively()
+        for entry in newLocal:
+            #print("Check")
+            if("local_game_state" not in entry):
+                #print("should")
+                entry["local_game_state"]=LocalGameState.Installed
+        myresult = GenericEmulatorPlugin.get_state_changes(self,[],newLocal)
+        #None Removed
+        print (len(myresult["old"].keys() - myresult["new"].keys()))
+        print (len(myresult["new"].keys() - myresult["old"].keys()))
+        self.assertTrue(len(myresult["old"].keys() - myresult["new"].keys())==0)
+        #All Added
+        self.assertTrue(len(myresult["new"].keys() - myresult["old"].keys())==161)
+
+        print(myresult)
+        
+    def test_compSame(self):
+        systems = List_Games()
+        newLocal = systems.listAllRecursively()
+        for entry in newLocal:
+            #print("Check")
+            if("local_game_state" not in entry):
+                #print("should")
+                entry["local_game_state"]=LocalGameState.Installed
+        myresult = GenericEmulatorPlugin.get_state_changes(self,newLocal,newLocal)
+        #None Removed
+        print (len(myresult["old"].keys() - myresult["new"].keys()))
+        print (len(myresult["new"].keys() - myresult["old"].keys()))
+        self.assertTrue(len(myresult["old"].keys() - myresult["new"].keys())==0)
+        #None Added
+        self.assertTrue(len(myresult["new"].keys() - myresult["old"].keys())==0)
+
+        print(myresult)
+        
+    def test_compRemoved(self):
+        systems = List_Games()
+        newLocal = systems.listAllRecursively()
+        for entry in newLocal:
+            #print("Check")
+            if("local_game_state" not in entry):
+                #print("should")
+                entry["local_game_state"]=LocalGameState.Installed
+        myresult = GenericEmulatorPlugin.get_state_changes(self,newLocal,[])
+        #All Removed
+        print (len(myresult["old"].keys() - myresult["new"].keys()))
+        print (len(myresult["new"].keys() - myresult["old"].keys()))
+        self.assertTrue(len(myresult["old"].keys() - myresult["new"].keys())==161)
+        #None Added
+        self.assertTrue(len(myresult["new"].keys() - myresult["old"].keys())==0)
+
+        print(myresult)
         
     def test_launch(self):
         systems = List_Games()
