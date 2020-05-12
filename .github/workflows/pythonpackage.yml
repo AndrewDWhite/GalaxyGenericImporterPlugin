@@ -48,5 +48,7 @@ jobs:
     - name: GitHub Upload Release Artifacts
       uses: Roang-zero1/github-upload-release-artifacts-action@v2.1.0
       with:
-        # Allows to pass an already created tag, forces update_existing to true.
-        created_tag: autobuild
+        args:
+        - importer_97543122-7785-4444-2254-711233556699.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
