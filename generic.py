@@ -106,7 +106,7 @@ class GenericEmulatorPlugin(Plugin):
         # removed games
         for myId in (old_dict.keys() - new_dict.keys()):
             logging.info("removed")
-            #self.update_local_game_status(LocalGame(myId, LocalGameState.None_))
+            self.update_local_game_status(LocalGame(myId, LocalGameState.None_))
         # added games
         for local_game in new_list:
             #print(local_game)
@@ -117,14 +117,14 @@ class GenericEmulatorPlugin(Plugin):
             if ("hash_digest" in local_game) and (local_game["hash_digest"] in (new_dict.keys() - old_dict.keys())):
                 logging.info("added")
                 #self.remove_game(local_game["hash_digest"])
-                #self.add_game(Game(local_game["hash_digest"], escapejson(local_game["filename_short"]), None, LicenseInfo(LicenseType.SinglePurchase)))
-                #self.update_local_game_status(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
+                self.add_game(Game(local_game["hash_digest"], escapejson(local_game["filename_short"]), None, LicenseInfo(LicenseType.SinglePurchase)))
+                self.update_local_game_status(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
                     
         # state changed
         for myId in new_dict.keys() & old_dict.keys():
             if new_dict[myId] != old_dict[myId]:
                 logging.info("changed")
-                #self.update_local_game_status(LocalGame(myId, new_dict[myId]))
+                self.update_local_game_status(LocalGame(myId, new_dict[myId]))
         #return result
         logging.info("done updates")    
 
