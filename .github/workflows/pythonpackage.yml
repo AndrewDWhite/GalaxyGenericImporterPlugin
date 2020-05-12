@@ -53,10 +53,10 @@ jobs:
       uses: Roang-zero1/github-create-release-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    - name: Create GitHub release
-      uses: Roang-zero1/github-upload-release-artifacts-action@master
-      with:
-        args:
-        - importer_97543122-7785-4444-2254-711233556699.zip
+    - name: Release
+      uses: fnkr/github-action-ghr@v1
+      if: startsWith(github.ref, 'refs/tags/')
       env:
+        GHR_COMPRESS: zip
+        GHR_PATH: importer_97543122-7785-4444-2254-711233556699.zip
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
