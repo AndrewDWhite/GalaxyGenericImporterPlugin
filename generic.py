@@ -78,12 +78,16 @@ class GenericEmulatorPlugin(Plugin):
     async def get_game_library_settings(self, game_id: str, context: Any)  -> GameLibrarySettings:
         logging.info("Updating library "+game_id)
         myCurrentGameSelected={}
+        if self.create_task_status is None:
+                self.create_task_status = self.create_task(self.update_local_games(), 'Update local games')
+        if not self.create_task_status.done():
+            await self.create_task_status
         for currentGameChecking in self.local_game_cache:
             if (currentGameChecking["hash_digest"] == game_id):
                 myCurrentGameSelected =  currentGameChecking
                 break
         gameTags = [myCurrentGameSelected["name"]]
-        gameSettings = GameLibrarySettings(game_id, gameTags)
+        gameSettings = GameLibrarySettings(game_id, gameTags, False)
         return gameSettings
     
     def get_state_changes(self, old_list, new_list):
