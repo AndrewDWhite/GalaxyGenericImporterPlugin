@@ -26,9 +26,6 @@ class GenericEmulatorPlugin(Plugin):
         )
         self.configuration = Default_Config()
         self.local_game_cache = []
-        self.updatedMyGamesOnce = False
-        self.gotOwnedGames = False
-        self.gotLocalGames = False
         self.create_task_status = None
 
     # implement methods
@@ -58,6 +55,7 @@ class GenericEmulatorPlugin(Plugin):
                 self.create_task_status = self.create_task(self.update_local_games(), 'Update local games')
         if not self.create_task_status.done():
             await self.create_task_status
+        logging.info("moving on with owned")
         listToGalaxy = []
         found_games = self.local_game_cache
         
@@ -68,7 +66,6 @@ class GenericEmulatorPlugin(Plugin):
             thisGame=Game(game["hash_digest"], escapejson(game["filename_short"]), None, LicenseInfo(LicenseType.SinglePurchase))
             listToGalaxy.append(thisGame)
         
-        self.gotOwnedGames=True
         return listToGalaxy
 
     # Only placeholders so the feature is recognized
@@ -109,7 +106,7 @@ class GenericEmulatorPlugin(Plugin):
         # removed games
         for myId in (old_dict.keys() - new_dict.keys()):
             logging.info("removed")
-            self.update_local_game_status(LocalGame(myId, LocalGameState.None_))
+            #self.update_local_game_status(LocalGame(myId, LocalGameState.None_))
         # added games
         for local_game in new_list:
             #print(local_game)
@@ -120,23 +117,16 @@ class GenericEmulatorPlugin(Plugin):
             if ("hash_digest" in local_game) and (local_game["hash_digest"] in (new_dict.keys() - old_dict.keys())):
                 logging.info("added")
                 #self.remove_game(local_game["hash_digest"])
-                self.add_game(Game(local_game["hash_digest"], escapejson(local_game["filename_short"]), None, LicenseInfo(LicenseType.SinglePurchase)))
-                self.update_local_game_status(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
+                #self.add_game(Game(local_game["hash_digest"], escapejson(local_game["filename_short"]), None, LicenseInfo(LicenseType.SinglePurchase)))
+                #self.update_local_game_status(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
                     
         # state changed
         for myId in new_dict.keys() & old_dict.keys():
             if new_dict[myId] != old_dict[myId]:
                 logging.info("changed")
-                self.update_local_game_status(LocalGame(myId, new_dict[myId]))
+                #self.update_local_game_status(LocalGame(myId, new_dict[myId]))
         #return result
         logging.info("done updates")    
-
-    async def update_games(self):
-        if not self.updatedMyGamesOnce:
-            self.updatedMyGamesOnce=True
-            logging.info("updating all games to galaxy")
-            for currentGameEntry in self.local_game_cache:
-                self.update_game(Game(currentGameEntry["hash_digest"], escapejson(currentGameEntry["filename_short"]), None, LicenseInfo(LicenseType.SinglePurchase)))
 
     def sendMyUpdates(self, new_local_games_list):
         logging.info("sending updates")
@@ -150,22 +140,22 @@ class GenericEmulatorPlugin(Plugin):
         stateChanges = self.get_state_changes(self.local_game_cache, new_local_games_list)
         self.sendThoseChanges(new_local_games_list, stateChanges["old"], stateChanges["new"])
         self.local_game_cache = new_local_games_list
+        #self.update_game(Game(currentGameEntry["hash_digest"], escapejson(currentGameEntry["filename_short"]), None, LicenseInfo(LicenseType.SinglePurchase)))
         #await asyncio.sleep(60)
 
     async def update_local_games(self):
-        #if self.gotOwnedGames and self.gotLocalGames:
-            logging.info("get local updates")
-            loop = asyncio.get_running_loop()
-            new_local_games_list = await loop.run_in_executor(None, List_Games().listAllRecursively)
-            logging.info("Got new List")
-            self.sendMyUpdates(new_local_games_list)
-            #for local_game_notify in notify_list:
-            #    logging.info("sending update")
-            #    logging.info(local_game_notify)
-            #    if ("game" in local_game_notify):
-            #        self.add_game(local_game_notify["game"])
-            #    self.update_local_game_status(local_game_notify["local"])
-            await asyncio.sleep(60)
+        logging.info("get local updates")
+        loop = asyncio.get_running_loop()
+        new_local_games_list = await loop.run_in_executor(None, List_Games().listAllRecursively)
+        logging.info("Got new List")
+        self.sendMyUpdates(new_local_games_list)
+        #for local_game_notify in notify_list:
+        #    logging.info("sending update")
+        #    logging.info(local_game_notify)
+        #    if ("game" in local_game_notify):
+        #        self.add_game(local_game_notify["game"])
+        #    self.update_local_game_status(local_game_notify["local"])
+        await asyncio.sleep(60)
 
     async def get_local_games(self):
         logging.info("get local")
@@ -174,9 +164,9 @@ class GenericEmulatorPlugin(Plugin):
                 self.create_task_status = self.create_task(self.update_local_games(), 'Update local games')
         if not self.create_task_status.done():
             await self.create_task_status
+        logging.info("moving on with local")
         for local_game in self.local_game_cache :
             localgames.append(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
-        self.gotLocalGames=True
         return localgames
     
     def tick(self):
