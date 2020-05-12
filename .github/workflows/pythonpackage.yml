@@ -47,7 +47,7 @@ jobs:
     - name: Upload result
       uses: actions/upload-artifact@v1
       with:
-        name: importer ${{ GITHUB_SHA }}
+        name: importer_$GITHUB_SHA
         path: importer_97543122-7785-4444-2254-711233556699.zip
     - name: github-action-publish-binaries
       uses: skx/github-action-publish-binaries@release-1.3
