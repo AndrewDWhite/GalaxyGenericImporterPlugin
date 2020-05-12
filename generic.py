@@ -179,6 +179,9 @@ class GenericEmulatorPlugin(Plugin):
         if self.create_task_status is None or self.create_task_status.done():
             self.create_task_status = self.create_task(self.update_local_games(), 'Update local games')    
 
+    def runMySelectedGameHere(self, executionCommand):
+        os.system(executionCommand)
+
     async def launch_game(self, game_id):
         logging.info("launch")
         # define an empty list
@@ -202,9 +205,9 @@ class GenericEmulatorPlugin(Plugin):
         logging.info("starting")
         logging.info(executionCommand)
         #print(executionCommand)
-        returnedValue = os.system(executionCommand)
+        loop = asyncio.get_running_loop()
+        await loop.run_in_executor(None, self.runMySelectedGameHere,executionCommand)
         logging.info("returned")
-        logging.info(returnedValue)
         #print(returnedValue)
         #process = subprocess.Popen([executionCommand])
             
