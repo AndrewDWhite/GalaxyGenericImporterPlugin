@@ -44,3 +44,9 @@ jobs:
         path: .
         # Working directory before zipping
         directory: .
+
+    - name: GitHub Upload Release Artifacts
+      uses: Roang-zero1/github-upload-release-artifacts-action@v2.1.0
+      with:
+        # Allows to pass an already created tag, forces update_existing to true.
+        created_tag: autobuild
