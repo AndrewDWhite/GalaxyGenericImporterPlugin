@@ -44,10 +44,15 @@ jobs:
         path: .
         # Working directory before zipping
         directory: .
-    - name: github-action-publish-binaries
-      uses: skx/github-action-publish-binaries@release-1.3
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload result
+      uses: actions/upload-artifact@v1
       with:
-        # The pattern of files to upload
-        args: importer_97543122-7785-4444-2254-711233556699.zip
+        name: importer
+        path: importer_97543122-7785-4444-2254-711233556699.zip
+    #- name: github-action-publish-binaries
+    #  uses: skx/github-action-publish-binaries@release-1.3
+    #  env:
+    #      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  with:
+    #    # The pattern of files to upload
+    #    args: importer_97543122-7785-4444-2254-711233556699.zip
