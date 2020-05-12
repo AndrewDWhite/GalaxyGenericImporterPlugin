@@ -13,3 +13,4 @@ The plugin will need to be placed in
 
 Configuration for execution, selection and location of files is located in the emulators.json file.
 
+The different platforms are saved as tags so you will want to manually import them
