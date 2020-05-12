@@ -49,9 +49,14 @@ jobs:
       with:
         name: importer_ ${{ github.sha }}
         path: importer_97543122-7785-4444-2254-711233556699.zip
-    - name: Upload the artifacts
-      uses: skx/github-action-publish-binaries@master
+    - name: Create release
+      uses: Roang-zero1/github-create-release-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create GitHub release
+      uses: Roang-zero1/github-upload-release-artifacts-action@master
       with:
-        args: 'importer*.zip'
+        args:
+        - importer_97543122-7785-4444-2254-711233556699.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
