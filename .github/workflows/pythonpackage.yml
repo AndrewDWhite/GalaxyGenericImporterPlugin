@@ -41,6 +41,6 @@ jobs:
         # Filename for archive
         filename: importer_97543122-7785-4444-2254-711233556699.zip
         # Base path for archive files
-        path: . # optional, default is .
+        path: .
         # Working directory before zipping
-        directory: .# optional, default is .
+        directory: .
