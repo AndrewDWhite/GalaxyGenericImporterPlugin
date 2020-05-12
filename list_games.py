@@ -9,6 +9,7 @@ import json
 import logging
 
 import hashlib
+from galaxy.api.consts import Platform
 
 class List_Games():
     '''
@@ -27,36 +28,40 @@ class List_Games():
         logging.info("loading emulators configuration completed")
         logging.info(len(self.loaded_systems_configuration))
         
-    def listAllRecursively(self):
+    def listAllRecursively(self, myPlatform):
         logging.info("listing")
-        self.mylist=[]
+        mylist=[]
         #how to access
         for emulated_system in self.loaded_systems_configuration:
-            #logging.info(emulated_system["name"])
-            #logging.info(emulated_system["execution"])
-            #logging.info(emulated_system["path_regex"])
-            #logging.info(emulated_system["filename_regex"])
-            #logging.info("found:")
-            #logging.info(glob.glob(emulated_system["path_regex"],recursive=True))
-            #logging.info(glob.glob((emulated_system["path_regex"]+'./**/'+emulated_system["filename_regex"]),recursive=True))
-            for extension in emulated_system["filename_regex"]:
-                #logging.info (extension)
-                found_games=glob.glob(os.path.join((emulated_system["path_regex"]), '**',extension),recursive=True)
-                #logging.info(len(found_games))
-                
-                for myGame in found_games:
-                    with open(myGame, 'rb') as data:
-                        myhasher = hashlib.sha1()
-                        #logging.info(myGame)
-                        new_entry = emulated_system.copy()
-                        #TODO to re-enable hashing
-                        #for chunk in iter(lambda: data.read(4096), ""):
-                        #    myhasher.update(chunk)
-                        myhasher.update(myGame.encode('utf-8'))
-                        new_entry["hash_digest"]=myhasher.hexdigest()
-                        #print(new_entry["hash_digest"])
-                        new_entry["filename"]=myGame
-                        new_entry["filename_short"]=os.path.basename(myGame)
-                        #logging.info(new_entry)
-                        self.mylist.append(new_entry)
-        return self.mylist        
+            #Only return games for this platform and throw the rest into testing
+            print(myPlatform.value)
+            print(emulated_system["name"])
+            if (emulated_system["name"] == myPlatform.value) or (not (emulated_system["name"] in Platform._value2member_map_) and (myPlatform == Platform.Test)):
+                #logging.info(emulated_system["name"])
+                #logging.info(emulated_system["execution"])
+                #logging.info(emulated_system["path_regex"])
+                #logging.info(emulated_system["filename_regex"])
+                #logging.info("found:")
+                #logging.info(glob.glob(emulated_system["path_regex"],recursive=True))
+                #logging.info(glob.glob((emulated_system["path_regex"]+'./**/'+emulated_system["filename_regex"]),recursive=True))
+                for extension in emulated_system["filename_regex"]:
+                    #logging.info (extension)
+                    found_games=glob.glob(os.path.join((emulated_system["path_regex"]), '**',extension),recursive=True)
+                    #logging.info(len(found_games))
+                    
+                    for myGame in found_games:
+                        with open(myGame, 'rb') as data:
+                            myhasher = hashlib.sha1()
+                            #logging.info(myGame)
+                            new_entry = emulated_system.copy()
+                            #TODO to re-enable hashing
+                            #for chunk in iter(lambda: data.read(4096), ""):
+                            #    myhasher.update(chunk)
+                            myhasher.update(myGame.encode('utf-8'))
+                            new_entry["hash_digest"]=myhasher.hexdigest()
+                            #print(new_entry["hash_digest"])
+                            new_entry["filename"]=myGame
+                            new_entry["filename_short"]=os.path.basename(myGame)
+                            #logging.info(new_entry)
+                            mylist.append(new_entry)
+        return mylist        

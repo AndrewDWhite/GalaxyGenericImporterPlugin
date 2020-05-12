@@ -11,6 +11,8 @@ import asyncio
 import os
 from escapejson import escapejson
 
+from socket import socket
+
 #local
 from configuration import Default_Config
 from list_games import List_Games
@@ -18,7 +20,8 @@ from list_games import List_Games
 class GenericEmulatorPlugin(Plugin):
     def __init__(self, reader, writer, token):
         super().__init__(
-            Platform.Test,  # choose platform from available list
+            self.MyPlatform,
+            #Platform.Test,  # choose platform from available list
             "0.1",  # version
             reader,
             writer,
@@ -150,7 +153,7 @@ class GenericEmulatorPlugin(Plugin):
     async def update_local_games(self):
         logging.info("get local updates")
         loop = asyncio.get_running_loop()
-        new_local_games_list = await loop.run_in_executor(None, List_Games().listAllRecursively)
+        new_local_games_list = await loop.run_in_executor(None, List_Games().listAllRecursively,self.MyPlatform)
         logging.info("Got new List")
         self.sendMyUpdates(new_local_games_list)
         #for local_game_notify in notify_list:
@@ -221,7 +224,17 @@ class GenericEmulatorPlugin(Plugin):
             
     
 def main():
-    create_and_run_plugin(GenericEmulatorPlugin, sys.argv)
+    for myCurrentPlatFormToSetup in Platform:
+        myCustomPlugin = GenericEmulatorPlugin
+        myCustomPlugin.MyPlatform = myCurrentPlatFormToSetup
+        port = 0
+        with socket() as s:
+            s.bind(('',0))
+            port = s.getsockname()[1]
+            s.close()
+        logging.info(port)
+        logging.info(sys.argv[2])
+        create_and_run_plugin(GenericEmulatorPlugin, [0,sys.argv[1], sys.argv[2]] ) #sys.argv)
 
 # run plugin event loop
 if __name__ == "__main__":

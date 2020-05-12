@@ -14,6 +14,7 @@ from generic import GenericEmulatorPlugin
 from _operator import length_hint
 
 from galaxy.api.consts import LocalGameState
+from galaxy.api.consts import Platform
 
 class unittestproject(unittest.TestCase):
     '''
@@ -32,14 +33,15 @@ class unittestproject(unittest.TestCase):
         
     def test_rec(self):
         systems = List_Games()
-        myresult = systems.listAllRecursively()
+        myresult = systems.listAllRecursively(Platform.Test)
         print(len(myresult))
         #TODO implement tests
-        self.assertEquals(161,len(myresult))
+        self.assertNotEquals(161,len(myresult))
+        self.assertEquals(89,len(myresult))
         
     def test_comp(self):
         systems = List_Games()
-        newLocal = systems.listAllRecursively()
+        newLocal = systems.listAllRecursively(Platform.Test)
         for entry in newLocal:
             #print("Check")
             if("local_game_state" not in entry):
@@ -49,15 +51,15 @@ class unittestproject(unittest.TestCase):
         #None Removed
         #print (len(myresult["old"].keys() - myresult["new"].keys()))
         #print (len(myresult["new"].keys() - myresult["old"].keys()))
-        self.assertTrue(len(myresult["old"].keys() - myresult["new"].keys())==0)
+        self.assertEquals(len(myresult["old"].keys() - myresult["new"].keys()),0)
         #All Added
-        self.assertTrue(len(myresult["new"].keys() - myresult["old"].keys())==161)
+        self.assertEquals(len(myresult["new"].keys() - myresult["old"].keys()),89) #161
 
         #print(myresult)
         
     def test_compSame(self):
         systems = List_Games()
-        newLocal = systems.listAllRecursively()
+        newLocal = systems.listAllRecursively(Platform.Test)
         for entry in newLocal:
             #print("Check")
             if("local_game_state" not in entry):
@@ -67,15 +69,15 @@ class unittestproject(unittest.TestCase):
         #None Removed
         #print (len(myresult["old"].keys() - myresult["new"].keys()))
         #print (len(myresult["new"].keys() - myresult["old"].keys()))
-        self.assertTrue(len(myresult["old"].keys() - myresult["new"].keys())==0)
+        self.assertEquals(len(myresult["old"].keys() - myresult["new"].keys()),0)
         #None Added
-        self.assertTrue(len(myresult["new"].keys() - myresult["old"].keys())==0)
+        self.assertEquals(len(myresult["new"].keys() - myresult["old"].keys()),0)
 
         #print(myresult)
         
     def test_compRemoved(self):
         systems = List_Games()
-        newLocal = systems.listAllRecursively()
+        newLocal = systems.listAllRecursively(Platform.Test)
         for entry in newLocal:
             #print("Check")
             if("local_game_state" not in entry):
@@ -85,15 +87,33 @@ class unittestproject(unittest.TestCase):
         #All Removed
         #print (len(myresult["old"].keys() - myresult["new"].keys()))
         #print (len(myresult["new"].keys() - myresult["old"].keys()))
-        self.assertTrue(len(myresult["old"].keys() - myresult["new"].keys())==161)
+        self.assertEquals(len(myresult["old"].keys() - myresult["new"].keys()),89) #161
         #None Added
-        self.assertTrue(len(myresult["new"].keys() - myresult["old"].keys())==0)
+        self.assertEquals(len(myresult["new"].keys() - myresult["old"].keys()),0)
+
+        #print(myresult)
+        
+    def test_compRemovedNes(self):
+        systems = List_Games()
+        newLocal = systems.listAllRecursively(Platform.NintendoEntertainmentSystem)
+        for entry in newLocal:
+            #print("Check")
+            if("local_game_state" not in entry):
+                #print("should")
+                entry["local_game_state"]=LocalGameState.Installed
+        myresult = GenericEmulatorPlugin.get_state_changes(self,newLocal,[])
+        #All Removed
+        #print (len(myresult["old"].keys() - myresult["new"].keys()))
+        #print (len(myresult["new"].keys() - myresult["old"].keys()))
+        self.assertEquals(len(myresult["old"].keys() - myresult["new"].keys()),12) #161
+        #None Added
+        self.assertEquals(len(myresult["new"].keys() - myresult["old"].keys()),0)
 
         #print(myresult)
         
     def test_launch_command(self):
         systems = List_Games()
-        myresult = systems.listAllRecursively()
+        myresult = systems.listAllRecursively(Platform.Test)
         executionCommand = GenericEmulatorPlugin.getExeCommand(self,myresult[0]["hash_digest"], myresult)
         #print(executionCommand)
         #GenericEmulatorPlugin.runMySelectedGameHere(self, executionCommand)
@@ -102,9 +122,9 @@ class unittestproject(unittest.TestCase):
         
     def test_launch(self):
         systems = List_Games()
-        myresult = systems.listAllRecursively()
+        myresult = systems.listAllRecursively(Platform.Test)
         executionCommand = GenericEmulatorPlugin.getExeCommand(self,"b96bc8c22d1ad87eb934fedf1a075ab4bf70728c", myresult)
-        GenericEmulatorPlugin.runMySelectedGameHere(self, executionCommand)
+        #GenericEmulatorPlugin.runMySelectedGameHere(self, executionCommand)
         #TODO implement tests
         self.assertTrue(True)
         
