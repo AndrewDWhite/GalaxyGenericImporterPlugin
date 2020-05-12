@@ -46,7 +46,7 @@ class List_Games():
                 
                 for myGame in found_games:
                     with open(myGame, 'rb') as data:
-                        myhasher = hashlib.md5()
+                        myhasher = hashlib.sha1()
                         #logging.info(myGame)
                         new_entry = emulated_system.copy()
                         #TODO to re-enable hashing
