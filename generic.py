@@ -54,10 +54,12 @@ class GenericEmulatorPlugin(Plugin):
     # required
     async def get_owned_games(self):
         logging.info("get owned")
+        if self.create_task_status is None:
+                self.create_task_status = self.create_task(self.update_local_games(), 'Update local games')
+        if not self.create_task_status.done():
+            await self.create_task_status
         listToGalaxy = []
-        #Need To update our list
-        found_games = List_Games().listAllRecursively()
-        self.local_game_cache = found_games
+        found_games = self.local_game_cache
         
         #with open(self.configuration.outputFile, 'w') as filehandle:
         for game in found_games:
@@ -103,7 +105,7 @@ class GenericEmulatorPlugin(Plugin):
         result = {"old":old_dict,"new":new_dict}
         return result
 
-    def sendThoseChanges(self,old_list, new_list, old_dict,new_dict):
+    def sendThoseChanges(self, new_list, old_dict,new_dict):
         # removed games
         for myId in (old_dict.keys() - new_dict.keys()):
             logging.info("removed")
@@ -146,7 +148,7 @@ class GenericEmulatorPlugin(Plugin):
 
         #notify_list = 
         stateChanges = self.get_state_changes(self.local_game_cache, new_local_games_list)
-        self.sendThoseChanges(self.local_game_cache, new_local_games_list, stateChanges["old"], stateChanges["new"])
+        self.sendThoseChanges(new_local_games_list, stateChanges["old"], stateChanges["new"])
         self.local_game_cache = new_local_games_list
         #await asyncio.sleep(60)
 
@@ -168,6 +170,10 @@ class GenericEmulatorPlugin(Plugin):
     async def get_local_games(self):
         logging.info("get local")
         localgames = []
+        if self.create_task_status is None:
+                self.create_task_status = self.create_task(self.update_local_games(), 'Update local games')
+        if not self.create_task_status.done():
+            await self.create_task_status
         for local_game in self.local_game_cache :
             localgames.append(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
         self.gotLocalGames=True
