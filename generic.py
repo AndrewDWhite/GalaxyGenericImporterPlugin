@@ -2,12 +2,13 @@ import sys
 
 from galaxy.api.consts import Platform, LocalGameState
 from galaxy.api.plugin import Plugin, create_and_run_plugin
-from galaxy.api.types import Authentication, Game, LocalGame, LicenseInfo, LicenseType
+from galaxy.api.types import Authentication, Game, LocalGame, LicenseInfo, LicenseType, GameLibrarySettings
 
 import subprocess
 import logging
 import asyncio
 import os
+from escapejson import escapejson
 
 #local
 from configuration import Default_Config
@@ -24,6 +25,7 @@ class GenericEmulatorPlugin(Plugin):
         )
         self.configuration = Default_Config()
         self.local_game_cache = []
+        self.updatedMyGamesOnce = False
 
     # implement methods
 
@@ -57,9 +59,8 @@ class GenericEmulatorPlugin(Plugin):
         for game in found_games:
             #filehandle.write('%s\n' % game)
             #self.update_local_game_status(LocalGame(game["hash_digest"], LocalGameState.Installed))
-            listToGalaxy.append(
-                Game(game["hash_digest"], game["filename_short"], None, LicenseInfo(LicenseType.SinglePurchase))
-                )
+            thisGame=Game(game["hash_digest"], escapejson(game["filename_short"]), None, LicenseInfo(LicenseType.SinglePurchase))
+            listToGalaxy.append(thisGame)
         
         return listToGalaxy
 
@@ -69,6 +70,22 @@ class GenericEmulatorPlugin(Plugin):
 
     async def uninstall_game(self, game_id):
         pass
+    
+    #async def prepare_game_library_settings_context(self, game_ids):
+    #    context={}
+    #    for currentId in game_ids:
+    #        self.get_game_library_settings(self,currentId,context)
+    
+    async def get_game_library_settings(self, game_id, context):
+        logging.info("Updating library "+game_id)
+        myCurrentGameSelected={}
+        for currentGameChecking in self.local_game_cache:
+            if (currentGameChecking["hash_digest"] == game_id):
+                myCurrentGameSelected =  currentGameChecking
+                break
+        gameTags = myCurrentGameSelected["name"]
+        gameSettings = GameLibrarySettings(game_id, gameTags)
+        return gameSettings
     
     def get_state_changes(self, old_list, new_list):
         logging.info("get changes")
@@ -98,7 +115,8 @@ class GenericEmulatorPlugin(Plugin):
             #print(new_dict.keys())
             if ("hash_digest" in local_game) and (local_game["hash_digest"] in (new_dict.keys() - old_dict.keys())):
                 logging.info("added")
-                self.add_game(Game(local_game["hash_digest"], local_game["filename_short"], None, LicenseInfo(LicenseType.SinglePurchase)))
+                self.remove_game(local_game["hash_digest"])
+                self.add_game(Game(local_game["hash_digest"], escapejson(local_game["filename_short"]), None, LicenseInfo(LicenseType.SinglePurchase)))
                 self.update_local_game_status(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
                     
         # state changed
@@ -109,7 +127,15 @@ class GenericEmulatorPlugin(Plugin):
         #return result
         logging.info("done updates")
 
+    async def update_games(self):
+        if not self.updatedMyGamesOnce:
+            self.updatedMyGamesOnce=True
+            logging.info("updating all games to galaxy")
+            for currentGameEntry in self.local_game_cache:
+                self.update_game(Game(currentGameEntry["hash_digest"], escapejson(currentGameEntry["filename_short"]), None, LicenseInfo(LicenseType.SinglePurchase)))
+
     async def update_local_games(self):
+        logging.info("get local updates")
         loop = asyncio.get_running_loop()
         new_local_games_list = await loop.run_in_executor(None, List_Games().listAllRecursively)
         for entry in new_local_games_list:
@@ -129,16 +155,17 @@ class GenericEmulatorPlugin(Plugin):
         #    self.update_local_game_status(local_game_notify["local"])
 
     async def get_local_games(self):
+        logging.info("get local")
         localgames = []
         for local_game in self.local_game_cache :
             localgames.append(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
         
         return localgames
     
-    #def tick(self):
+    def tick(self):
         #self.local_game_cache = {currentEntry.game_id: 0 for currentEntry in self.local_games_list()}
-            
-    #    self.create_task(self.update_local_games(), 'Update local games')    
+        self.create_task(self.update_games(), 'Update games')    
+        self.create_task(self.update_local_games(), 'Update local games')    
 
     async def launch_game(self, game_id):
         logging.info("launch")

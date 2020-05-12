@@ -3,7 +3,9 @@ Plugin for GOG Galaxy to allow the generic definition of files to add using regu
 
 Will need both the standard gog plugin https://github.com/gogcom/galaxy-integrations-python-api and utils https://github.com/tylerbrawl/Galaxy-Utils packages to be placed as dependencies in the root of the folder
 
-py -m pip install galaxy.plugin.api galaxyutils --target DIR
+Also needs escapejson
+
+py -m pip install escapejson galaxy.plugin.api galaxyutils --target DIR
 
 The plugin will need to be placed in 
 
