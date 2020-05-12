@@ -47,6 +47,11 @@ jobs:
     - name: Upload result
       uses: actions/upload-artifact@v1
       with:
-        name: importer_ ${{ env.GITHUB_SHA }}
+        name: importer_ ${{ github.sha }}
         path: importer_97543122-7785-4444-2254-711233556699.zip
-
+    - name: Upload the artifacts
+      uses: skx/github-action-publish-binaries@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        args: 'importer*.zip'
