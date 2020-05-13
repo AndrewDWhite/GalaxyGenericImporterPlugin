@@ -95,6 +95,12 @@
             "execution" : "\"C:\\Users\\andyn\\Downloads\\cemu_1.17.2\\Cemu.exe\" -g \"%ROM_RAW%\" -f",
             "path_regex" : "F:\\Software\\games\\roms\\wii[ ]u\\converted./**/\\code\\",
             "filename_regex" : ["*[.]rpx"]
+        },
+        {
+            "name" : "arcade",
+            "execution" : "\"C:\\Users\\andyn\\Downloads\\mame0220b_64bit\\mame64.exe\" %ROM_NAME% -rompath \"%ROM_DIR%\"",
+            "path_regex" : "F:\\Software\\games\\roms\\arcade",
+            "filename_regex" : ["*[.]zip"]
         }
     ]
 

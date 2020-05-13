@@ -27,15 +27,15 @@ class unittestproject(unittest.TestCase):
         
     def test_emulators(self):
         systems = List_Games()
-        #tests if it loaded the default 16 emulators
-        self.assertEqual(len(systems.loaded_systems_configuration),16)
+        #tests if it loaded the default number of emulators
+        self.assertEqual(len(systems.loaded_systems_configuration),17)
         
     def test_rec(self):
         systems = List_Games()
         myresult = systems.listAllRecursively()
         print(len(myresult))
         #TODO implement tests
-        self.assertEquals(161,len(myresult))
+        self.assertEquals(184,len(myresult))
         
     def test_comp(self):
         systems = List_Games()
@@ -51,7 +51,7 @@ class unittestproject(unittest.TestCase):
         #print (len(myresult["new"].keys() - myresult["old"].keys()))
         self.assertTrue(len(myresult["old"].keys() - myresult["new"].keys())==0)
         #All Added
-        self.assertTrue(len(myresult["new"].keys() - myresult["old"].keys())==161)
+        self.assertTrue(len(myresult["new"].keys() - myresult["old"].keys())==184)
 
         #print(myresult)
         
@@ -85,7 +85,7 @@ class unittestproject(unittest.TestCase):
         #All Removed
         #print (len(myresult["old"].keys() - myresult["new"].keys()))
         #print (len(myresult["new"].keys() - myresult["old"].keys()))
-        self.assertTrue(len(myresult["old"].keys() - myresult["new"].keys())==161)
+        self.assertTrue(len(myresult["old"].keys() - myresult["new"].keys())==184)
         #None Added
         self.assertTrue(len(myresult["new"].keys() - myresult["old"].keys())==0)
 
@@ -99,7 +99,20 @@ class unittestproject(unittest.TestCase):
         #GenericEmulatorPlugin.runMySelectedGameHere(self, executionCommand)
         #TODO implement tests
         self.assertEquals(executionCommand,"\"\"C:\\Users\\andyn\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"C:\\Users\\andyn\\AppData\\Roaming\\RetroArch\\cores\\flycast_libretro.dll\" \"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends\\disc.gdi\"\"")
+    
+    def test_returned_dir_data(self):
+        systems = List_Games()
+        myresult = systems.listAllRecursively()[0]
         
+        #print(myresult)
+        self.assertEquals(len(myresult), 9)
+        self.assertEquals(myresult["filename"],"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends\\disc.gdi")
+        self.assertEquals(myresult["filename_short"],"disc.gdi")
+        self.assertEquals(myresult["gamename"],"disc")
+        self.assertEquals(myresult["name"],"dreamcast")
+        self.assertEquals(myresult["path"],"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends")
+        self.assertEquals(myresult["hash_digest"],"50b3bc6339b0965795a61c33bbb0681966fd1752")
+            
     def test_launch(self):
         systems = List_Games()
         myresult = systems.listAllRecursively()

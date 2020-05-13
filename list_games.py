@@ -57,6 +57,8 @@ class List_Games():
                         #print(new_entry["hash_digest"])
                         new_entry["filename"]=myGame
                         new_entry["filename_short"]=os.path.basename(myGame)
+                        new_entry["gamename"]=os.path.splitext(new_entry["filename_short"])[0]
+                        new_entry["path"]=os.path.split(myGame)[0]
                         #logging.info(new_entry)
                         self.mylist.append(new_entry)
         return self.mylist        

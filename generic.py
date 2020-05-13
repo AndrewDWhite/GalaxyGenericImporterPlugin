@@ -87,6 +87,7 @@ class GenericEmulatorPlugin(Plugin):
                 myCurrentGameSelected =  currentGameChecking
                 break
         gameTags = [myCurrentGameSelected["name"]]
+        logging.info(myCurrentGameSelected["name"])
         gameSettings = GameLibrarySettings(game_id, gameTags, False)
         return gameSettings
     
@@ -191,7 +192,7 @@ class GenericEmulatorPlugin(Plugin):
         print (myGameToLaunch)
         executionCommand = ""
         if "execution" in myGameToLaunch.keys():
-            executionCommand="\""+myGameToLaunch["execution"].replace("%ROM_RAW%", myGameToLaunch["filename"])+"\""
+            executionCommand="\""+myGameToLaunch["execution"].replace("%ROM_RAW%", myGameToLaunch["filename"]).replace("%ROM_DIR%", myGameToLaunch["path"]).replace("%ROM_NAME%", myGameToLaunch["gamename"])+"\""
             logging.info("starting")
             logging.info(executionCommand)
         return executionCommand
