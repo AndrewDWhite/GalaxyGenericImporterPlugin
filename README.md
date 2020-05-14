@@ -24,7 +24,8 @@ The regular expression to use to allow for the selection of the software. For mo
 The regular expression to use to select valid files.
 
 #### Example configuration entry
-The following is an example of teh configuration of a single entry for a system. These objects should be enclosed in an array. Again see the example file for how this should look all together.
+The following is an example of the configuration of a single entry for a system. These objects should be enclosed in an array. Again see the example file for how this should look all together.
+
        {
             "name" : "dreamcast",
             "execution" : "\"C:\\Users\\andyn\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"C:\\Users\\andyn\\AppData\\Roaming\\RetroArch\\cores\\flycast_libretro.dll\" \"%ROM_RAW%\"",
