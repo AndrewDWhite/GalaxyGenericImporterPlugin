@@ -2,10 +2,10 @@
 Plugin for GOG Galaxy to allow the generic definition of software using regular expressions.
 
 ## Installation
-The plugin will need to be placed in `%localappdata%\GOG.com\Galaxy\plugins\installed\importer_97543122-7785-4444-2254-711233556699` . The following is a Youtube video showing installation using default directories for software. https://www.youtube.com/watch?v=FCrHWRy0fOs
+The plugin will need to be placed in `%localappdata%\GOG.com\Galaxy\plugins\installed\` as `importer_97543122-7785-4444-2254-711233556699` . The easiest version to install is the lastest version under releases with all of the libraries pre installed and can be unzipped into the installation directory. The following is a Youtube video showing installation using default directories for software. https://www.youtube.com/watch?v=FCrHWRy0fOs
 
 ## Configuration
-Configuration for execution, selection and location of files is located in the `emulators.json` file. See the included for an example and used by default if not changed.
+Configuration for execution, selection and location of files is located in the `emulators.json` file. See the included for an example and used by default if not changed. You will need to change this. Any platform you do not need can be safetly removed.
 
 ### name
 The different platforms names are saved as tags, so you will want to manually import them to use these filters in GOG Galaxy.
