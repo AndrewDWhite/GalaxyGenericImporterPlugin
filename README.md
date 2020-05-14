@@ -12,7 +12,7 @@ The different platforms names are saved as tags, so you will want to manually im
 
 ### execution
 The escaped execution command to send to the operating system. Allows for expansion of the following variables.
-#### "%ROM_RAW%
+#### %ROM_RAW%
 The full filename of the software.
 #### %ROM_NAME%
 The filename without the path and extension.
