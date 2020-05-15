@@ -30,19 +30,9 @@ class List_Games():
     def listAllRecursively(self):
         logging.info("listing")
         self.mylist=[]
-        #how to access
         for emulated_system in self.loaded_systems_configuration:
-            #logging.info(emulated_system["name"])
-            #logging.info(emulated_system["execution"])
-            #logging.info(emulated_system["path_regex"])
-            #logging.info(emulated_system["filename_regex"])
-            #logging.info("found:")
-            #logging.info(glob.glob(emulated_system["path_regex"],recursive=True))
-            #logging.info(glob.glob((emulated_system["path_regex"]+'./**/'+emulated_system["filename_regex"]),recursive=True))
             for extension in emulated_system["filename_regex"]:
-                #logging.info (extension)
                 found_games=glob.glob(os.path.join((emulated_system["path_regex"]), '**',extension),recursive=True)
-                #logging.info(len(found_games))
                 
                 for myGame in found_games:
                     with open(myGame, 'rb') as data:
@@ -59,6 +49,5 @@ class List_Games():
                         new_entry["filename_short"]=os.path.basename(myGame)
                         new_entry["gamename"]=os.path.splitext(new_entry["filename_short"])[0]
                         new_entry["path"]=os.path.split(myGame)[0]
-                        #logging.info(new_entry)
                         self.mylist.append(new_entry)
         return self.mylist        
