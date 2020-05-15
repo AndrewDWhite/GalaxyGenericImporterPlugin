@@ -3,10 +3,10 @@ Created on May 9, 2020
 
 @author: Andrew David White
 '''
-import unittest
+import unittest, logging
 
 #local
-from configuration import Default_Config
+from configuration import DefaultConfig
 from ListGames import ListGames
 from generic import GenericEmulatorPlugin
 
@@ -18,9 +18,9 @@ class UnittestProject(unittest.TestCase):
     '''
         
     def test_config(self):
-        Default_Config()
+        config = DefaultConfig()
         #TODO implement tests
-        self.assertTrue(True)
+        self.assertEquals(config.my_user_to_gog,"andyn")
         
     def test_emulators(self):
         systems = ListGames()
@@ -119,4 +119,5 @@ class UnittestProject(unittest.TestCase):
         self.assertTrue(True)
         
 if __name__ == '__main__':
+    logging.basicConfig(format='%(asctime)s %(message)s')
     unittest.main()
