@@ -10,7 +10,7 @@ import logging
 
 import hashlib
 
-class List_Games():
+class ListGames():
     '''
     classdocs
     '''
@@ -27,27 +27,27 @@ class List_Games():
         logging.info("loading emulators configuration completed")
         logging.info(len(self.loaded_systems_configuration))
         
-    def listAllRecursively(self):
+    def list_all_recursively(self):
         logging.info("listing")
         self.mylist=[]
         for emulated_system in self.loaded_systems_configuration:
             for extension in emulated_system["filename_regex"]:
                 found_games=glob.glob(os.path.join((emulated_system["path_regex"]), '**',extension),recursive=True)
                 
-                for myGame in found_games:
-                    with open(myGame, 'rb') as data:
+                for my_game in found_games:
+                    #with open(my_game, 'rb') as data:
                         myhasher = hashlib.sha1()
-                        #logging.info(myGame)
+                        #logging.info(my_game)
                         new_entry = emulated_system.copy()
                         #TODO to re-enable hashing
                         #for chunk in iter(lambda: data.read(4096), ""):
                         #    myhasher.update(chunk)
-                        myhasher.update(myGame.encode('utf-8'))
+                        myhasher.update(my_game.encode('utf-8'))
                         new_entry["hash_digest"]=myhasher.hexdigest()
                         #print(new_entry["hash_digest"])
-                        new_entry["filename"]=myGame
-                        new_entry["filename_short"]=os.path.basename(myGame)
+                        new_entry["filename"]=my_game
+                        new_entry["filename_short"]=os.path.basename(my_game)
                         new_entry["gamename"]=os.path.splitext(new_entry["filename_short"])[0]
-                        new_entry["path"]=os.path.split(myGame)[0]
+                        new_entry["path"]=os.path.split(my_game)[0]
                         self.mylist.append(new_entry)
         return self.mylist        
