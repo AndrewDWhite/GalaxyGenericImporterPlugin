@@ -11,7 +11,7 @@ import os
 from escapejson import escapejson
 
 #local
-from configuration import Default_Config
+from configuration import DefaultConfig
 from ListGames import ListGames
 
 class GenericEmulatorPlugin(Plugin):
@@ -23,7 +23,7 @@ class GenericEmulatorPlugin(Plugin):
             writer,
             token
         )
-        self.configuration = Default_Config()
+        self.configuration = DefaultConfig()
         self.local_game_cache = []
         self.create_task_status = None
 
@@ -38,12 +38,10 @@ class GenericEmulatorPlugin(Plugin):
     
     def doAuth(self):    
         logging.info("Auth")
-        username = ''
-        with open(self.configuration.outputUserFile, 'r') as username_file:
-            username = username_file.read()
-
         user_data = {}
-        user_data['username'] = username
+        username = self.configuration.my_user_to_gog
+        logging.info(username)
+        user_data['username'] = username       
         self.store_credentials(user_data)
         return Authentication('importer_user', user_data['username'])
 
