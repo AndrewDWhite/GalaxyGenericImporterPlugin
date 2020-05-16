@@ -102,11 +102,12 @@ class UnittestProject(unittest.TestCase):
         myresult = systems.list_all_recursively()[0]
         
         #print(myresult)
-        self.assertEquals(len(myresult), 9)
+        self.assertEquals(len(myresult), 10)
         self.assertEquals(myresult["filename"],"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends\\disc.gdi")
         self.assertEquals(myresult["filename_short"],"disc.gdi")
         self.assertEquals(myresult["gamename"],"disc")
         self.assertEquals(myresult["name"],"dreamcast")
+        self.assertEquals(myresult["tags"],["retroarch","dreamcast"])
         self.assertEquals(myresult["path"],"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends")
         self.assertEquals(myresult["hash_digest"],"50b3bc6339b0965795a61c33bbb0681966fd1752")
             
