@@ -4,6 +4,7 @@ Created on May 9, 2020
 @author: Andrew David White
 '''
 import unittest, logging
+import asyncio
 
 #local
 from configuration import DefaultConfig
@@ -28,16 +29,18 @@ class UnittestProject(unittest.TestCase):
         self.assertEqual(len(systems.loaded_systems_configuration),17)
         
     def test_rec(self):
-        systems = ListGames()
-        myresult = systems.list_all_recursively()
+        loop = asyncio.get_event_loop()
+        myresult = loop.run_until_complete(ListGames().list_all_recursively())
+        
         #print(myresult)
         #print(len(myresult))
         #TODO implement tests
         self.assertEquals(184,len(myresult))
         
     def test_comp(self):
-        systems = ListGames()
-        new_local = systems.list_all_recursively()
+        loop = asyncio.get_event_loop()
+        new_local = loop.run_until_complete(ListGames().list_all_recursively())
+        
         for entry in new_local:
             #print("Check")
             if("local_game_state" not in entry):
@@ -53,8 +56,9 @@ class UnittestProject(unittest.TestCase):
         #print(myresult)
         
     def test_compSame(self):
-        systems = ListGames()
-        new_local = systems.list_all_recursively()
+        loop = asyncio.get_event_loop()
+        new_local = loop.run_until_complete(ListGames().list_all_recursively())
+        
         for entry in new_local:
             #print("Check")
             if("local_game_state" not in entry):
@@ -71,8 +75,9 @@ class UnittestProject(unittest.TestCase):
         #print(myresult)
         
     def test_compRemoved(self):
-        systems = ListGames()
-        new_local = systems.list_all_recursively()
+        loop = asyncio.get_event_loop()
+        new_local = loop.run_until_complete(ListGames().list_all_recursively())
+        
         for entry in new_local:
             #print("Check")
             if("local_game_state" not in entry):
@@ -89,8 +94,8 @@ class UnittestProject(unittest.TestCase):
         #print(myresult)
         
     def test_launch_command(self):
-        systems = ListGames()
-        myresult = systems.list_all_recursively()
+        loop = asyncio.get_event_loop()
+        myresult = loop.run_until_complete(ListGames().list_all_recursively())
         execution_command = GenericEmulatorPlugin.getExeCommand(self,myresult[0]["hash_digest"], myresult)
         #print(execution_command)
         #GenericEmulatorPlugin.runMySelectedGameHere(self, execution_command)
@@ -98,8 +103,9 @@ class UnittestProject(unittest.TestCase):
         self.assertEquals(execution_command,"\"\"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\cores\\flycast_libretro.dll\" \"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends\\disc.gdi\"\"")
     
     def test_returned_dir_data(self):
-        systems = ListGames()
-        myresult = systems.list_all_recursively()[0]
+        loop = asyncio.get_event_loop()
+        myresult = loop.run_until_complete(ListGames().list_all_recursively())
+        myresult =myresult[0]
         
         #print(myresult)
         expected_attributes = ["name", "execution", "path_regex", "filename_regex",
@@ -120,8 +126,8 @@ class UnittestProject(unittest.TestCase):
         self.assertEquals(myresult["hash_digest"],"50b3bc6339b0965795a61c33bbb0681966fd1752")
             
     def test_launch(self):
-        systems = ListGames()
-        myresult = systems.list_all_recursively()
+        loop = asyncio.get_event_loop()
+        myresult = loop.run_until_complete(ListGames().list_all_recursively())
         execution_command = GenericEmulatorPlugin.getExeCommand(self,"b96bc8c22d1ad87eb934fedf1a075ab4bf70728c", myresult)
         GenericEmulatorPlugin.runMySelectedGameHere(self, execution_command)
         #TODO implement tests
