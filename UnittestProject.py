@@ -29,7 +29,7 @@ class UnittestProject(unittest.TestCase):
         
     def test_rec(self):
         systems = ListGames()
-        myresult = systems.list_all_recursively()
+        myresult = systems.list_all_recursively("test_user")
         #print(myresult)
         #print(len(myresult))
         #TODO implement tests
@@ -37,7 +37,7 @@ class UnittestProject(unittest.TestCase):
         
     def test_comp(self):
         systems = ListGames()
-        new_local = systems.list_all_recursively()
+        new_local = systems.list_all_recursively("test_user")
         for entry in new_local:
             #print("Check")
             if("local_game_state" not in entry):
@@ -54,7 +54,7 @@ class UnittestProject(unittest.TestCase):
         
     def test_compSame(self):
         systems = ListGames()
-        new_local = systems.list_all_recursively()
+        new_local = systems.list_all_recursively("test_user")
         for entry in new_local:
             #print("Check")
             if("local_game_state" not in entry):
@@ -72,7 +72,7 @@ class UnittestProject(unittest.TestCase):
         
     def test_compRemoved(self):
         systems = ListGames()
-        new_local = systems.list_all_recursively()
+        new_local = systems.list_all_recursively("test_user")
         for entry in new_local:
             #print("Check")
             if("local_game_state" not in entry):
@@ -90,7 +90,7 @@ class UnittestProject(unittest.TestCase):
         
     def test_launch_command(self):
         systems = ListGames()
-        myresult = systems.list_all_recursively()
+        myresult = systems.list_all_recursively("test_user")
         execution_command = GenericEmulatorPlugin.getExeCommand(self,myresult[0]["hash_digest"], myresult)
         #print(execution_command)
         #GenericEmulatorPlugin.runMySelectedGameHere(self, execution_command)
@@ -99,7 +99,7 @@ class UnittestProject(unittest.TestCase):
     
     def test_returned_dir_data(self):
         systems = ListGames()
-        myresult = systems.list_all_recursively()[0]
+        myresult = systems.list_all_recursively("test_user")[0]
         
         #print(myresult)
         expected_attributes = ["name", "execution", "path_regex", "filename_regex",
@@ -117,11 +117,11 @@ class UnittestProject(unittest.TestCase):
         self.assertEquals(myresult["name"],"dreamcast")
         self.assertEquals(myresult["tags"],["retroarch","dreamcast"])
         self.assertEquals(myresult["path"],"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends")
-        self.assertEquals(myresult["hash_digest"],"50b3bc6339b0965795a61c33bbb0681966fd1752")
+        self.assertEquals(myresult["hash_digest"],"af6d2857d1f332323ce954ace3ec5200fe013473")
             
     def test_launch(self):
         systems = ListGames()
-        myresult = systems.list_all_recursively()
+        myresult = systems.list_all_recursively("test_user")
         execution_command = GenericEmulatorPlugin.getExeCommand(self,"b96bc8c22d1ad87eb934fedf1a075ab4bf70728c", myresult)
         GenericEmulatorPlugin.runMySelectedGameHere(self, execution_command)
         #TODO implement tests

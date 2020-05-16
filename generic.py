@@ -141,8 +141,7 @@ class GenericEmulatorPlugin(Plugin):
         
     async def update_local_games(self):
         logging.info("get local updates")
-        loop = asyncio.get_running_loop()
-        new_local_games_list = await loop.run_in_executor(None, ListGames().list_all_recursively)
+        new_local_games_list = ListGames().list_all_recursively(self.configuration.my_user_to_gog)
         logging.info("Got new List")
         self.sendMyUpdates(new_local_games_list)
         await asyncio.sleep(60)
