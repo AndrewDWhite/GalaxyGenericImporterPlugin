@@ -31,6 +31,11 @@ class ListGames():
         logging.info("listing")
         self.mylist=[]
         for emulated_system in self.loaded_systems_configuration:
+            tags = []
+            if "tags" in emulated_system:
+                tags = emulated_system["tags"]
+            tags.append(emulated_system["name"])
+            
             for extension in emulated_system["filename_regex"]:
                 found_games=glob.glob(os.path.join((emulated_system["path_regex"]), '**',extension),recursive=True)
                 
@@ -49,5 +54,6 @@ class ListGames():
                         new_entry["filename_short"]=os.path.basename(my_game)
                         new_entry["gamename"]=os.path.splitext(new_entry["filename_short"])[0]
                         new_entry["path"]=os.path.split(my_game)[0]
+                        new_entry["tags"] = tags                        
                         self.mylist.append(new_entry)
         return self.mylist        
