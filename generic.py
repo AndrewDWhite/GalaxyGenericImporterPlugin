@@ -66,7 +66,7 @@ class GenericEmulatorPlugin(Plugin):
         return list_to_galaxy
 
     def create_game(self, game):
-        return Game(game["hash_digest"], escapejson(game["filename_short"]), None, LicenseInfo(LicenseType.SinglePurchase))
+        return Game(game["hash_digest"], escapejson(game["game_name"]), None, LicenseInfo(LicenseType.SinglePurchase))
 
     # Only placeholders so the feature is recognized
     async def install_game(self, game_id):
