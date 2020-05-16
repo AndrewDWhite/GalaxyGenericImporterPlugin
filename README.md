@@ -32,6 +32,7 @@ The following is an example of the configuration of a single entry for a system.
             "name" : "dreamcast",
             "execution" : "\"C:\\Users\\andyn\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"C:\\Users\\andyn\\AppData\\Roaming\\RetroArch\\cores\\flycast_libretro.dll\" \"%ROM_RAW%\"",
             "path_regex" : "F:\\Software\\games\\roms\\Dreamcast",
+	    "tags" : ["retroarch"],
             "filename_regex" : ["disc[.]gdi"]
         }
 
