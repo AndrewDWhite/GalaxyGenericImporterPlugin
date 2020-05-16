@@ -22,6 +22,8 @@ The full path to the software.
 The regular expression to use to allow for the selection of the software. For most platforms this is just an escaped version of the directory where the games are stored.
 #### filename_regex
 The regular expression to use to select valid files.
+#### tags
+Optional: Additional tags to add to files.
 
 #### Example configuration entry
 The following is an example of the configuration of a single entry for a system. These objects should be enclosed in an array. Again see the example file for how this should look all together.
