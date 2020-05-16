@@ -85,8 +85,8 @@ class GenericEmulatorPlugin(Plugin):
             if (current_game_checking["hash_digest"] == game_id):
                 my_current_game_selected =  current_game_checking
                 break
-        game_tags = [my_current_game_selected["name"]]
-        logging.info(my_current_game_selected["name"])
+        game_tags = my_current_game_selected["tags"]
+        logging.info(game_tags)
         game_settings = GameLibrarySettings(game_id, game_tags, False)
         return game_settings
     
