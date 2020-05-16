@@ -14,7 +14,7 @@
             "execution" : "\"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\cores\\mgba_libretro.dll\" \"%ROM_RAW%\"",
             "path_regex" : "F:\\Software\\games\\roms\\GBA",
             "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+)[.]gba",
+            "game_name_regex" : ".*[\\\\](.+?)([.].*)*[.]gba",
             "game_name_regex_group" : 1,
             "filename_regex" : ["*[.]gba"]
         },
@@ -32,7 +32,7 @@
             "execution" : "\"%USERPROFILE%\\Downloads\\dolphin-master-5.0-11701-x64\\Dolphin-x64\\Dolphin.exe\" --config \"Dolphin.Display.Fullscreen=True\" -e \"%ROM_RAW%\"",
             "path_regex" : "F:\\Software\\games\\roms\\GameCube",
             "tags" : ["dolphin"],
-            "game_name_regex" : ".*[\\\\](.+)[.]iso",
+            "game_name_regex" : ".*[\\\\](.+?)([ ][\\(].*[\\)])*[.]iso",
             "game_name_regex_group" : 1,
             "filename_regex" : ["*[.]iso"]
         },
@@ -41,7 +41,7 @@
             "execution" : "\"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\cores\\genesis_plus_gx_libretro.dll\" \"%ROM_RAW%\"",
             "path_regex" : "F:\\Software\\games\\roms\\Genesis",
             "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+)[.]bin",
+            "game_name_regex" : ".*[\\\\](.+?)([.].*)*[.]bin",
             "game_name_regex_group" : 1,
             "filename_regex" : ["*[.]bin"]
         },
@@ -50,7 +50,7 @@
             "execution" : "\"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\cores\\mupen64plus_next_libretro.dll\" \"%ROM_RAW%\"",
             "path_regex" : "F:\\Software\\games\\roms\\N64",
             "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+)[.]z64",
+            "game_name_regex" : ".*[\\\\](.+?)([.].*)*[.]z64",
             "game_name_regex_group" : 1,
             "filename_regex" : ["*[.]z64"]
         },
@@ -113,7 +113,7 @@
             "execution" : "\"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\cores\\snes9x_libretro.dll\" \"%ROM_RAW%\"",
             "path_regex" : "F:\\Software\\games\\roms\\SNES",
             "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+)[.]sfc",
+            "game_name_regex" : ".*[\\\\](.+?)([.].*)*[.]sfc",
             "game_name_regex_group" : 1,
             "filename_regex" : ["*[.]sfc"]
         },
@@ -122,7 +122,7 @@
             "execution" : "\"%USERPROFILE%\\Downloads\\dolphin-master-5.0-11701-x64\\Dolphin-x64\\Dolphin.exe\" --config \"Dolphin.Display.Fullscreen=True\" -e \"%ROM_RAW%\"",
             "path_regex" : "F:\\Software\\games\\roms\\Wii",
             "tags" : ["dolphin"],
-            "game_name_regex" : ".*[\\\\](.+)[.]iso",
+            "game_name_regex" : ".*[\\\\](.+?)([ ][\\(].*[\\)])*[.]iso",
             "game_name_regex_group" : 1,
             "filename_regex" : ["*[.]iso"]
         },
@@ -131,7 +131,7 @@
             "execution" : "\"%USERPROFILE%\\Downloads\\CxbxReloaded-Release-VS2017\\cxbx.exe\" \"%ROM_RAW%\"",
             "path_regex" : "F:\\Software\\games\\roms\\xbox\\games",
             "tags" : ["cxbxreloaded"],
-            "game_name_regex" : ".*[\\\\](.+)[.]xbe",
+            "game_name_regex" : ".*[\\\\](.+)[\\\\]default[.]xbe",
             "game_name_regex_group" : 1,
             "filename_regex" : ["default[.]xbe"]
         },
