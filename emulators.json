@@ -79,7 +79,7 @@
             "tags" : ["pcsx2"],
             "game_name_regex" : ".*[\\\\](.+)[.].*",
             "game_name_regex_group" : 1,
-            "filename_regex" : ["*[.]iso","*[.]toc"]
+            "filename_regex" : ["*[.]iso","*[.]bin"]
         },
         {
             "name" : "ps3",
