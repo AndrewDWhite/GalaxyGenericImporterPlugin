@@ -30,7 +30,7 @@ class UnittestProject(unittest.TestCase):
     def test_rec(self):
         systems = ListGames()
         myresult = systems.list_all_recursively()
-        print(len(myresult))
+        #print(len(myresult))
         #TODO implement tests
         self.assertEquals(184,len(myresult))
         
@@ -102,10 +102,18 @@ class UnittestProject(unittest.TestCase):
         myresult = systems.list_all_recursively()[0]
         
         #print(myresult)
-        self.assertEquals(len(myresult), 10)
+        expected_attributes = ["name", "execution", "path_regex", "filename_regex",
+                               "game_name_regex", "game_name_regex_group",
+                               "hash_digest", "filename", "filename_short",
+                               "game_filename", "game_name", "path",
+                               "tags"]
+        self.assertEquals(len(myresult), len(expected_attributes))
+        for attribute_expected in expected_attributes:
+            self.assertTrue(attribute_expected in myresult)
         self.assertEquals(myresult["filename"],"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends\\disc.gdi")
         self.assertEquals(myresult["filename_short"],"disc.gdi")
-        self.assertEquals(myresult["gamename"],"disc")
+        self.assertEquals(myresult["game_filename"],"disc")
+        self.assertEquals(myresult["game_name"],"Gauntlet Legends")
         self.assertEquals(myresult["name"],"dreamcast")
         self.assertEquals(myresult["tags"],["retroarch","dreamcast"])
         self.assertEquals(myresult["path"],"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends")
