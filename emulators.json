@@ -74,7 +74,7 @@
         },
         {
             "name" : "ps2",
-            "execution" : "\"C:\\Program Files (x86)\\PCSX2 1.4.0\\pcsx2.exe\" --fullscreen \"%ROM_RAW%\"",
+            "execution" : "\"C:\\Program Files (x86)\\PCSX2\\pcsx2.exe\" --fullscreen \"%ROM_RAW%\"",
             "path_regex" : "F:\\Software\\games\\roms\\PS2",
             "tags" : ["pcsx2"],
             "game_name_regex" : ".*[\\\\](.+)[.].*",
