@@ -30,6 +30,7 @@ class UnittestProject(unittest.TestCase):
     def test_rec(self):
         systems = ListGames()
         myresult = systems.list_all_recursively()
+        #print(myresult)
         #print(len(myresult))
         #TODO implement tests
         self.assertEquals(184,len(myresult))
@@ -49,7 +50,6 @@ class UnittestProject(unittest.TestCase):
         self.assertTrue(len(myresult["old"].keys() - myresult["new"].keys())==0)
         #All Added
         self.assertTrue(len(myresult["new"].keys() - myresult["old"].keys())==184)
-
         #print(myresult)
         
     def test_compSame(self):
