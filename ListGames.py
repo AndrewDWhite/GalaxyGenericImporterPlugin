@@ -28,7 +28,7 @@ class ListGames():
         logging.info("loading emulators configuration completed")
         logging.info(len(self.loaded_systems_configuration))
         
-    def list_all_recursively(self):
+    def list_all_recursively(self, salt):
         logging.info("listing")
         self.mylist=[]
         for emulated_system in self.loaded_systems_configuration:
@@ -42,24 +42,19 @@ class ListGames():
                 found_games=glob.glob(os.path.join((emulated_system["path_regex"]), '**',extension),recursive=True)
                 
                 for my_game in found_games:
-                    #with open(my_game, 'rb') as data:
-                        myhasher = hashlib.sha1()
-                        #logging.info(my_game)
-                        new_entry = emulated_system.copy()
-                        #TODO to re-enable hashing
-                        #for chunk in iter(lambda: data.read(4096), ""):
-                        #    myhasher.update(chunk)
-                        myhasher.update(my_game.encode('utf-8'))
-                        new_entry["hash_digest"]=myhasher.hexdigest()
-                        logging.info(new_entry["hash_digest"])
-                        new_entry["filename"]=my_game
-                        new_entry["filename_short"]=os.path.basename(my_game)
-                        new_entry["game_filename"]=os.path.splitext(new_entry["filename_short"])[0]
-                        regex_result = matcher.search(my_game)
-                        logging.info(regex_result)
-                        new_entry["game_name"] = regex_result.group(emulated_system["game_name_regex_group"])
-                        logging.info(new_entry["game_name"])
-                        new_entry["path"]=os.path.split(my_game)[0]
-                        new_entry["tags"] = tags                        
-                        self.mylist.append(new_entry)
+                    myhasher = hashlib.sha1()
+                    new_entry = emulated_system.copy()
+                    myhasher.update((my_game+salt).encode('utf-8'))
+                    new_entry["hash_digest"]=myhasher.hexdigest()
+                    logging.info(new_entry["hash_digest"])
+                    new_entry["filename"]=my_game
+                    new_entry["filename_short"]=os.path.basename(my_game)
+                    new_entry["game_filename"]=os.path.splitext(new_entry["filename_short"])[0]
+                    regex_result = matcher.search(my_game)
+                    logging.info(regex_result)
+                    new_entry["game_name"] = regex_result.group(emulated_system["game_name_regex_group"])
+                    logging.info(new_entry["game_name"])
+                    new_entry["path"]=os.path.split(my_game)[0]
+                    new_entry["tags"] = tags                        
+                    self.mylist.append(new_entry)
         return self.mylist        
