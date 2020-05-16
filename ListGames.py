@@ -7,6 +7,7 @@ import glob
 import os
 import json
 import logging
+import re
 
 import hashlib
 
@@ -35,6 +36,7 @@ class ListGames():
             if "tags" in emulated_system:
                 tags = emulated_system["tags"]
             tags.append(emulated_system["name"])
+            matcher = re.compile(emulated_system["game_name_regex"], re.IGNORECASE)
             
             for extension in emulated_system["filename_regex"]:
                 found_games=glob.glob(os.path.join((emulated_system["path_regex"]), '**',extension),recursive=True)
@@ -49,10 +51,14 @@ class ListGames():
                         #    myhasher.update(chunk)
                         myhasher.update(my_game.encode('utf-8'))
                         new_entry["hash_digest"]=myhasher.hexdigest()
-                        #print(new_entry["hash_digest"])
+                        logging.info(new_entry["hash_digest"])
                         new_entry["filename"]=my_game
                         new_entry["filename_short"]=os.path.basename(my_game)
-                        new_entry["gamename"]=os.path.splitext(new_entry["filename_short"])[0]
+                        new_entry["game_filename"]=os.path.splitext(new_entry["filename_short"])[0]
+                        regex_result = matcher.search(my_game)
+                        logging.info(regex_result)
+                        new_entry["game_name"] = regex_result.group(emulated_system["game_name_regex_group"])
+                        logging.info(new_entry["game_name"])
                         new_entry["path"]=os.path.split(my_game)[0]
                         new_entry["tags"] = tags                        
                         self.mylist.append(new_entry)
