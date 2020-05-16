@@ -60,10 +60,13 @@ class GenericEmulatorPlugin(Plugin):
         found_games = self.local_game_cache
         
         for game in found_games:
-            this_game=Game(game["hash_digest"], escapejson(game["filename_short"]), None, LicenseInfo(LicenseType.SinglePurchase))
+            this_game=self.create_game(game)
             list_to_galaxy.append(this_game)
         logging.info(len(list_to_galaxy))
         return list_to_galaxy
+
+    def create_game(self, game):
+        return Game(game["hash_digest"], escapejson(game["game_name"]), None, LicenseInfo(LicenseType.SinglePurchase))
 
     # Only placeholders so the feature is recognized
     async def install_game(self, game_id):
@@ -115,7 +118,7 @@ class GenericEmulatorPlugin(Plugin):
             if ("hash_digest" in local_game) and (local_game["hash_digest"] in (new_dict.keys() - old_dict.keys())):
                 logging.info("added")
                 #self.remove_game(local_game["hash_digest"])
-                self.add_game(Game(local_game["hash_digest"], escapejson(local_game["filename_short"]), None, LicenseInfo(LicenseType.SinglePurchase)))
+                self.add_game(self.create_game(local_game))
                 self.update_local_game_status(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
                     
         # state changed
@@ -138,8 +141,7 @@ class GenericEmulatorPlugin(Plugin):
         
     async def update_local_games(self):
         logging.info("get local updates")
-        loop = asyncio.get_running_loop()
-        new_local_games_list = await loop.run_in_executor(None, ListGames().list_all_recursively)
+        new_local_games_list = ListGames().list_all_recursively(self.configuration.my_user_to_gog)
         logging.info("Got new List")
         self.sendMyUpdates(new_local_games_list)
         await asyncio.sleep(60)
@@ -171,10 +173,10 @@ class GenericEmulatorPlugin(Plugin):
             if (current_game_checking["hash_digest"] == game_id):
                 my_game_to_launch =  current_game_checking
                 break      
-        print (my_game_to_launch)
+        logging.info(my_game_to_launch)
         execution_command = ""
         if "execution" in my_game_to_launch.keys():
-            execution_command="\""+my_game_to_launch["execution"].replace("%ROM_RAW%", my_game_to_launch["filename"]).replace("%ROM_DIR%", my_game_to_launch["path"]).replace("%ROM_NAME%", my_game_to_launch["gamename"])+"\""
+            execution_command="\""+my_game_to_launch["execution"].replace("%ROM_RAW%", my_game_to_launch["filename"]).replace("%ROM_DIR%", my_game_to_launch["path"]).replace("%ROM_NAME%", my_game_to_launch["game_filename"])+"\""
             logging.info("starting")
             logging.info(execution_command)
         return execution_command
