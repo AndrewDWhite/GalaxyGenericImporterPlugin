@@ -24,6 +24,10 @@ The regular expression to use to allow for the selection of the software. For mo
 The regular expression to use to select valid files.
 #### tags
 Optional: Additional tags to add to files.
+#### game_name_regex
+The regular expression to use to select the name portion of the file. for example, `".*[\\\\](.+)[\\\\].*"` would use the last folder name as the game name.
+#### game_name_regex_group
+The regular expression group to use from the game_name_regex match.
 
 #### Example configuration entry
 The following is an example of the configuration of a single entry for a system. These objects should be enclosed in an array. Again see the example file for how this should look all together.
@@ -32,7 +36,9 @@ The following is an example of the configuration of a single entry for a system.
             "name" : "dreamcast",
             "execution" : "\"C:\\Users\\andyn\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"C:\\Users\\andyn\\AppData\\Roaming\\RetroArch\\cores\\flycast_libretro.dll\" \"%ROM_RAW%\"",
             "path_regex" : "F:\\Software\\games\\roms\\Dreamcast",
-	    "tags" : ["retroarch"],
+            "tags" : ["retroarch"],
+            "game_name_regex" : ".*[\\\\](.+)[\\\\].*",
+            "game_name_regex_group" : 1,
             "filename_regex" : ["disc[.]gdi"]
         }
 
