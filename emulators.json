@@ -77,7 +77,7 @@
             "execution" : "\"C:\\Program Files (x86)\\PCSX2\\pcsx2.exe\" --fullscreen \"%ROM_RAW%\"",
             "path_regex" : "F:\\Software\\games\\roms\\PS2",
             "tags" : ["pcsx2"],
-            "game_name_regex" : ".*[\\\\](.+)[.].*",
+            "game_name_regex" : ".*[\\\\](.+)[.](iso|bin)",
             "game_name_regex_group" : 1,
             "filename_regex" : ["*[.]iso","*[.]bin"]
         },
@@ -104,7 +104,7 @@
             "execution" : "\"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\cores\\pcsx_rearmed_libretro.dll\" \"%ROM_RAW%\"",
             "path_regex" : "F:\\Software\\games\\roms\\PS1",
             "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+)[.].*",
+            "game_name_regex" : ".*[\\\\](.+?)([ ][\\(].*[\\)])*[.](iso|toc)",
             "game_name_regex_group" : 1,
             "filename_regex" :  ["*[.]iso","*[.]toc"]
         },
