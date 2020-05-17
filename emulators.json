@@ -3,7 +3,7 @@
         {
             "name" : "dreamcast",
             "execution" : "\"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\cores\\flycast_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : "F:\\Software\\games\\roms\\Dreamcast",
+            "path_regex" : ["F:\\Software\\games\\roms\\Dreamcast"],
             "tags" : ["retroarch"],
             "game_name_regex" : ".*[\\\\](.+)[\\\\].*",
             "game_name_regex_group" : 1,
@@ -12,7 +12,7 @@
         {
             "name" : "gba",
             "execution" : "\"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\cores\\mgba_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : "F:\\Software\\games\\roms\\GBA",
+            "path_regex" : ["F:\\Software\\games\\roms\\GBA"],
             "tags" : ["retroarch"],
             "game_name_regex" : ".*[\\\\](.+?)([ ][\\(].*[\\)])*([.].*)*[.]gba",
             "game_name_regex_group" : 1,
@@ -21,16 +21,16 @@
         {
             "name" : "gbc",
             "execution" : "\"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\cores\\gambatte_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : "F:\\Software\\games\\roms\\GBC",
+            "path_regex" : ["F:\\Software\\games\\roms\\GBC","F:\\Software\\games\\roms\\GB"],
             "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+)[.]gb",
+            "game_name_regex" : ".*[\\\\](.+)[.](gb|gbc)",
             "game_name_regex_group" : 1,
-            "filename_regex" : ["*[.]gb"]
+            "filename_regex" : ["*[.]gb","*[.]gbc"]
         },
         {
             "name" : "gcn",
             "execution" : "\"%USERPROFILE%\\Downloads\\dolphin-master-5.0-11701-x64\\Dolphin-x64\\Dolphin.exe\" --config \"Dolphin.Display.Fullscreen=True\" -e \"%ROM_RAW%\"",
-            "path_regex" : "F:\\Software\\games\\roms\\GameCube",
+            "path_regex" : ["F:\\Software\\games\\roms\\GameCube"],
             "tags" : ["dolphin"],
             "game_name_regex" : ".*[\\\\](.+?)([ ][\\(].*[\\)])*[.]iso",
             "game_name_regex_group" : 1,
@@ -39,7 +39,7 @@
         {
             "name" : "genesis",
             "execution" : "\"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\cores\\genesis_plus_gx_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : "F:\\Software\\games\\roms\\Genesis",
+            "path_regex" : ["F:\\Software\\games\\roms\\Genesis"],
             "tags" : ["retroarch"],
             "game_name_regex" : ".*[\\\\](.+?)([.].*)*[.]bin",
             "game_name_regex_group" : 1,
@@ -48,7 +48,7 @@
         {
             "name" : "n64",
             "execution" : "\"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\cores\\mupen64plus_next_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : "F:\\Software\\games\\roms\\N64",
+            "path_regex" : ["F:\\Software\\games\\roms\\N64"],
             "tags" : ["retroarch"],
             "game_name_regex" : ".*[\\\\](.+?)([.].*)*[.]z64",
             "game_name_regex_group" : 1,
@@ -57,7 +57,7 @@
         {
             "name" : "nds",
             "execution" : "\"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\cores\\desmume_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : "F:\\Software\\games\\roms\\nds",
+            "path_regex" : ["F:\\Software\\games\\roms\\nds"],
             "tags" : ["retroarch"],
             "game_name_regex" : ".*[\\\\](.+)[.]nds",
             "game_name_regex_group" : 1,
@@ -66,7 +66,7 @@
         {
             "name" : "nes",
             "execution" : "\"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\cores\\nestopia_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : "F:\\Software\\games\\roms\\nes\\roms",
+            "path_regex" : ["F:\\Software\\games\\roms\\nes\\roms"],
             "tags" : ["retroarch"],
             "game_name_regex" : ".*[\\\\](.+)[.]nes",
             "game_name_regex_group" : 1,
@@ -75,7 +75,7 @@
         {
             "name" : "ps2",
             "execution" : "\"C:\\Program Files (x86)\\PCSX2\\pcsx2.exe\" --fullscreen \"%ROM_RAW%\"",
-            "path_regex" : "F:\\Software\\games\\roms\\PS2",
+            "path_regex" : ["F:\\Software\\games\\roms\\PS2"],
             "tags" : ["pcsx2"],
             "game_name_regex" : ".*[\\\\](.+)[.](iso|bin)",
             "game_name_regex_group" : 1,
@@ -84,7 +84,7 @@
         {
             "name" : "ps3",
             "execution" : "\"%USERPROFILE%\\Downloads\\rpcs3-v0.0.7-9236-db4041e0_win64\\rpcs3.exe\" --no-gui \"%ROM_RAW%\"",
-            "path_regex" : "F:\\Software\\games\\roms\\PS3\\\\out",
+            "path_regex" : ["F:\\Software\\games\\roms\\PS3\\\\out"],
             "tags" : ["rpcs3"],
             "game_name_regex" : ".*[\\\\]([\\[].*[\\]][ ]*)*(.+)[\\\\]PS3_GAME.*",
             "game_name_regex_group" : 2,
@@ -93,7 +93,7 @@
         {
             "name" : "psp",
             "execution" : "\"%USERPROFILE%\\Downloads\\ppsspp_win\\PPSSPPWindows64.exe\" \"%ROM_RAW%\"",
-            "path_regex" : "F:\\Software\\games\\roms\\psp",
+            "path_regex" : ["F:\\Software\\games\\roms\\psp"],
             "tags" : ["ppssp"],
             "game_name_regex" : ".*[\\\\](.+)[.]iso",
             "game_name_regex_group" : 1,
@@ -102,7 +102,7 @@
         {
             "name" : "ps1",
             "execution" : "\"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\cores\\pcsx_rearmed_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : "F:\\Software\\games\\roms\\PS1",
+            "path_regex" : ["F:\\Software\\games\\roms\\PS1"],
             "tags" : ["retroarch"],
             "game_name_regex" : ".*[\\\\](.+?)([ ][\\(].*[\\)])*[.](iso|toc)",
             "game_name_regex_group" : 1,
@@ -111,16 +111,16 @@
         {
             "name" : "snes",
             "execution" : "\"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\cores\\snes9x_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : "F:\\Software\\games\\roms\\SNES",
+            "path_regex" : ["F:\\Software\\games\\roms\\SNES"],
             "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+?)([.].*)*[.]sfc",
+            "game_name_regex" : ".*[\\\\](.+?)([ ][\\(].*[\\)])*([.].*)*[.]sfc",
             "game_name_regex_group" : 1,
             "filename_regex" : ["*[.]sfc"]
         },
         {
             "name" : "wii",
             "execution" : "\"%USERPROFILE%\\Downloads\\dolphin-master-5.0-11701-x64\\Dolphin-x64\\Dolphin.exe\" --config \"Dolphin.Display.Fullscreen=True\" -e \"%ROM_RAW%\"",
-            "path_regex" : "F:\\Software\\games\\roms\\Wii",
+            "path_regex" : ["F:\\Software\\games\\roms\\Wii"],
             "tags" : ["dolphin"],
             "game_name_regex" : ".*[\\\\](.+?)([ ][\\(].*[\\)])*[.]iso",
             "game_name_regex_group" : 1,
@@ -129,7 +129,7 @@
         {
             "name" : "xbox",
             "execution" : "\"%USERPROFILE%\\Downloads\\CxbxReloaded-Release-VS2017\\cxbx.exe\" \"%ROM_RAW%\"",
-            "path_regex" : "F:\\Software\\games\\roms\\xbox\\games",
+            "path_regex" : ["F:\\Software\\games\\roms\\xbox\\games"],
             "tags" : ["cxbxreloaded"],
             "game_name_regex" : ".*[\\\\](.+)[\\\\]default[.]xbe",
             "game_name_regex_group" : 1,
@@ -138,7 +138,7 @@
         {
             "name" : "wiiu",
             "execution" : "\"%USERPROFILE%\\Downloads\\cemu_1.17.2\\Cemu.exe\" -g \"%ROM_RAW%\" -f",
-            "path_regex" : "F:\\Software\\games\\roms\\wii[ ]u\\converted./**/\\code\\",
+            "path_regex" : ["F:\\Software\\games\\roms\\wii[ ]u\\converted./**/\\code\\"],
             "tags" : ["cemu"],
             "game_name_regex" : ".*[\\\\](.+)[\\\\]code.*",
             "game_name_regex_group" : 1,
@@ -147,7 +147,7 @@
         {
             "name" : "arcade",
             "execution" : "\"%USERPROFILE%\\Downloads\\mame0220b_64bit\\mame64.exe\" %ROM_NAME% -rompath \"%ROM_DIR%\"",
-            "path_regex" : "F:\\Software\\games\\roms\\arcade",
+            "path_regex" : ["F:\\Software\\games\\roms\\arcade"],
             "tags" : ["mame"],
             "game_name_regex" : ".*[\\\\](.+)[.]zip",
             "game_name_regex_group" : 1,
