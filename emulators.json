@@ -14,7 +14,7 @@
             "execution" : "\"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\cores\\mgba_libretro.dll\" \"%ROM_RAW%\"",
             "path_regex" : "F:\\Software\\games\\roms\\GBA",
             "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+?)([.].*)*[.]gba",
+            "game_name_regex" : ".*[\\\\](.+?)([ ][\\(].*[\\)])*([.].*)*[.]gba",
             "game_name_regex_group" : 1,
             "filename_regex" : ["*[.]gba"]
         },
