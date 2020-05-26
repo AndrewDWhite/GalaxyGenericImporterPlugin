@@ -26,7 +26,6 @@ class GenericEmulatorPlugin(Plugin):
             token
         )
         self.configuration = DefaultConfig()
-        #self.local_game_cache = []
         self.create_task_status = None
         self.my_game_lister =  ListGames()        
         self.local_game_cache = self.my_game_lister.read_from_cache()
@@ -69,7 +68,7 @@ class GenericEmulatorPlugin(Plugin):
         return list_to_galaxy
 
     def create_game(self, game):
-        return Game(game["hash_digest"], escapejson(game["game_name"]), None, LicenseInfo(LicenseType.SinglePurchase))
+        return Game(escapejson(game["hash_digest"]), escapejson(game["game_name"]), None, LicenseInfo(LicenseType.SinglePurchase))
 
     # Only placeholders so the feature is recognized
     async def install_game(self, game_id):
@@ -86,7 +85,7 @@ class GenericEmulatorPlugin(Plugin):
             logging.info("Creating update task")
             self.create_task_status = self.create_task(self.update_local_games(), "Creating update task")
         for current_game_checking in self.local_game_cache:
-            if (current_game_checking["hash_digest"] == game_id):
+            if (escapejson(current_game_checking["hash_digest"]) == game_id):
                 my_current_game_selected =  current_game_checking
                 break
         game_tags = my_current_game_selected["tags"]
