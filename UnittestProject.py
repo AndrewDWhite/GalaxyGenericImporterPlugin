@@ -30,6 +30,13 @@ class UnittestProject(unittest.TestCase):
         #tests if it loaded the default number of emulators
         self.assertEqual(len(systems.loaded_systems_configuration),17)
     
+    #def test_speed(self):
+    #    systems = ListGames()
+    #    my_initial_time = datetime.now()
+    #    systems.list_all_recursively("test_user")
+    #    my_delta = GenericEmulatorPlugin.time_delta_calc_minutes(self, my_initial_time)
+    #    print (my_delta)
+    
     def test_load_empty(self):
         systems = ListGames()
         systems.delete_cache()
@@ -116,7 +123,7 @@ class UnittestProject(unittest.TestCase):
         #print(execution_command)
         #GenericEmulatorPlugin.runMySelectedGameHere(self, execution_command)
         #TODO implement tests
-        self.assertEquals(execution_command,"\"\"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\cores\\flycast_libretro.dll\" \"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends\\disc.gdi\"\"")
+        self.assertEquals(execution_command,"\"\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\flycast_libretro.dll\" \"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends\\disc.gdi\"\"")
     
     def test_returned_dir_data(self):
         systems = ListGames()
