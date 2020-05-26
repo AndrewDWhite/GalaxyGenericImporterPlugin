@@ -2,7 +2,7 @@ import sys
 
 from galaxy.api.consts import Platform, LocalGameState
 from galaxy.api.plugin import Plugin, create_and_run_plugin
-from galaxy.api.types import Authentication, Game, LocalGame, LicenseInfo, LicenseType, GameLibrarySettings
+from galaxy.api.types import Authentication, Game, LocalGame, LicenseInfo, LicenseType, GameLibrarySettings, GameTime
 from typing import Any
 
 import logging
@@ -109,22 +109,7 @@ class GenericEmulatorPlugin(Plugin):
                 self.last_update = datetime.now()
                 self.create_task_status = self.create_task(update_local_games(self), "tick update")    
 
-        #for tracking time
-        my_threads_to_remove = []
-        logging.info("thread size")
-        logging.info(len(self.my_threads))
-        for my_current_thread in self.my_threads:
-            if not my_current_thread.is_alive():
-                logging.info("thread not alive")
-                my_thread_name = my_current_thread.name
-                logging.info(my_thread_name)
-                logging.info(my_thread_name)
-                my_dictionary_values = json.loads(my_thread_name)
-                finished_game_run(datetime.fromisoformat(my_dictionary_values["time"]),my_dictionary_values["id"])
-                my_threads_to_remove.append(my_current_thread)
-        for my_thread_to_remove in my_threads_to_remove:
-            logging.info("thread removed")
-            self.my_threads.remove(my_thread_to_remove)
+        time_tracking(self)
 
     # api interface shutdown nicely
     def shutdown(self):
@@ -142,6 +127,24 @@ class GenericEmulatorPlugin(Plugin):
         my_thread.name = json.dumps({"time":my_current_time.isoformat(), "id":game_id})
         logging.info(my_thread.name)
         my_thread.start()
+
+def time_tracking(self):
+    #for tracking time
+    my_threads_to_remove = []
+    logging.info("thread size")
+    logging.info(len(self.my_threads))
+    for my_current_thread in self.my_threads:
+        if not my_current_thread.is_alive():
+            logging.info("thread not alive")
+            my_thread_name = my_current_thread.name
+            logging.info(my_thread_name)
+            logging.info(my_thread_name)
+            my_dictionary_values = json.loads(my_thread_name)
+            finished_game_run(self, datetime.fromisoformat(my_dictionary_values["time"]),my_dictionary_values["id"])
+            my_threads_to_remove.append(my_current_thread)
+    for my_thread_to_remove in my_threads_to_remove:
+        logging.info("thread removed")
+        self.my_threads.remove(my_thread_to_remove)
         
 def create_game(game):
     return Game(escapejson(game["hash_digest"]), escapejson(game["game_name"]), None, LicenseInfo(LicenseType.SinglePurchase))
@@ -206,7 +209,7 @@ def run_my_selected_game_here(execution_command):
 def get_exe_command(game_id,local_game_cache):
     my_game_to_launch={}
     for current_game_checking in local_game_cache:
-        if (current_game_checking["hash_digest"] == game_id):
+        if (escapejson(current_game_checking["hash_digest"]) == game_id):
             my_game_to_launch =  current_game_checking
             break      
     logging.info(my_game_to_launch)
@@ -225,12 +228,29 @@ def time_delta_calc_minutes(last_update):
     time_delta_seconds = time_delta.total_seconds()
     return math.ceil(time_delta_seconds/60)    
 
-def finished_game_run(start_time, game_id):
+def finished_game_run(self, start_time, game_id):
     logging.info("game finished")
     logging.info(game_id)
     my_delta = time_delta_calc_minutes(start_time)
     logging.info(my_delta)
+    my_cache_update =[]
     #TODO implement logging of time
+    for current_game in self.local_game_cache:
+        if current_game["hash_digest"] == game_id:
+            my_game_update = current_game.copy()
+            if "run_time_total" in current_game.keys():
+                logging.info("updated play time")
+                my_game_update["run_time_total"] = current_game["run_time_total"] + my_delta
+            else:
+                logging.info("new play time")
+                my_game_update["run_time_total"] = my_delta
+            my_cache_update.append(my_game_update)
+            self.update_game_time(GameTime(escapejson(game_id), my_game_update["run_time_total"], start_time.timestamp()))
+        else:
+            my_cache_update.append(current_game)
+    #Potential race condition here probably want to add semaphores on cache writes or refactor
+    self.local_game_cache = my_cache_update
+    self.my_game_lister.write_to_cache(my_cache_update)
 
 def do_auth(self):    
     logging.info("Auth")
