@@ -48,13 +48,13 @@ class GenericEmulatorPlugin(Plugin):
     async def get_owned_games(self):
         logging.info("get owned")
         #call function to update
-        if self.create_task_status is None:
-            logging.info("Creating owned task")
-            self.create_task_status = self.create_task(update_local_games(self), "Creating owned task")
-            await self.create_task_status
-        else:
-            if not self.create_task_status.done():
-                await self.create_task_status
+        #if self.create_task_status is None:
+        #    logging.info("Creating owned task")
+        #    self.create_task_status = self.create_task(update_local_games(self), "Creating owned task")
+        #    await self.create_task_status
+        #else:
+        #    if not self.create_task_status.done():
+        #        await self.create_task_status
         logging.info("moving on with owned ")
         logging.info(self.create_task_status)
         list_to_galaxy = []
@@ -102,12 +102,12 @@ class GenericEmulatorPlugin(Plugin):
         logging.info("get local")
         localgames = []
         #call function to update 
-        if self.create_task_status is None:
-                self.create_task_status = self.create_task(update_local_games(self), "get local")
-                await self.create_task_status
-        else:
-            if not self.create_task_status.done():
-                await self.create_task_status
+        #if self.create_task_status is None:
+        #        self.create_task_status = self.create_task(update_local_games(self), "get local")
+        #        await self.create_task_status
+        #else:
+        #    if not self.create_task_status.done():
+        #        await self.create_task_status
         logging.info("moving on with local ")
         logging.info(self.create_task_status)
         for local_game in self.local_game_cache :
@@ -138,7 +138,7 @@ class GenericEmulatorPlugin(Plugin):
         my_current_time = datetime.now()
         my_coroutine = run_my_selected_game_here(execution_command)
         my_coroutine_task = self.create_task(my_coroutine, "starting game")
-        my_coroutine_task.add_done_callback(functools.partial(finished_game_run, self, my_current_time, game_id))       
+        my_coroutine_task.add_done_callback(functools.partial(finished_game_run, self, my_current_time, game_id))    
 
 def create_game(game):
     return Game(escapejson(game["hash_digest"]), escapejson(game["game_name"]), None, LicenseInfo(LicenseType.SinglePurchase))
@@ -198,7 +198,7 @@ async def update_local_games(self):
     self.my_game_lister.write_to_cache(new_local_games_list)
 
 async def run_my_selected_game_here(execution_command):
-    os.system(execution_command)
+    return os.system(execution_command)
 
 def get_exe_command(game_id,local_game_cache):
     my_game_to_launch={}

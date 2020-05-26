@@ -52,6 +52,7 @@ class UnittestProject(unittest.TestCase):
         self.assertTrue(systems.cache_exists())
         data_read = systems.read_from_cache()
         self.assertEquals(184,len(data_read ))
+        self.assertEquals(data_read, data)
         
     def test_rec(self):
         systems = ListGames()
@@ -152,8 +153,11 @@ class UnittestProject(unittest.TestCase):
     def test_launch(self):
         systems = ListGames()
         myresult = systems.list_all_recursively("test_user")
-        execution_command = get_exe_command("b96bc8c22d1ad87eb934fedf1a075ab4bf70728c", myresult)
-        run_my_selected_game_here(execution_command)
+        execution_command = get_exe_command("70408a8d1da48c8760c3c65f2485f3d28c23198f", myresult)
+        #task = run_my_selected_game_here(execution_command)
+        #loop = asyncio.new_event_loop()
+        #asyncio.set_event_loop(loop)
+        #loop.run_until_complete(task)
         #TODO implement tests
         self.assertTrue(True)
         
