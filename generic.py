@@ -10,7 +10,6 @@ import os
 from escapejson import escapejson
 import json
 from datetime import datetime
-#import functools
 import threading
 import math
 
@@ -50,15 +49,6 @@ class GenericEmulatorPlugin(Plugin):
     # required api interface to return the owned games
     async def get_owned_games(self):
         logging.info("get owned")
-        #call function to update
-        #if self.create_task_status is None:
-        #    logging.info("Creating owned task")
-        #    self.create_task_status = self.create_task(update_local_games(self), "Creating owned task")
-        #    await self.create_task_status
-        #else:
-        #    if not self.create_task_status.done():
-        #        await self.create_task_status
-        logging.info("moving on with owned ")
         logging.info(self.create_task_status)
         list_to_galaxy = []
         found_games = self.local_game_cache
@@ -83,14 +73,11 @@ class GenericEmulatorPlugin(Plugin):
         logging.info(game_id)
     
     # api interface to update game library data with tags
-    # appears that get_owned_games will always run first 
+    # assumes that library has already been imported
     async def get_game_library_settings(self, game_id: str, context: Any)  -> GameLibrarySettings:
         logging.info("Updating library "+game_id)
         my_current_game_selected={}
         #call function to update
-        if self.create_task_status is None:
-            logging.info("Creating update task")
-            self.create_task_status = self.create_task(update_local_games(self), "Creating update task")
         for current_game_checking in self.local_game_cache:
             if (escapejson(current_game_checking["hash_digest"]) == game_id):
                 my_current_game_selected =  current_game_checking
@@ -101,17 +88,10 @@ class GenericEmulatorPlugin(Plugin):
         return game_settings
 
     # api interface to return locally installed games
+    # appears that get_owned_games will always run first
     async def get_local_games(self):
         logging.info("get local")
         localgames = []
-        #call function to update 
-        #if self.create_task_status is None:
-        #        self.create_task_status = self.create_task(update_local_games(self), "get local")
-        #        await self.create_task_status
-        #else:
-        #    if not self.create_task_status.done():
-        #        await self.create_task_status
-        logging.info("moving on with local ")
         logging.info(self.create_task_status)
         for local_game in self.local_game_cache :
             localgames.append(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
@@ -156,16 +136,13 @@ class GenericEmulatorPlugin(Plugin):
         logging.info("launch")
         execution_command = get_exe_command(game_id, self.local_game_cache)
         my_current_time = datetime.now()
-        #my_coroutine = run_my_selected_game_here(execution_command)
-        print(execution_command)
+        logging.info(execution_command)
         my_thread= threading.Thread(target=run_my_selected_game_here, args=(execution_command,))
         self.my_threads.append(my_thread)
         my_thread.name = json.dumps({"time":my_current_time.isoformat(), "id":game_id})
-        print(my_thread.name)
+        logging.info(my_thread.name)
         my_thread.start()
-        #my_coroutine_task = self.create_task(my_coroutine, "starting game")
-        #my_coroutine_task.add_done_callback(functools.partial(finished_game_run, self, my_current_time, game_id))    
-
+        
 def create_game(game):
     return Game(escapejson(game["hash_digest"]), escapejson(game["game_name"]), None, LicenseInfo(LicenseType.SinglePurchase))
 
