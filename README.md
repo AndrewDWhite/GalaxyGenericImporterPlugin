@@ -9,20 +9,20 @@ If the configuration is not changed to reflect your system, then the following i
 
 ### Sega Dreamcast
 #### emulator
-    %USERPROFILE%\AppData\Roaming\RetroArch\retroarch.exe
+    %APPDATA%\RetroArch\retroarch.exe
 This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `flycast_libretro.dll` core.
 #### roms
     F:\Software\games\roms\Dreamcast\Game Name\disc.gdi
 By default the folders in `F:\Software\games\roms\Dreamcast` will be populated as your game names.
 ### Game Boy Advance
 #### emulator
-    %USERPROFILE%\AppData\Roaming\RetroArch
+    %APPDATA%\RetroArch
 This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `mgba_libretro.dll` core.
 #### roms
     F:\Software\games\roms\GBA
 ### Game Boy Color
 #### emulator
-    %USERPROFILE%\AppData\Roaming\RetroArch
+    %APPDATA%\RetroArch
 This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `gambatte_libretro.dll` core.
 #### roms
     F:\Software\games\roms\GBC
@@ -35,25 +35,25 @@ This will end up being something like `C:\Users\andyn\AppData\Downloads\dolphin-
     F:\Software\games\roms\GameCube
 ### Sega Genesis
 #### emulator
-    %USERPROFILE%\AppData\Roaming\RetroArch
+    %APPDATA%\RetroArch
 This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `genesis_plus_gx_libretro.dll` core.
 #### roms
     F:\Software\games\roms\Genesis
 ### Nintendo 64
 #### emulator
-    %USERPROFILE%\AppData\Roaming\RetroArch
+    %APPDATA%\RetroArch
 This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `mupen64plus_next_libretro.dll` core.
 #### roms
     F:\Software\games\roms\N64
 #### Nintendo DS
 #### emulator
-    %USERPROFILE%\AppData\Roaming\RetroArch
+    %APPDATA%\RetroArch
 This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `desmume_libretro.dll` core.
 #### roms
     F:\Software\games\roms\nds
 ### Nintendo Entertainment System
 #### emulator
-    %USERPROFILE%\AppData\Roaming\RetroArch
+    %APPDATA%\RetroArch
 This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `nestopia_libretro.dll` core.
 #### roms
     F:\Software\games\roms\nes
@@ -77,13 +77,13 @@ This will end up being something like `C:\Users\andyn\Downloads\ppsspp_win\PPSSP
     F:\Software\games\roms\psp
 ### Playstation 1
 #### emulator
-    %USERPROFILE%\AppData\Roaming\RetroArch
+    %APPDATA%\RetroArch
 This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `pcsx_rearmed_libretro.dll` core.
 #### roms
     F:\Software\games\roms\PS1
 ### Super Nintendo Entertainment System
 #### emulator
-    %USERPROFILE%\AppData\Roaming\RetroArch
+    %APPDATA%\RetroArch
 This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `snes9x_libretro.dll` core.
 #### roms
     F:\Software\games\roms\SNES
