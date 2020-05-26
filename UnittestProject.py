@@ -30,12 +30,14 @@ class UnittestProject(unittest.TestCase):
         #tests if it loaded the default number of emulators
         self.assertEqual(len(systems.loaded_systems_configuration),17)
     
-    #def test_speed(self):
-    #    systems = ListGames()
-    #    my_initial_time = datetime.now()
-    #    systems.list_all_recursively("test_user")
-    #    my_delta = GenericEmulatorPlugin.time_delta_calc_minutes(self, my_initial_time)
-    #    print (my_delta)
+    def test_speed(self):
+        systems = ListGames()
+        my_initial_time = datetime.now()
+        #print (my_initial_time)
+        systems.list_all_recursively("test_user")
+        #my_delta = GenericEmulatorPlugin.time_delta_calc_minutes(self, my_initial_time)
+        #print (datetime.now())
+        #TODO add some test here
     
     def test_load_empty(self):
         systems = ListGames()
