@@ -6,9 +6,11 @@ from galaxy.api.types import Authentication, Game, LocalGame, LicenseInfo, Licen
 from typing import Any
 
 import logging
-import asyncio
 import os
 from escapejson import escapejson
+from datetime import datetime
+import functools
+import math
 
 #local
 from configuration import DefaultConfig
@@ -24,8 +26,11 @@ class GenericEmulatorPlugin(Plugin):
             token
         )
         self.configuration = DefaultConfig()
-        self.local_game_cache = []
+        #self.local_game_cache = []
         self.create_task_status = None
+        self.my_game_lister =  ListGames()        
+        self.local_game_cache = self.my_game_lister.read_from_cache()
+        self.last_update = datetime.now()
 
     # implement methods
 
@@ -48,12 +53,10 @@ class GenericEmulatorPlugin(Plugin):
     # required
     async def get_owned_games(self):
         logging.info("get owned")
+        #call function to update
         if self.create_task_status is None:
             logging.info("Creating owned task")
-            self.create_task_status = asyncio.create_task(self.update_local_games())
-        if not self.create_task_status.done():
-            logging.info("awaiting owned task")
-            await asyncio.wait({self.create_task_status})
+            self.create_task_status = self.create_task(self.update_local_games(), "Creating owned task")
         logging.info("moving on with owned ")
         logging.info(self.create_task_status)
         list_to_galaxy = []
@@ -78,12 +81,10 @@ class GenericEmulatorPlugin(Plugin):
     async def get_game_library_settings(self, game_id: str, context: Any)  -> GameLibrarySettings:
         logging.info("Updating library "+game_id)
         my_current_game_selected={}
+        #call function to update
         if self.create_task_status is None:
             logging.info("Creating update task")
-            self.create_task_status = asyncio.create_task(self.update_local_games())
-        if not self.create_task_status.done():
-            logging.info("awaiting update task")
-            await self.create_task_status
+            self.create_task_status = self.create_task(self.update_local_games(), "Creating update task")
         for current_game_checking in self.local_game_cache:
             if (current_game_checking["hash_digest"] == game_id):
                 my_current_game_selected =  current_game_checking
@@ -141,18 +142,17 @@ class GenericEmulatorPlugin(Plugin):
         
     async def update_local_games(self):
         logging.info("get local updates")
-        new_local_games_list = ListGames().list_all_recursively(self.configuration.my_user_to_gog)
+        new_local_games_list = self.my_game_lister.list_all_recursively(self.configuration.my_user_to_gog)
         logging.info("Got new List")
         self.sendMyUpdates(new_local_games_list)
-        await asyncio.sleep(60)
+        self.my_game_lister.write_to_cache(new_local_games_list)
 
     async def get_local_games(self):
         logging.info("get local")
         localgames = []
+        #call function to update 
         if self.create_task_status is None:
-                self.create_task_status = asyncio.create_task(self.update_local_games())
-        if not self.create_task_status.done():
-            await asyncio.wait({self.create_task_status})
+                self.create_task_status = self.create_task(self.update_local_games(), "get local")
         logging.info("moving on with local ")
         logging.info(self.create_task_status)
         for local_game in self.local_game_cache :
@@ -161,10 +161,15 @@ class GenericEmulatorPlugin(Plugin):
         return localgames
     
     def tick(self):
-        if self.create_task_status is None or self.create_task_status.done():
-            self.create_task_status = asyncio.create_task(self.update_local_games())    
+        time_delta_minutes = self.time_delta_calc_minutes(self.last_update)
+        #delta is calculated to ensure that we only run expensive operation no more than once a minute
+        
+        if self.create_task_status is None or (self.create_task_status.done() and time_delta_minutes>1):
+            self.last_update = datetime.now()
+            self.create_task_status = self.create_task(self.update_local_games(), "tick update")    
 
-    def runMySelectedGameHere(self, execution_command):
+
+    async def runMySelectedGameHere(self, execution_command):
         os.system(execution_command)
 
     def getExeCommand(self, game_id,local_game_cache):
@@ -184,9 +189,26 @@ class GenericEmulatorPlugin(Plugin):
     async def launch_game(self, game_id):
         logging.info("launch")
         execution_command = self.getExeCommand(game_id, self.local_game_cache)
-        loop = asyncio.get_running_loop()
-        await loop.run_in_executor(None, self.runMySelectedGameHere,execution_command)
-        logging.info("returned")            
+        my_current_time = datetime.now()
+        my_coroutine = self.runMySelectedGameHere(execution_command)
+        my_coroutine_task = self.create_task(my_coroutine, "starting game")
+        my_coroutine_task.add_done_callback(functools.partial(self.finished_game_run, my_current_time, game_id))       
+
+    def time_delta_calc_minutes(self, last_update):
+        current_time = datetime.now()
+        logging.info(current_time)
+        logging.info(last_update)
+        time_delta = (current_time - last_update)
+        time_delta_seconds = time_delta.total_seconds()
+        return math.ceil(time_delta_seconds/60)
+    
+    def finished_game_run(self, start_time, game_id, future):
+        logging.info("game finished")
+        logging.info(game_id)
+        my_delta = self.time_delta_calc_minutes(start_time)
+        logging.info(my_delta)
+        #TODO implement logging of time
+        return self
     
 def main():
     create_and_run_plugin(GenericEmulatorPlugin, sys.argv)
