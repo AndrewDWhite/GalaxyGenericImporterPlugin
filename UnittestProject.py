@@ -9,7 +9,7 @@ import asyncio
 #local
 from configuration import DefaultConfig
 from ListGames import ListGames
-from generic import GenericEmulatorPlugin
+from generic import GenericEmulatorPlugin, get_exe_command, time_delta_calc_minutes, run_my_selected_game_here, get_state_changes
 
 from datetime import datetime
 
@@ -30,6 +30,15 @@ class UnittestProject(unittest.TestCase):
         #tests if it loaded the default number of emulators
         self.assertEqual(len(systems.loaded_systems_configuration),17)
     
+    def test_speed(self):
+        systems = ListGames()
+        my_initial_time = datetime.now()
+        #print (my_initial_time)
+        systems.list_all_recursively("test_user")
+        #my_delta = GenericEmulatorPlugin.time_delta_calc_minutes(my_initial_time)
+        #print (datetime.now())
+        #TODO add some test here
+    
     def test_load_empty(self):
         systems = ListGames()
         systems.delete_cache()
@@ -42,7 +51,10 @@ class UnittestProject(unittest.TestCase):
         systems.write_to_cache(data)
         self.assertTrue(systems.cache_exists())
         data_read = systems.read_from_cache()
+        
+        systems.delete_cache()
         self.assertEquals(184,len(data_read ))
+        self.assertEquals(data_read, data)
         
     def test_rec(self):
         systems = ListGames()
@@ -60,7 +72,7 @@ class UnittestProject(unittest.TestCase):
             if("local_game_state" not in entry):
                 #print("should")
                 entry["local_game_state"]=LocalGameState.Installed
-        myresult = GenericEmulatorPlugin.get_state_changes(self,[],new_local)
+        myresult = get_state_changes([],new_local)
         #None Removed
         #print (len(myresult["old"].keys() - myresult["new"].keys()))
         #print (len(myresult["new"].keys() - myresult["old"].keys()))
@@ -70,7 +82,7 @@ class UnittestProject(unittest.TestCase):
         #print(myresult)
     
     def test_time_delta_calc_minutes(self):
-        my_delta = GenericEmulatorPlugin.time_delta_calc_minutes(self, datetime.now())
+        my_delta = time_delta_calc_minutes(datetime.now())
         self.assertEquals(my_delta,0)
         
     def test_compSame(self):
@@ -81,7 +93,7 @@ class UnittestProject(unittest.TestCase):
             if("local_game_state" not in entry):
                 #print("should")
                 entry["local_game_state"]=LocalGameState.Installed
-        myresult = GenericEmulatorPlugin.get_state_changes(self,new_local,new_local)
+        myresult = get_state_changes(new_local,new_local)
         #None Removed
         #print (len(myresult["old"].keys() - myresult["new"].keys()))
         #print (len(myresult["new"].keys() - myresult["old"].keys()))
@@ -99,7 +111,7 @@ class UnittestProject(unittest.TestCase):
             if("local_game_state" not in entry):
                 #print("should")
                 entry["local_game_state"]=LocalGameState.Installed
-        myresult = GenericEmulatorPlugin.get_state_changes(self,new_local,[])
+        myresult = get_state_changes(new_local,[])
         #All Removed
         #print (len(myresult["old"].keys() - myresult["new"].keys()))
         #print (len(myresult["new"].keys() - myresult["old"].keys()))
@@ -112,11 +124,11 @@ class UnittestProject(unittest.TestCase):
     def test_launch_command(self):
         systems = ListGames()
         myresult = systems.list_all_recursively("test_user")
-        execution_command = GenericEmulatorPlugin.getExeCommand(self,myresult[0]["hash_digest"], myresult)
+        execution_command = get_exe_command(myresult[0]["hash_digest"], myresult)
         #print(execution_command)
-        #GenericEmulatorPlugin.runMySelectedGameHere(self, execution_command)
+        #run_my_selected_game_here(execution_command)
         #TODO implement tests
-        self.assertEquals(execution_command,"\"\"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"%USERPROFILE%\\AppData\\Roaming\\RetroArch\\cores\\flycast_libretro.dll\" \"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends\\disc.gdi\"\"")
+        self.assertEquals(execution_command,"\"\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\flycast_libretro.dll\" \"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends\\disc.gdi\"\"")
     
     def test_returned_dir_data(self):
         systems = ListGames()
@@ -140,13 +152,28 @@ class UnittestProject(unittest.TestCase):
         self.assertEquals(myresult["path"],"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends")
         self.assertEquals(myresult["hash_digest"],"af6d2857d1f332323ce954ace3ec5200fe013473")
             
-    def test_launch(self):
-        systems = ListGames()
-        myresult = systems.list_all_recursively("test_user")
-        execution_command = GenericEmulatorPlugin.getExeCommand(self,"b96bc8c22d1ad87eb934fedf1a075ab4bf70728c", myresult)
-        GenericEmulatorPlugin.runMySelectedGameHere(self, execution_command)
+    #def test_launch(self):
+    #    systems = ListGames()
+    #    myresult = systems.list_all_recursively("test_user")
+    #    execution_command = get_exe_command("70408a8d1da48c8760c3c65f2485f3d28c23198f", myresult)
+    #    task = run_my_selected_game_here(execution_command)
+    #    loop = asyncio.new_event_loop()
+    #    asyncio.set_event_loop(loop)
+    #    loop.run_until_complete(task)
         #TODO implement tests
-        self.assertTrue(True)
+    #    self.assertTrue(True)
+        
+    #def test_launch_game(self):
+    #    systems = ListGames()
+    #    self.local_game_cache = systems.list_all_recursively("test_user")
+                
+    #    self.my_threads = []
+    #    task = GenericEmulatorPlugin.launch_game(self, "70408a8d1da48c8760c3c65f2485f3d28c23198f")
+    #    loop = asyncio.new_event_loop()
+    #    asyncio.set_event_loop(loop)
+    #    loop.run_until_complete(task)
+        #TODO implement tests
+    #    self.assertTrue(True)
         
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s %(message)s')
