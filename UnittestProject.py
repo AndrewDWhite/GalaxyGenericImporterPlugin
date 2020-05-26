@@ -4,11 +4,14 @@ Created on May 9, 2020
 @author: Andrew David White
 '''
 import unittest, logging
+import asyncio
 
 #local
 from configuration import DefaultConfig
 from ListGames import ListGames
 from generic import GenericEmulatorPlugin
+
+from datetime import datetime
 
 from galaxy.api.consts import LocalGameState
 
@@ -26,6 +29,20 @@ class UnittestProject(unittest.TestCase):
         systems = ListGames()
         #tests if it loaded the default number of emulators
         self.assertEqual(len(systems.loaded_systems_configuration),17)
+    
+    def test_load_empty(self):
+        systems = ListGames()
+        systems.delete_cache()
+        self.assertEqual([], systems.read_from_cache())
+    
+    def test_write(self):
+        systems = ListGames()
+        systems.delete_cache()
+        data = systems.list_all_recursively("test_user")
+        systems.write_to_cache(data)
+        self.assertTrue(systems.cache_exists())
+        data_read = systems.read_from_cache()
+        self.assertEquals(184,len(data_read ))
         
     def test_rec(self):
         systems = ListGames()
@@ -51,6 +68,10 @@ class UnittestProject(unittest.TestCase):
         #All Added
         self.assertTrue(len(myresult["new"].keys() - myresult["old"].keys())==184)
         #print(myresult)
+    
+    def test_time_delta_calc_minutes(self):
+        my_delta = GenericEmulatorPlugin.time_delta_calc_minutes(self, datetime.now())
+        self.assertEquals(my_delta,0)
         
     def test_compSame(self):
         systems = ListGames()
