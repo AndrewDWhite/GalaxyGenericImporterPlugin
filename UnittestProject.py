@@ -51,6 +51,8 @@ class UnittestProject(unittest.TestCase):
         systems.write_to_cache(data)
         self.assertTrue(systems.cache_exists())
         data_read = systems.read_from_cache()
+        
+        systems.delete_cache()
         self.assertEquals(184,len(data_read ))
         self.assertEquals(data_read, data)
         
@@ -150,16 +152,28 @@ class UnittestProject(unittest.TestCase):
         self.assertEquals(myresult["path"],"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends")
         self.assertEquals(myresult["hash_digest"],"af6d2857d1f332323ce954ace3ec5200fe013473")
             
-    def test_launch(self):
-        systems = ListGames()
-        myresult = systems.list_all_recursively("test_user")
-        execution_command = get_exe_command("70408a8d1da48c8760c3c65f2485f3d28c23198f", myresult)
-        #task = run_my_selected_game_here(execution_command)
-        #loop = asyncio.new_event_loop()
-        #asyncio.set_event_loop(loop)
-        #loop.run_until_complete(task)
+    #def test_launch(self):
+    #    systems = ListGames()
+    #    myresult = systems.list_all_recursively("test_user")
+    #    execution_command = get_exe_command("70408a8d1da48c8760c3c65f2485f3d28c23198f", myresult)
+    #    task = run_my_selected_game_here(execution_command)
+    #    loop = asyncio.new_event_loop()
+    #    asyncio.set_event_loop(loop)
+    #    loop.run_until_complete(task)
         #TODO implement tests
-        self.assertTrue(True)
+    #    self.assertTrue(True)
+        
+    #def test_launch_game(self):
+    #    systems = ListGames()
+    #    self.local_game_cache = systems.list_all_recursively("test_user")
+                
+    #    self.my_threads = []
+    #    task = GenericEmulatorPlugin.launch_game(self, "70408a8d1da48c8760c3c65f2485f3d28c23198f")
+    #    loop = asyncio.new_event_loop()
+    #    asyncio.set_event_loop(loop)
+    #    loop.run_until_complete(task)
+        #TODO implement tests
+    #    self.assertTrue(True)
         
 if __name__ == '__main__':
     logging.basicConfig(format='%(asctime)s %(message)s')

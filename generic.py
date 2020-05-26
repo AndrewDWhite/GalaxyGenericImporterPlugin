@@ -8,8 +8,10 @@ from typing import Any
 import logging
 import os
 from escapejson import escapejson
+import json
 from datetime import datetime
-import functools
+#import functools
+import threading
 import math
 
 #local
@@ -33,6 +35,7 @@ class GenericEmulatorPlugin(Plugin):
         self.my_authenticated = False
         self.my_imported_owned = False
         self.my_imported_local = False
+        self.my_threads = []
 
     # required api interface to authenticate the user with the platform
     async def authenticate(self, stored_credentials=None):
@@ -126,6 +129,23 @@ class GenericEmulatorPlugin(Plugin):
                 self.last_update = datetime.now()
                 self.create_task_status = self.create_task(update_local_games(self), "tick update")    
 
+        #for tracking time
+        my_threads_to_remove = []
+        logging.info("thread size")
+        logging.info(len(self.my_threads))
+        for my_current_thread in self.my_threads:
+            if not my_current_thread.is_alive():
+                logging.info("thread not alive")
+                my_thread_name = my_current_thread.name
+                logging.info(my_thread_name)
+                logging.info(my_thread_name)
+                my_dictionary_values = json.loads(my_thread_name)
+                finished_game_run(datetime.fromisoformat(my_dictionary_values["time"]),my_dictionary_values["id"])
+                my_threads_to_remove.append(my_current_thread)
+        for my_thread_to_remove in my_threads_to_remove:
+            logging.info("thread removed")
+            self.my_threads.remove(my_thread_to_remove)
+
     # api interface shutdown nicely
     def shutdown(self):
         logging.info("shutdown called")
@@ -136,9 +156,15 @@ class GenericEmulatorPlugin(Plugin):
         logging.info("launch")
         execution_command = get_exe_command(game_id, self.local_game_cache)
         my_current_time = datetime.now()
-        my_coroutine = run_my_selected_game_here(execution_command)
-        my_coroutine_task = self.create_task(my_coroutine, "starting game")
-        my_coroutine_task.add_done_callback(functools.partial(finished_game_run, self, my_current_time, game_id))    
+        #my_coroutine = run_my_selected_game_here(execution_command)
+        print(execution_command)
+        my_thread= threading.Thread(target=run_my_selected_game_here, args=(execution_command,))
+        self.my_threads.append(my_thread)
+        my_thread.name = json.dumps({"time":my_current_time.isoformat(), "id":game_id})
+        print(my_thread.name)
+        my_thread.start()
+        #my_coroutine_task = self.create_task(my_coroutine, "starting game")
+        #my_coroutine_task.add_done_callback(functools.partial(finished_game_run, self, my_current_time, game_id))    
 
 def create_game(game):
     return Game(escapejson(game["hash_digest"]), escapejson(game["game_name"]), None, LicenseInfo(LicenseType.SinglePurchase))
@@ -197,7 +223,7 @@ async def update_local_games(self):
     send_my_updates(self, new_local_games_list)
     self.my_game_lister.write_to_cache(new_local_games_list)
 
-async def run_my_selected_game_here(execution_command):
+def run_my_selected_game_here(execution_command):
     return os.system(execution_command)
 
 def get_exe_command(game_id,local_game_cache):
@@ -222,13 +248,12 @@ def time_delta_calc_minutes(last_update):
     time_delta_seconds = time_delta.total_seconds()
     return math.ceil(time_delta_seconds/60)    
 
-def finished_game_run(self, start_time, game_id, future):
+def finished_game_run(start_time, game_id):
     logging.info("game finished")
     logging.info(game_id)
     my_delta = time_delta_calc_minutes(start_time)
     logging.info(my_delta)
     #TODO implement logging of time
-    return self
 
 def do_auth(self):    
     logging.info("Auth")
