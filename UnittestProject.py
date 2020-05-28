@@ -174,7 +174,31 @@ class UnittestProject(unittest.TestCase):
     #    loop.run_until_complete(task)
         #TODO implement tests
     #    self.assertTrue(True)
+    
+    
+    #def test_launch_thread(self):
+    #    systems = ListGames()
+    #    self.local_game_cache = systems.list_all_recursively("test_user")
+    #    self.my_authenticated = "test_user"
+    #    self.my_imported_owned = True
+    #    self.my_imported_local = True
+    #    self.last_update = datetime.now()
+    #    self.my_library_thread = None
+    #    self.my_threads = []
+    #    GenericEmulatorPlugin.get_owned_games(self)
+    #    GenericEmulatorPlugin.get_local_games(self)
         
+    #    GenericEmulatorPlugin.tick(self)
+    #    logging.getLogger('').setLevel(logging.DEBUG)
+    #    GenericEmulatorPlugin.tick(self)
+        #TODO implement tests
+    #    self.assertTrue(True)
+    
+    logging.basicConfig(level=logging.WARN, format='%(message)s')
+    # define a Handler which writes messages to the sys.stderr
+    console = logging.StreamHandler()
+    # add the handler to the root logger
+    logging.getLogger('').addHandler(console)
+       
 if __name__ == '__main__':
-    logging.basicConfig(format='%(asctime)s %(message)s')
     unittest.main()

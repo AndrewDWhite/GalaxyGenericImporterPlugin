@@ -13,6 +13,8 @@ from datetime import datetime
 import threading
 import math
 
+import asyncio
+
 #local
 from configuration import DefaultConfig
 from ListGames import ListGames
@@ -27,7 +29,6 @@ class GenericEmulatorPlugin(Plugin):
             token
         )
         self.configuration = DefaultConfig()
-        self.create_task_status = None
         self.my_game_lister =  ListGames()        
         self.local_game_cache = self.my_game_lister.read_from_cache()
         self.last_update = datetime.now()
@@ -35,6 +36,7 @@ class GenericEmulatorPlugin(Plugin):
         self.my_imported_owned = False
         self.my_imported_local = False
         self.my_threads = []
+        self.my_library_thread = None
 
     # required api interface to authenticate the user with the platform
     async def authenticate(self, stored_credentials=None):
@@ -49,7 +51,6 @@ class GenericEmulatorPlugin(Plugin):
     # required api interface to return the owned games
     async def get_owned_games(self):
         logging.info("get owned")
-        logging.info(self.create_task_status)
         list_to_galaxy = []
         found_games = self.local_game_cache
         
@@ -92,7 +93,6 @@ class GenericEmulatorPlugin(Plugin):
     async def get_local_games(self):
         logging.info("get local")
         localgames = []
-        logging.info(self.create_task_status)
         for local_game in self.local_game_cache :
             localgames.append(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
         logging.info(len(localgames))
@@ -104,16 +104,23 @@ class GenericEmulatorPlugin(Plugin):
         if self.my_authenticated and self.my_imported_owned and self.my_imported_local:
             time_delta_minutes = time_delta_calc_minutes(self.last_update)
             #delta is calculated to ensure that we only run expensive operation no more than once a minute
-            
-            if self.create_task_status is None or (self.create_task_status.done() and time_delta_minutes>1):
+            if self.my_library_thread is None or ((not self.my_library_thread.is_alive()) and time_delta_minutes>1):
+                logging.info("lets start")
                 self.last_update = datetime.now()
-                self.create_task_status = self.create_task(update_local_games(self), "tick update")    
-
+                self.my_library_thread = threading.Thread(target=kickoff_update_local_games, args=(self,))
+                self.my_library_thread.start()
+                logging.info("started")
+                logging.info(self.my_library_thread.is_alive())                    
+            else:
+                logging.info("alive")
+                logging.info(self.my_library_thread.is_alive())
         time_tracking(self)
 
     # api interface shutdown nicely
     def shutdown(self):
         logging.info("shutdown called")
+        if not self.my_library_thread is None:
+            self.my_library_thread.join()
 
     # api interface to startup game
     # requires get_local_games to have listed the game
@@ -195,6 +202,14 @@ def get_state_changes(old_list, new_list):
     
     result = {"old":old_dict,"new":new_dict}
     return result
+
+def kickoff_update_local_games(self):
+    logging.info("kickoff update local games")
+    task = update_local_games(self)
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(task)
+    logging.info("run until complete")
 
 async def update_local_games(self):
     logging.info("get local updates")
