@@ -9,7 +9,8 @@ import asyncio
 #local
 from configuration import DefaultConfig
 from ListGames import ListGames
-from generic import GenericEmulatorPlugin, get_exe_command, time_delta_calc_minutes, run_my_selected_game_here, get_state_changes
+from generic import GenericEmulatorPlugin, get_exe_command, time_delta_calc_minutes, run_my_selected_game_here
+from Backend import get_state_changes
 
 from datetime import datetime
 
