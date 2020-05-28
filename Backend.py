@@ -78,20 +78,20 @@ def get_state_changes(old_list, new_list):
     result = {"old":old_dict,"new":new_dict}
     return result
 
-def kickoff_update_local_games(self):
+def kickoff_update_local_games(self, username, my_game_lister):
     logging.info("kickoff update local games")
-    task = update_local_games(self)
+    task = update_local_games(self, username, my_game_lister)
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     loop.run_until_complete(task)
     logging.info("run until complete")
 
-async def update_local_games(self):
+async def update_local_games(self, username, my_game_lister):
     logging.info("get local updates")
-    new_local_games_list = self.my_game_lister.list_all_recursively(self.configuration.my_user_to_gog)
+    new_local_games_list = my_game_lister.list_all_recursively(username)
     logging.info("Got new List")
     send_my_updates(self, new_local_games_list)
-    self.my_game_lister.write_to_cache(new_local_games_list)
+    my_game_lister.write_to_cache(new_local_games_list)
 
 def run_my_selected_game_here(execution_command):
     return os.system(execution_command)
@@ -142,10 +142,9 @@ def finished_game_run(self, start_time, game_id):
     self.local_game_cache = my_cache_update
     self.my_game_lister.write_to_cache(my_cache_update)
 
-def do_auth(self):    
+def do_auth(self, username):    
     logging.info("Auth")
     user_data = {}
-    username = self.configuration.my_user_to_gog
     logging.info(username)
     user_data['username'] = username       
     self.store_credentials(user_data)

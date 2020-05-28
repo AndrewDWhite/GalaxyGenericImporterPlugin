@@ -38,12 +38,12 @@ class GenericEmulatorPlugin(Plugin):
     # required api interface to authenticate the user with the platform
     async def authenticate(self, stored_credentials=None):
         logging.info("authenticate called")
-        return do_auth(self)
+        return do_auth(self, self.configuration.my_user_to_gog)
 
     # required api interface
     async def pass_login_credentials(self, step, credentials, cookies):
         logging.info("pass_login_credentials called")
-        return do_auth(self)
+        return do_auth(self, self.configuration.my_user_to_gog)
     
     # required api interface to return the owned games
     async def get_owned_games(self):
@@ -104,7 +104,7 @@ class GenericEmulatorPlugin(Plugin):
             if self.my_library_thread is None or ((not self.my_library_thread.is_alive()) and time_delta_minutes>1):
                 logging.info("lets start")
                 self.last_update = datetime.now()
-                self.my_library_thread = threading.Thread(target=kickoff_update_local_games, args=(self,))
+                self.my_library_thread = threading.Thread(target=kickoff_update_local_games, args=(self,self.configuration.my_user_to_gog, self.my_game_lister,))
                 self.my_library_thread.start()
                 logging.info("started")
                 logging.info(self.my_library_thread.is_alive())                    
