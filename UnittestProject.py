@@ -174,7 +174,12 @@ class UnittestProject(unittest.TestCase):
     #    loop.run_until_complete(task)
         #TODO implement tests
     #    self.assertTrue(True)
-        
+    
+    logging.basicConfig(level=logging.DEBUG, format='%(message)s')
+    # define a Handler which writes messages to the sys.stderr
+    console = logging.StreamHandler()
+    # add the handler to the root logger
+    logging.getLogger('').addHandler(console)
+       
 if __name__ == '__main__':
-    logging.basicConfig(format='%(asctime)s %(message)s')
     unittest.main()
