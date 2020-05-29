@@ -31,25 +31,37 @@ class ListGames():
         logging.info(len(self.loaded_systems_configuration))
     
     def write_to_cache(self, data):
-        logging.info(self.cache_filepath)
-        with open(self.cache_filepath, 'wb') as my_file:
+        self.write_to_cache_file(data, self.cache_filepath)
+        
+    def write_to_cache_file(self, data, cache_filepath):
+        logging.info(cache_filepath)
+        with open(cache_filepath, 'wb') as my_file:
             pickle.dump(data, my_file)
         my_file.close()
         
     def cache_exists(self):
-        return os.path.exists(self.cache_filepath)
+        return self.cache_exists_file(self.cache_filepath)
+    
+    def cache_exists_file(self, cache_filepath):
+        return os.path.exists(cache_filepath)
         
     def read_from_cache(self):
+        return self.read_from_cache_filename(self.cache_filepath)
+    
+    def read_from_cache_filename(self, cache_filepath):
         if self.cache_exists():
-            with open(self.cache_filepath, 'rb') as my_file:
+            with open(cache_filepath, 'rb') as my_file:
                 return pickle.load(my_file)
             my_file.close()
         else:
             return []
-        
+    
     def delete_cache(self):
+        self.delete_cache_file(self.cache_filepath)
+        
+    def delete_cache_file(self, cache_filepath):
         if self.cache_exists():
-            os.remove(self.cache_filepath)
+            os.remove(cache_filepath)
     
     def hash_data(self, my_game, salt):
         myhasher = hashlib.sha1()

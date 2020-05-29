@@ -21,6 +21,10 @@ class Backend():
         self.my_imported_local = False
         self.my_game_lister =  ListGames()
         self.local_game_cache = self.my_game_lister.read_from_cache()
+        self.cache_times_filepath = self.my_game_lister.cache_filepath+"-times"
+        self.local_time_cache = []
+        if self.my_game_lister.cache_exists_file(self.cache_times_filepath):
+            self.local_time_cache = self.my_game_lister.read_from_cache_filename(self.cache_times_filepath)
         self.library_lock = threading.Lock()
         self.library_run = True
         self.my_authenticated = False
@@ -46,7 +50,7 @@ def time_tracking(self, my_threads):
             logging.info(my_thread_name)
             logging.info(my_thread_name)
             my_dictionary_values = json.loads(my_thread_name)
-            finished_game_run(self, datetime.fromisoformat(my_dictionary_values["time"]),my_dictionary_values["id"], self.backend.local_game_cache)
+            finished_game_run(self, datetime.fromisoformat(my_dictionary_values["time"]),my_dictionary_values["id"], self.backend.local_time_cache)
             my_threads_to_remove.append(my_current_thread)
     for my_thread_to_remove in my_threads_to_remove:
         logging.info("thread removed")
@@ -179,27 +183,43 @@ def time_delta_calc_minutes(last_update):
     time_delta_seconds = time_delta.total_seconds()
     return math.ceil(time_delta_seconds/60)    
 
-def finished_game_run(self, start_time, game_id, local_game_cache):
+def finished_game_run(self, start_time, game_id, local_time_cache):
     logging.info("game finished")
     logging.info(game_id)
     my_delta = time_delta_calc_minutes(start_time)
     logging.info(my_delta)
     my_cache_update =[]
-    for current_game in local_game_cache:
+    placed_game = False
+    for current_game in local_time_cache:
         if current_game["hash_digest"] == game_id:
-            my_game_update = current_game.copy()
-            if "run_time_total" in current_game.keys():
-                logging.info("updated play time")
-                my_game_update["run_time_total"] = current_game["run_time_total"] + my_delta
-            else:
-                logging.info("new play time")
-                my_game_update["run_time_total"] = my_delta
+            #update it if it exists in some form
+            my_game_update = created_update(current_game, my_delta, start_time)
+            placed_game = True
             my_cache_update.append(my_game_update)
-            self.backend.my_queue_update_game_time.put(GameTime(escapejson(game_id), my_game_update["run_time_total"], math.floor(start_time.timestamp() )))
+            self.backend.my_queue_update_game_time.put(GameTime(escapejson(game_id), my_game_update["run_time_total"], my_game_update["last_time_played"]))
         else:
+            #This entry doesn't need an update
             my_cache_update.append(current_game)
-    update_cache(self, my_cache_update)
-   
+    if not placed_game:
+        #new entry to be placed
+        my_game_update = {} 
+        my_game_update["run_time_total"] = my_delta
+        my_game_update["last_time_played"] = math.floor(start_time.timestamp() )
+        my_game_update["hash_digest"] = game_id
+        my_cache_update.append(my_game_update)
+    update_cache_time(self, my_cache_update, self.backend.cache_times_filepath)
+
+def created_update(current_game, my_delta, start_time):
+    my_game_update = current_game.copy()
+    if "run_time_total" in current_game.keys():
+        logging.info("updated play time")
+        my_game_update["run_time_total"] = current_game["run_time_total"] + my_delta
+    else:
+        logging.info("new play time")
+        my_game_update["run_time_total"] = my_delta
+    my_game_update["last_time_played"] = math.floor(start_time.timestamp() )
+    return my_game_update
+
 def do_auth(self, username):    
     logging.info("Auth")
     user_data = {}
@@ -208,7 +228,16 @@ def do_auth(self, username):
     self.store_credentials(user_data)
     self.backend.my_authenticated = True
     return Authentication('importer_user', user_data['username'])
-    
+
+def update_cache_time(self, my_cache_update, cache_filepath):
+    #Potential race condition here probably want to add semaphores on cache writes or refactor
+    self.backend.library_lock.acquire()
+    try:
+        logging.info("locked")
+        self.backend.local_time_cache = my_cache_update
+        self.backend.my_game_lister.write_to_cache_file(my_cache_update, cache_filepath)
+    finally:
+        self.backend.library_lock.release()
     
 def update_cache(self, my_cache_update):
     #Potential race condition here probably want to add semaphores on cache writes or refactor
