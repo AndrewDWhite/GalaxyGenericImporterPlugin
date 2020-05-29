@@ -9,8 +9,8 @@ import asyncio
 #local
 from configuration import DefaultConfig
 from ListGames import ListGames
-from generic import GenericEmulatorPlugin, get_exe_command, time_delta_calc_minutes, run_my_selected_game_here
-from Backend import get_state_changes
+from generic import GenericEmulatorPlugin, get_exe_command, run_my_selected_game_here
+from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games
 
 from datetime import datetime
 
@@ -177,20 +177,18 @@ class UnittestProject(unittest.TestCase):
     #    self.assertTrue(True)
     
     
-    #def test_launch_thread(self):
-    #    systems = ListGames()
-    #    self.local_game_cache = systems.list_all_recursively("test_user")
-    #    self.my_authenticated = "test_user"
-    #    self.my_imported_owned = True
-    #    self.my_imported_local = True
-    #    self.last_update = datetime.now()
-    #    self.my_library_thread = None
-    #    self.my_threads = []
-    #    GenericEmulatorPlugin.get_owned_games(self)
-    #    GenericEmulatorPlugin.get_local_games(self)
-        
-    #    GenericEmulatorPlugin.tick(self)
-    #    logging.getLogger('').setLevel(logging.DEBUG)
+    def test_launch_thread(self):
+        self.my_game_lister = ListGames()
+        self.local_game_cache = self.my_game_lister.list_all_recursively("test_user")
+        self.my_authenticated = "test_user"
+        self.configuration = DefaultConfig()                
+        self.backend = Backend(self.configuration)        
+        self.my_threads = []
+        #GenericEmulatorPlugin.get_owned_games(self)
+        #GenericEmulatorPlugin.get_local_games(self)
+        #update_local_games(self, "test_user", self.my_game_lister)
+        #logging.getLogger('').setLevel(logging.DEBUG)
+        #GenericEmulatorPlugin.tick(self)
     #    GenericEmulatorPlugin.tick(self)
         #TODO implement tests
     #    self.assertTrue(True)

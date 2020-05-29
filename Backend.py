@@ -1,62 +1,118 @@
 from galaxy.api.consts import LocalGameState
 from galaxy.api.types import Authentication, Game, LocalGame, LicenseInfo, LicenseType, GameTime
 
+from ListGames import ListGames
+
 import logging
 import os
 from escapejson import escapejson
 import json
 from datetime import datetime
 import math
+import threading
+import time
+import queue
 
-import asyncio
+class Backend():
+        
+    def __init__(self, configuration):
+        self.last_update = datetime.now()
+        self.my_imported_owned = False
+        self.my_imported_local = False
+        self.my_game_lister =  ListGames()
+        self.local_game_cache = self.my_game_lister.read_from_cache()
+        self.library_lock = threading.Lock()
+        self.library_run = True
+        self.my_authenticated = False
+        self.my_queue_update_local_game_status = queue.Queue()
+        self.my_queue_add_game = queue.Queue()
+        self.my_queue_update_game_time = queue.Queue()
+        logging.info("backend started up")
+        
+def shutdown_library(self):
+    logging.info("Library update in progress?")
+    self.backend.library_run= False
+    self.my_library_thread.join() 
 
-def time_tracking(self):
+def time_tracking(self, my_threads):
     #for tracking time
     my_threads_to_remove = []
     logging.info("thread size")
-    logging.info(len(self.my_threads))
-    for my_current_thread in self.my_threads:
+    logging.info(len(my_threads))
+    for my_current_thread in my_threads:
         if not my_current_thread.is_alive():
             logging.info("thread not alive")
             my_thread_name = my_current_thread.name
             logging.info(my_thread_name)
             logging.info(my_thread_name)
             my_dictionary_values = json.loads(my_thread_name)
-            finished_game_run(self, datetime.fromisoformat(my_dictionary_values["time"]),my_dictionary_values["id"])
+            finished_game_run(self, datetime.fromisoformat(my_dictionary_values["time"]),my_dictionary_values["id"], self.local_game_cache)
             my_threads_to_remove.append(my_current_thread)
     for my_thread_to_remove in my_threads_to_remove:
         logging.info("thread removed")
-        self.my_threads.remove(my_thread_to_remove)
+        my_threads.remove(my_thread_to_remove)
         
 def create_game(game):
     return Game(escapejson(game["hash_digest"]), escapejson(game["game_name"]), None, LicenseInfo(LicenseType.SinglePurchase))
 
-def send_my_updates(self, new_local_games_list):
+def prepare_to_send_my_updates(self, new_local_games_list, local_game_cache):
     logging.info("sending updates")
     for entry in new_local_games_list:
         if("local_game_state" not in entry):
             entry["local_game_state"]=LocalGameState.Installed
-    state_changes = get_state_changes(self.local_game_cache, new_local_games_list)
-    send_those_changes(self, new_local_games_list, state_changes["old"], state_changes["new"])
-    self.local_game_cache = new_local_games_list
+    state_changes = get_state_changes(local_game_cache, new_local_games_list)
+    setup_queue_to_send_those_changes(self, new_local_games_list, state_changes["old"], state_changes["new"])
+    update_cache(self, new_local_games_list)
+
+#Will cause issues it not called from initial thread
+def send_events(self):
+    logging.info("sending events to galaxy")
+    logging.info("my_queue_add_game")
+    logging.info(self.backend.my_queue_add_game.empty())
+    while not self.backend.my_queue_add_game.empty():
+        my_game_sending = self.backend.my_queue_add_game.get()
+        logging.info(my_game_sending)
+        self.add_game(my_game_sending)
     
-def send_those_changes(self, new_list, old_dict,new_dict):
+    logging.info("my_queue_update_local_game_status")
+    logging.info(self.backend.my_queue_update_local_game_status.empty())    
+    while not self.backend.my_queue_update_local_game_status.empty():
+        my_game_sending = self.backend.my_queue_update_local_game_status.get()
+        logging.info(my_game_sending)
+        self.update_local_game_status(my_game_sending)
+  
+    logging.info("my_queue_update_game_time")
+    logging.info(self.backend.my_queue_update_game_time.empty())    
+    while not self.backend.my_queue_update_game_time.empty():    
+        my_game_sending = self.backend.my_queue_update_game_time.get()
+        logging.info(my_game_sending)
+        self.update_game_time(my_game_sending)
+
+def removed_games(self, old_dict, new_dict):
     # removed games
     for my_id in (old_dict.keys() - new_dict.keys()):
         logging.info("removed")
-        self.update_local_game_status(LocalGame(my_id, LocalGameState.None_))
+        self.backend.my_queue_update_local_game_status.put(LocalGame(my_id, LocalGameState.None_))
+
+def added_games(self, new_list, old_dict, new_dict):
     # added games
     for local_game in new_list:
         if ("hash_digest" in local_game) and (local_game["hash_digest"] in (new_dict.keys() - old_dict.keys())):
             logging.info("added")
-            self.add_game(create_game(local_game))
-            self.update_local_game_status(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
-                
+            self.backend.my_queue_add_game.put(create_game(local_game))
+            self.backend.my_queue_update_local_game_status.put(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
+
+def state_changed(self, old_dict, new_dict):
     # state changed
     for my_id in new_dict.keys() & old_dict.keys():
         if new_dict[my_id] != old_dict[my_id]:
             logging.info("changed")
-            self.update_local_game_status(LocalGame(my_id, new_dict[my_id]))
+            self.backend.my_queue_update_local_game_status.put(LocalGame(my_id, new_dict[my_id]))
+    
+def setup_queue_to_send_those_changes(self, new_list, old_dict, new_dict):
+    removed_games(self, old_dict, new_dict)    
+    added_games(self, new_list, old_dict, new_dict)                
+    state_changed(self, old_dict, new_dict)
     logging.info("done updates")
 
 def get_state_changes(old_list, new_list):
@@ -75,11 +131,28 @@ def get_state_changes(old_list, new_list):
     return result
 
 def update_local_games(self, username, my_game_lister):
-    logging.info("get local updates")
-    new_local_games_list = my_game_lister.list_all_recursively(username)
-    logging.info("Got new List")
-    send_my_updates(self, new_local_games_list)
-    my_game_lister.write_to_cache(new_local_games_list)
+    not_run = True
+    logging.info("update_local_games")
+    logging.info(self.backend.library_run)
+    while(self.backend.library_run):
+        if self.backend.my_authenticated and self.backend.my_imported_owned and self.backend.my_imported_local:
+            #delta is calculated to ensure that we only run expensive operation no more than once a minute
+            time_delta_minutes = time_delta_calc_minutes(self.backend.last_update)
+            #logging.info("delta")
+            #logging.info(time_delta_minutes)
+            #logging.info("not run?")
+            #logging.info(not_run)
+            if time_delta_minutes>1 or not_run:
+                not_run = False
+                self.backend.last_update = datetime.now()
+                logging.info("get local updates")
+                new_local_games_list = my_game_lister.list_all_recursively(username)
+                logging.info("Got new List")
+                prepare_to_send_my_updates(self, new_local_games_list, self.backend.local_game_cache)
+                
+        logging.info("sleepy")
+        time.sleep(10)
+    logging.info("bye")
 
 def run_my_selected_game_here(execution_command):
     return os.system(execution_command)
@@ -106,13 +179,13 @@ def time_delta_calc_minutes(last_update):
     time_delta_seconds = time_delta.total_seconds()
     return math.ceil(time_delta_seconds/60)    
 
-def finished_game_run(self, start_time, game_id):
+def finished_game_run(self, start_time, game_id, local_game_cache):
     logging.info("game finished")
     logging.info(game_id)
     my_delta = time_delta_calc_minutes(start_time)
     logging.info(my_delta)
     my_cache_update =[]
-    for current_game in self.local_game_cache:
+    for current_game in local_game_cache:
         if current_game["hash_digest"] == game_id:
             my_game_update = current_game.copy()
             if "run_time_total" in current_game.keys():
@@ -122,18 +195,27 @@ def finished_game_run(self, start_time, game_id):
                 logging.info("new play time")
                 my_game_update["run_time_total"] = my_delta
             my_cache_update.append(my_game_update)
-            self.update_game_time(GameTime(escapejson(game_id), my_game_update["run_time_total"]), math.floor(start_time.timestamp()) )
+            self.backend.my_queue_update_game_time.put(GameTime(escapejson(game_id), my_game_update["run_time_total"]), math.floor(start_time.timestamp()) )
         else:
             my_cache_update.append(current_game)
-    #Potential race condition here probably want to add semaphores on cache writes or refactor
-    self.local_game_cache = my_cache_update
-    self.my_game_lister.write_to_cache(my_cache_update)
-
+    update_cache(self, my_cache_update)
+   
 def do_auth(self, username):    
     logging.info("Auth")
     user_data = {}
     logging.info(username)
     user_data['username'] = username       
     self.store_credentials(user_data)
-    self.my_authenticated = True
+    self.backend.my_authenticated = True
     return Authentication('importer_user', user_data['username'])
+    
+    
+def update_cache(self, my_cache_update):
+    #Potential race condition here probably want to add semaphores on cache writes or refactor
+    self.backend.library_lock.acquire()
+    try:
+        logging.info("locked")
+        self.backend.local_game_cache = my_cache_update
+        self.backend.my_game_lister.write_to_cache(my_cache_update)
+    finally:
+        self.backend.library_lock.release()
