@@ -46,7 +46,7 @@ def time_tracking(self, my_threads):
             logging.info(my_thread_name)
             logging.info(my_thread_name)
             my_dictionary_values = json.loads(my_thread_name)
-            finished_game_run(self, datetime.fromisoformat(my_dictionary_values["time"]),my_dictionary_values["id"], self.local_game_cache)
+            finished_game_run(self, datetime.fromisoformat(my_dictionary_values["time"]),my_dictionary_values["id"], self.backend.local_game_cache)
             my_threads_to_remove.append(my_current_thread)
     for my_thread_to_remove in my_threads_to_remove:
         logging.info("thread removed")
