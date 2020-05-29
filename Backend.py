@@ -195,7 +195,7 @@ def finished_game_run(self, start_time, game_id, local_game_cache):
                 logging.info("new play time")
                 my_game_update["run_time_total"] = my_delta
             my_cache_update.append(my_game_update)
-            self.backend.my_queue_update_game_time.put(GameTime(escapejson(game_id), my_game_update["run_time_total"]), math.floor(start_time.timestamp()) )
+            self.backend.my_queue_update_game_time.put(GameTime(escapejson(game_id), my_game_update["run_time_total"], math.floor(start_time.timestamp() )))
         else:
             my_cache_update.append(current_game)
     update_cache(self, my_cache_update)
