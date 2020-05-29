@@ -13,8 +13,7 @@ import threading
 
 #local
 from configuration import DefaultConfig
-from ListGames import ListGames
-from Backend import time_tracking, create_game, update_local_games, run_my_selected_game_here, get_exe_command, time_delta_calc_minutes, do_auth
+from Backend import Backend, time_tracking, create_game, run_my_selected_game_here, get_exe_command, do_auth, shutdown_library, send_events, update_local_games
 
 class GenericEmulatorPlugin(Plugin):
     def __init__(self, reader, writer, token):
@@ -25,15 +24,12 @@ class GenericEmulatorPlugin(Plugin):
             writer,
             token
         )
-        self.configuration = DefaultConfig()
-        self.my_game_lister =  ListGames()        
-        self.local_game_cache = self.my_game_lister.read_from_cache()
-        self.last_update = datetime.now()
-        self.my_authenticated = False
-        self.my_imported_owned = False
-        self.my_imported_local = False
+        self.configuration = DefaultConfig()                
+        self.backend = Backend(self.configuration)        
         self.my_threads = []
-        self.my_library_thread = None
+        self.my_library_thread = threading.Thread(target=update_local_games, args=(self, self.configuration.my_user_to_gog, self.backend.my_game_lister,))
+        self.my_library_thread.start()
+        
 
     # required api interface to authenticate the user with the platform
     async def authenticate(self, stored_credentials=None):
@@ -49,13 +45,13 @@ class GenericEmulatorPlugin(Plugin):
     async def get_owned_games(self):
         logging.info("get owned")
         list_to_galaxy = []
-        found_games = self.local_game_cache
+        found_games = self.backend.local_game_cache
         
         for game in found_games:
             this_game=create_game(game)
             list_to_galaxy.append(this_game)
         logging.info(len(list_to_galaxy))
-        self.my_imported_owned = True
+        self.backend.my_imported_owned = True
         return list_to_galaxy
 
     # api interface to install games
@@ -76,7 +72,7 @@ class GenericEmulatorPlugin(Plugin):
         logging.info("Updating library "+game_id)
         my_current_game_selected={}
         #call function to update
-        for current_game_checking in self.local_game_cache:
+        for current_game_checking in self.backend.local_game_cache:
             if (escapejson(current_game_checking["hash_digest"]) == game_id):
                 my_current_game_selected =  current_game_checking
                 break
@@ -90,41 +86,32 @@ class GenericEmulatorPlugin(Plugin):
     async def get_local_games(self):
         logging.info("get local")
         localgames = []
-        for local_game in self.local_game_cache :
+        for local_game in self.backend.local_game_cache :
             localgames.append(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
         logging.info(len(localgames))
-        self.my_imported_local = True
+        self.backend.my_imported_local = True
         return localgames
     
     # api interface to periodically run processes such as rescanning for library changes
-    def tick(self):
-        if self.my_authenticated and self.my_imported_owned and self.my_imported_local:
-            time_delta_minutes = time_delta_calc_minutes(self.last_update)
-            #delta is calculated to ensure that we only run expensive operation no more than once a minute
-            if self.my_library_thread is None or ((not self.my_library_thread.is_alive()) and time_delta_minutes>1):
-                logging.info("lets start")
-                self.last_update = datetime.now()
-                self.my_library_thread = threading.Thread(target=update_local_games, args=(self,self.configuration.my_user_to_gog, self.my_game_lister,))
-                self.my_library_thread.start()
-                logging.info("started")
-                logging.info(self.my_library_thread.is_alive())                    
-            else:
-                logging.info("alive")
-                logging.info(self.my_library_thread.is_alive())
-        time_tracking(self)
+    def tick(self):   
+        logging.info("lib?")
+        logging.info(self.my_library_thread.is_alive())
+        send_events(self)         
+        time_tracking(self, self.my_threads)
 
     # api interface shutdown nicely
     async def shutdown(self):
         logging.info("shutdown called")
-        if not self.my_library_thread is None and self.my_library_thread.is_alive():
-            logging.info("Library update in progress")
-            self.my_library_thread.join() 
+        
+        shutdown_library(self)
+
+        logging.info("all done shutdown")
 
     # api interface to startup game
     # requires get_local_games to have listed the game
     async def launch_game(self, game_id):
         logging.info("launch")
-        execution_command = get_exe_command(game_id, self.local_game_cache)
+        execution_command = get_exe_command(game_id, self.backend.local_game_cache)
         my_current_time = datetime.now()
         logging.info(execution_command)
         my_thread= threading.Thread(target=run_my_selected_game_here, args=(execution_command,))
