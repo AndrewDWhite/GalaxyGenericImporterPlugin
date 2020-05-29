@@ -36,13 +36,10 @@ def send_my_updates(self, new_local_games_list):
     for entry in new_local_games_list:
         if("local_game_state" not in entry):
             entry["local_game_state"]=LocalGameState.Installed
-
     state_changes = get_state_changes(self.local_game_cache, new_local_games_list)
     send_those_changes(self, new_local_games_list, state_changes["old"], state_changes["new"])
     self.local_game_cache = new_local_games_list
-    #self.update_game(Game(currentGameEntry["hash_digest"], escapejson(currentGameEntry["filename_short"]), None, LicenseInfo(LicenseType.SinglePurchase)))
-
-
+    
 def send_those_changes(self, new_list, old_dict,new_dict):
     # removed games
     for my_id in (old_dict.keys() - new_dict.keys()):
@@ -52,7 +49,6 @@ def send_those_changes(self, new_list, old_dict,new_dict):
     for local_game in new_list:
         if ("hash_digest" in local_game) and (local_game["hash_digest"] in (new_dict.keys() - old_dict.keys())):
             logging.info("added")
-            #self.remove_game(local_game["hash_digest"])
             self.add_game(create_game(local_game))
             self.update_local_game_status(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
                 
@@ -78,15 +74,7 @@ def get_state_changes(old_list, new_list):
     result = {"old":old_dict,"new":new_dict}
     return result
 
-def kickoff_update_local_games(self, username, my_game_lister):
-    logging.info("kickoff update local games")
-    task = update_local_games(self, username, my_game_lister)
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(task)
-    logging.info("run until complete")
-
-async def update_local_games(self, username, my_game_lister):
+def update_local_games(self, username, my_game_lister):
     logging.info("get local updates")
     new_local_games_list = my_game_lister.list_all_recursively(username)
     logging.info("Got new List")
@@ -124,7 +112,6 @@ def finished_game_run(self, start_time, game_id):
     my_delta = time_delta_calc_minutes(start_time)
     logging.info(my_delta)
     my_cache_update =[]
-    #TODO implement logging of time
     for current_game in self.local_game_cache:
         if current_game["hash_digest"] == game_id:
             my_game_update = current_game.copy()
@@ -135,7 +122,7 @@ def finished_game_run(self, start_time, game_id):
                 logging.info("new play time")
                 my_game_update["run_time_total"] = my_delta
             my_cache_update.append(my_game_update)
-            self.update_game_time(GameTime(escapejson(game_id), my_game_update["run_time_total"], start_time.timestamp()))
+            self.update_game_time(GameTime(escapejson(game_id), my_game_update["run_time_total"]), math.floor(start_time.timestamp()) )
         else:
             my_cache_update.append(current_game)
     #Potential race condition here probably want to add semaphores on cache writes or refactor

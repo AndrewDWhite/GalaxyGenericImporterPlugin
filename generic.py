@@ -14,7 +14,7 @@ import threading
 #local
 from configuration import DefaultConfig
 from ListGames import ListGames
-from Backend import time_tracking, create_game, kickoff_update_local_games, run_my_selected_game_here, get_exe_command, time_delta_calc_minutes, do_auth
+from Backend import time_tracking, create_game, update_local_games, run_my_selected_game_here, get_exe_command, time_delta_calc_minutes, do_auth
 
 class GenericEmulatorPlugin(Plugin):
     def __init__(self, reader, writer, token):
@@ -104,7 +104,7 @@ class GenericEmulatorPlugin(Plugin):
             if self.my_library_thread is None or ((not self.my_library_thread.is_alive()) and time_delta_minutes>1):
                 logging.info("lets start")
                 self.last_update = datetime.now()
-                self.my_library_thread = threading.Thread(target=kickoff_update_local_games, args=(self,self.configuration.my_user_to_gog, self.my_game_lister,))
+                self.my_library_thread = threading.Thread(target=update_local_games, args=(self,self.configuration.my_user_to_gog, self.my_game_lister,))
                 self.my_library_thread.start()
                 logging.info("started")
                 logging.info(self.my_library_thread.is_alive())                    
@@ -114,10 +114,11 @@ class GenericEmulatorPlugin(Plugin):
         time_tracking(self)
 
     # api interface shutdown nicely
-    def shutdown(self):
+    async def shutdown(self):
         logging.info("shutdown called")
-        if not self.my_library_thread is None:
-            self.my_library_thread.join()
+        if not self.my_library_thread is None and self.my_library_thread.is_alive():
+            logging.info("Library update in progress")
+            self.my_library_thread.join() 
 
     # api interface to startup game
     # requires get_local_games to have listed the game
