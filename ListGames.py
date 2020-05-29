@@ -25,15 +25,17 @@ class ListGames():
         self.cache_filepath = os.path.abspath(os.path.join(os.path.abspath(__file__),'..','game_cache'))
         with open(emulator_config_path, 'r') as config:
             parsed_json = json.load(config)
+        config.close()
         self.loaded_systems_configuration=parsed_json["systems"]
         logging.info("loading emulators configuration completed")
         logging.info(len(self.loaded_systems_configuration))
     
     def write_to_cache(self, data):
-        print(self.cache_filepath)
+        logging.info(self.cache_filepath)
         with open(self.cache_filepath, 'wb') as my_file:
             pickle.dump(data, my_file)
-    
+        my_file.close()
+        
     def cache_exists(self):
         return os.path.exists(self.cache_filepath)
         
@@ -41,6 +43,7 @@ class ListGames():
         if self.cache_exists():
             with open(self.cache_filepath, 'rb') as my_file:
                 return pickle.load(my_file)
+            my_file.close()
         else:
             return []
         
