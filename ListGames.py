@@ -88,8 +88,10 @@ class ListGames():
             new_entry["game_name"] = regex_result.group(emulated_system["game_name_regex_group"])
             logging.info(new_entry["game_name"])
         else:
-            logging.warn("Could not match so just using it")
+            logging.warn("Could not match")
             new_entry["game_name"] = my_game
+            logging.warn(my_game)
+            raise UserWarning("Could not match")
         new_entry["path"]=os.path.split(my_game)[0]
         new_entry["tags"] = tags
         return new_entry
@@ -106,6 +108,10 @@ class ListGames():
                     found_games=glob.glob(os.path.join((current_path), '**',extension),recursive=True)
                     
                     for my_game in found_games:
-                        new_entry = self.setup_entry(emulated_system, my_game, salt, matcher, tags)                        
-                        self.mylist.append(new_entry)
+                        try:
+                            new_entry = self.setup_entry(emulated_system, my_game, salt, matcher, tags)                        
+                            self.mylist.append(new_entry)
+                        except  UserWarning as my_user_warning:
+                            logging.warning("skipping")
+                            logging.warning(my_user_warning)
         return self.mylist      

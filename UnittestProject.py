@@ -24,12 +24,12 @@ class UnittestProject(unittest.TestCase):
     def test_config(self):
         config = DefaultConfig()
         #TODO implement tests
-        self.assertEquals(config.my_user_to_gog,"andyn")
+        self.assertEquals(config.my_user_to_gog,"username")
         
     def test_emulators(self):
         systems = ListGames()
         #tests if it loaded the default number of emulators
-        self.assertEqual(len(systems.loaded_systems_configuration),17)
+        self.assertEqual(len(systems.loaded_systems_configuration),18)
     
     def test_speed(self):
         systems = ListGames()
@@ -54,7 +54,7 @@ class UnittestProject(unittest.TestCase):
         data_read = systems.read_from_cache()
         
         systems.delete_cache()
-        self.assertEquals(184,len(data_read ))
+        self.assertEquals(191,len(data_read ))
         self.assertEquals(data_read, data)
         
     def test_rec(self):
@@ -63,7 +63,7 @@ class UnittestProject(unittest.TestCase):
         #print(myresult)
         #print(len(myresult))
         #TODO implement tests
-        self.assertEquals(184,len(myresult))
+        self.assertEquals(191,len(myresult))
         
     def test_comp(self):
         systems = ListGames()
@@ -77,9 +77,9 @@ class UnittestProject(unittest.TestCase):
         #None Removed
         #print (len(myresult["old"].keys() - myresult["new"].keys()))
         #print (len(myresult["new"].keys() - myresult["old"].keys()))
-        self.assertTrue(len(myresult["old"].keys() - myresult["new"].keys())==0)
+        self.assertEquals(len(myresult["old"].keys() - myresult["new"].keys()),0)
         #All Added
-        self.assertTrue(len(myresult["new"].keys() - myresult["old"].keys())==184)
+        self.assertEquals(len(myresult["new"].keys() - myresult["old"].keys()),191)
         #print(myresult)
     
     def test_time_delta_calc_minutes(self):
@@ -98,9 +98,9 @@ class UnittestProject(unittest.TestCase):
         #None Removed
         #print (len(myresult["old"].keys() - myresult["new"].keys()))
         #print (len(myresult["new"].keys() - myresult["old"].keys()))
-        self.assertTrue(len(myresult["old"].keys() - myresult["new"].keys())==0)
+        self.assertEquals(len(myresult["old"].keys() - myresult["new"].keys()),0)
         #None Added
-        self.assertTrue(len(myresult["new"].keys() - myresult["old"].keys())==0)
+        self.assertEquals(len(myresult["new"].keys() - myresult["old"].keys()),0)
 
         #print(myresult)
         
@@ -116,9 +116,9 @@ class UnittestProject(unittest.TestCase):
         #All Removed
         #print (len(myresult["old"].keys() - myresult["new"].keys()))
         #print (len(myresult["new"].keys() - myresult["old"].keys()))
-        self.assertTrue(len(myresult["old"].keys() - myresult["new"].keys())==184)
+        self.assertEquals(len(myresult["old"].keys() - myresult["new"].keys()),191)
         #None Added
-        self.assertTrue(len(myresult["new"].keys() - myresult["old"].keys())==0)
+        self.assertEquals(len(myresult["new"].keys() - myresult["old"].keys()),0)
 
         #print(myresult)
         

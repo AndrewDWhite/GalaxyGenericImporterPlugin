@@ -152,6 +152,15 @@
             "game_name_regex" : ".*[\\\\](.+)[.]zip",
             "game_name_regex_group" : 1,
             "filename_regex" : ["*[.]zip"]
+        },
+		{
+            "name" : "amazon",
+            "execution" : "\"%ROM_RAW%\"",
+            "path_regex" : ["G:\\Amazon[ ]Games\\Library"],
+            "tags" : ["twitch", "windows"],
+            "game_name_regex" : ".*[:][\\\\]Amazon[ ]Games[\\\\]Library[\\\\](?!(_{2,2}))([^\\\\]+?)(?!(_{2,2}))[\\\\]([^\\\\]+?)[.](exe)",
+            "game_name_regex_group" : 2,
+            "filename_regex" : ["*[.]exe"]
         }
     ]
 
