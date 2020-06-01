@@ -54,7 +54,7 @@ class UnittestProject(unittest.TestCase):
         data_read = systems.read_from_cache()
         
         systems.delete_cache()
-        self.assertEquals(196,len(data_read ))
+        self.assertEquals(194,len(data_read ))
         self.assertEquals(data_read, data)
         
     def test_rec(self):
@@ -63,7 +63,7 @@ class UnittestProject(unittest.TestCase):
         #print(myresult)
         #print(len(myresult))
         #TODO implement tests
-        self.assertEquals(196,len(myresult))
+        self.assertEquals(194,len(myresult))
         
     def test_comp(self):
         systems = ListGames()
@@ -79,7 +79,7 @@ class UnittestProject(unittest.TestCase):
         #print (len(myresult["new"].keys() - myresult["old"].keys()))
         self.assertEquals(len(myresult["old"].keys() - myresult["new"].keys()),0)
         #All Added
-        self.assertEquals(len(myresult["new"].keys() - myresult["old"].keys()),196)
+        self.assertEquals(len(myresult["new"].keys() - myresult["old"].keys()),194)
         #print(myresult)
     
     def test_time_delta_calc_minutes(self):
@@ -116,7 +116,7 @@ class UnittestProject(unittest.TestCase):
         #All Removed
         #print (len(myresult["old"].keys() - myresult["new"].keys()))
         #print (len(myresult["new"].keys() - myresult["old"].keys()))
-        self.assertEquals(len(myresult["old"].keys() - myresult["new"].keys()),196)
+        self.assertEquals(len(myresult["old"].keys() - myresult["new"].keys()),194)
         #None Added
         self.assertEquals(len(myresult["new"].keys() - myresult["old"].keys()),0)
 
