@@ -112,6 +112,6 @@ class ListGames():
                             new_entry = self.setup_entry(emulated_system, my_game, salt, matcher, tags)                        
                             self.mylist.append(new_entry)
                         except  UserWarning as my_user_warning:
-                            logging.warning("skipping")
+                            logging.warning("skipping / dropping")
                             logging.warning(my_user_warning)
         return self.mylist      
