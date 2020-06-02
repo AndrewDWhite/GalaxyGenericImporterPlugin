@@ -1,6 +1,8 @@
 # GalaxyGenericImporterPlugin
 Plugin for GOG Galaxy to allow the generic definition of software using regular expressions.
 
+<img width="894" alt="galaxy_imported" src="https://user-images.githubusercontent.com/972757/83471895-e3d74c00-a453-11ea-8ea9-ac8f0a9c4af0.PNG">
+
 ## Installation
 The plugin will need to be placed in `%localappdata%\GOG.com\Galaxy\plugins\installed\` as `importer_97543122-7785-4444-2254-711233556699` . The easiest version to install is the lastest version under releases with all of the libraries pre installed and can be unzipped into the installation directory. The following is a Youtube video showing installation using default directories for software. https://www.youtube.com/watch?v=FCrHWRy0fOs
 
@@ -113,6 +115,11 @@ By default the folders in `F:\Software\games\roms\wii u\converted` will be popul
 This will end up being something like `C:\Users\andyn\AppData\Downloads\mame0220b_64bit\mame64.exe`.
 #### roms
     F:\Software\games\roms\arcade
+### Amazon
+#### game library folders
+    D:\Amazon Games\Library
+    G:\Amazon Games\Library
+This will by default populate any exe files found in the root folder of each game.
 
 ## Configuration
 Configuration for execution, selection and location of files is located in the `emulators.json` file. See the included for an example and used by default if not changed. You will need to change this. Any platform you do not need can be safetly removed.
