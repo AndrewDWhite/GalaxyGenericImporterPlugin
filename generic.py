@@ -2,7 +2,7 @@ import sys
 
 from galaxy.api.consts import Platform, LocalGameState
 from galaxy.api.plugin import Plugin, create_and_run_plugin
-from galaxy.api.types import LocalGame, GameLibrarySettings
+from galaxy.api.types import LocalGame, GameLibrarySettings, GameTime
 from typing import Any
 
 import logging
@@ -59,6 +59,18 @@ class GenericEmulatorPlugin(Plugin):
     async def install_game(self, game_id):
         logging.info("install called")
         logging.info(game_id)
+
+    async def get_game_time(self, game_id, context):
+        logging.info("getting play time")
+        logging.info(game_id)
+        for current_game in self.backend.local_time_cache:
+            if escapejson(current_game["hash_digest"]) == game_id:
+                logging.info(current_game["last_time_played"])
+                logging.info(current_game["run_time_total"])
+                return GameTime(game_id, current_game["run_time_total"], current_game["last_time_played"])
+        #not in cache so never played
+        logging.info("never played")
+        return GameTime(game_id, 0, None)
 
     # api interface to uninstall games
     # Only placeholder so the get_local_games feature is recognized
