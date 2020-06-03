@@ -88,9 +88,9 @@ class ListGames():
             new_entry["game_name"] = regex_result.group(emulated_system["game_name_regex_group"])
             logging.info(new_entry["game_name"])
         else:
-            logging.warn("Could not match")
+            logging.info("Could not match")
             new_entry["game_name"] = my_game
-            logging.warn(my_game)
+            logging.info(my_game)
             raise UserWarning("Could not match")
         new_entry["path"]=os.path.split(my_game)[0]
         new_entry["tags"] = tags
@@ -112,6 +112,6 @@ class ListGames():
                             new_entry = self.setup_entry(emulated_system, my_game, salt, matcher, tags)                        
                             self.mylist.append(new_entry)
                         except  UserWarning as my_user_warning:
-                            logging.warning("skipping / dropping")
-                            logging.warning(my_user_warning)
+                            logging.info("skipping / dropping")
+                            logging.info(my_user_warning)
         return self.mylist      

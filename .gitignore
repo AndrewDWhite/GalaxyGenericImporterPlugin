@@ -28,4 +28,5 @@ multidict-4.7.6.dist-info/
 nose_parameterized/
 parameterized-0.7.4.dist-info/
 parameterized/
-
+.coverage
+htmlcov/

@@ -28,7 +28,7 @@ class UnittestProject(unittest.TestCase):
     def test_config(self):
         config = DefaultConfig()
         #TODO implement tests
-        self.assertEquals(config.my_user_to_gog,"username1")
+        self.assertEqual(config.my_user_to_gog,"username1")
         
     def test_emulators(self):
         systems = ListGames()
@@ -56,8 +56,8 @@ class UnittestProject(unittest.TestCase):
         self.assertTrue(systems.cache_exists())
         data_read = systems.read_from_cache()
         systems.delete_cache()
-        self.assertEquals(0,len(data_read ))
-        self.assertEquals(data_read, data)
+        self.assertEqual(0,len(data_read ))
+        self.assertEqual(data_read, data)
             
     def test_rec(self):
         systems = ListGames()
@@ -65,7 +65,7 @@ class UnittestProject(unittest.TestCase):
         #print(myresult)
         #print(len(myresult))
         #TODO implement tests
-        self.assertEquals(194,len(myresult))
+        self.assertEqual(194,len(myresult))
         
     def test_comp(self):
         systems = ListGames()
@@ -79,14 +79,14 @@ class UnittestProject(unittest.TestCase):
         #None Removed
         #print (len(myresult["old"].keys() - myresult["new"].keys()))
         #print (len(myresult["new"].keys() - myresult["old"].keys()))
-        self.assertEquals(len(myresult["old"].keys() - myresult["new"].keys()),0)
+        self.assertEqual(len(myresult["old"].keys() - myresult["new"].keys()),0)
         #All Added
-        self.assertEquals(len(myresult["new"].keys() - myresult["old"].keys()),194)
+        self.assertEqual(len(myresult["new"].keys() - myresult["old"].keys()),194)
         #print(myresult)
     
     def test_time_delta_calc_minutes(self):
         my_delta = time_delta_calc_minutes(datetime.now())
-        self.assertEquals(my_delta,0)
+        self.assertEqual(my_delta,0)
         
     def test_compSame(self):
         systems = ListGames()
@@ -100,9 +100,9 @@ class UnittestProject(unittest.TestCase):
         #None Removed
         #print (len(myresult["old"].keys() - myresult["new"].keys()))
         #print (len(myresult["new"].keys() - myresult["old"].keys()))
-        self.assertEquals(len(myresult["old"].keys() - myresult["new"].keys()),0)
+        self.assertEqual(len(myresult["old"].keys() - myresult["new"].keys()),0)
         #None Added
-        self.assertEquals(len(myresult["new"].keys() - myresult["old"].keys()),0)
+        self.assertEqual(len(myresult["new"].keys() - myresult["old"].keys()),0)
 
         #print(myresult)
         
@@ -118,9 +118,9 @@ class UnittestProject(unittest.TestCase):
         #All Removed
         #print (len(myresult["old"].keys() - myresult["new"].keys()))
         #print (len(myresult["new"].keys() - myresult["old"].keys()))
-        self.assertEquals(len(myresult["old"].keys() - myresult["new"].keys()),194)
+        self.assertEqual(len(myresult["old"].keys() - myresult["new"].keys()),194)
         #None Added
-        self.assertEquals(len(myresult["new"].keys() - myresult["old"].keys()),0)
+        self.assertEqual(len(myresult["new"].keys() - myresult["old"].keys()),0)
 
         #print(myresult)
         
@@ -131,7 +131,7 @@ class UnittestProject(unittest.TestCase):
         #print(execution_command)
         #run_my_selected_game_here(execution_command)
         #TODO implement tests
-        self.assertEquals(execution_command,"\"\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\flycast_libretro.dll\" \"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends\\disc.gdi\"\"")
+        self.assertEqual(execution_command,"\"\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\flycast_libretro.dll\" \"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends\\disc.gdi\"\"")
     
     def test_returned_dir_data(self):
         systems = ListGames()
@@ -143,17 +143,17 @@ class UnittestProject(unittest.TestCase):
                                "hash_digest", "filename", "filename_short",
                                "game_filename", "game_name", "path",
                                "tags"]
-        self.assertEquals(len(myresult), len(expected_attributes))
+        self.assertEqual(len(myresult), len(expected_attributes))
         for attribute_expected in expected_attributes:
             self.assertTrue(attribute_expected in myresult)
-        self.assertEquals(myresult["filename"],"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends\\disc.gdi")
-        self.assertEquals(myresult["filename_short"],"disc.gdi")
-        self.assertEquals(myresult["game_filename"],"disc")
-        self.assertEquals(myresult["game_name"],"Gauntlet Legends")
-        self.assertEquals(myresult["name"],"dreamcast")
-        self.assertEquals(myresult["tags"],["retroarch","dreamcast"])
-        self.assertEquals(myresult["path"],"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends")
-        self.assertEquals(myresult["hash_digest"],"af6d2857d1f332323ce954ace3ec5200fe013473")
+        self.assertEqual(myresult["filename"],"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends\\disc.gdi")
+        self.assertEqual(myresult["filename_short"],"disc.gdi")
+        self.assertEqual(myresult["game_filename"],"disc")
+        self.assertEqual(myresult["game_name"],"Gauntlet Legends")
+        self.assertEqual(myresult["name"],"dreamcast")
+        self.assertEqual(myresult["tags"],["retroarch","dreamcast"])
+        self.assertEqual(myresult["path"],"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends")
+        self.assertEqual(myresult["hash_digest"],"af6d2857d1f332323ce954ace3ec5200fe013473")
             
     #def test_launch(self):
     #    systems = ListGames()
@@ -269,8 +269,8 @@ class TestParameterized(unittest.TestCase):
         self.assertTrue(systems.cache_exists())
         data_read = systems.read_from_cache()
         systems.delete_cache()
-        self.assertEquals(size,len(data_read ))
-        self.assertEquals(data_read, data)
+        self.assertEqual(size,len(data_read ))
+        self.assertEqual(data_read, data)
 
  
 if __name__ == '__main__':

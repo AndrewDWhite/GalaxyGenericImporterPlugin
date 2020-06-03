@@ -166,3 +166,5 @@ Use pip to install the dependencies to your local development copy (windows exam
 
      py -m pip install  -r requirements.txt --target .
 
+Run coverage tests
+	./coverage.sh
