@@ -12,13 +12,15 @@ from shutil import rmtree
 from configuration import DefaultConfig
 from ListGames import ListGames
 from generic import GenericEmulatorPlugin, get_exe_command, run_my_selected_game_here
-from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games
+from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games,\
+    create_game
 
 from datetime import datetime
 
-from galaxy.api.consts import LocalGameState
+from galaxy.api.consts import LocalGameState, LicenseType
 
 from parameterized import parameterized
+from galaxy.api.types import LicenseInfo
 
 class UnittestProject(unittest.TestCase):
     '''
@@ -200,6 +202,16 @@ class UnittestProject(unittest.TestCase):
     console = logging.StreamHandler()
     # add the handler to the root logger
     logging.getLogger('').addHandler(console)
+    
+    def test_create_game(self):
+        game_dictionary = {}
+        game_dictionary["hash_digest"]="hash_digest"
+        game_dictionary["game_name"]="Game_Name"
+        game_result = create_game(game_dictionary)
+        self.assertEqual(game_result.game_id,"hash_digest")
+        self.assertEqual(game_result.game_title,"Game_Name")
+        self.assertEqual(game_result.dlcs,None)
+        self.assertEqual(game_result.license_info,LicenseInfo(LicenseType.SinglePurchase))
 
 def setup_folders_for_testing (self):
     mypath = os.getcwd() + "\\TestDirectory"
