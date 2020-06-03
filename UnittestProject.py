@@ -5,6 +5,8 @@ Created on May 9, 2020
 '''
 import unittest, logging
 import asyncio
+import os
+from shutil import rmtree
 
 #local
 from configuration import DefaultConfig
@@ -15,6 +17,8 @@ from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_
 from datetime import datetime
 
 from galaxy.api.consts import LocalGameState
+
+from parameterized import parameterized
 
 class UnittestProject(unittest.TestCase):
     '''
@@ -45,18 +49,16 @@ class UnittestProject(unittest.TestCase):
         systems.delete_cache()
         self.assertEqual([], systems.read_from_cache())
     
-    def test_write(self):
-        systems = ListGames()
-        systems.delete_cache()
+    def test_write_no_data_in_folders(self):
+        systems=setup_folders_for_testing(self)
         data = systems.list_all_recursively("test_user")
         systems.write_to_cache(data)
         self.assertTrue(systems.cache_exists())
         data_read = systems.read_from_cache()
-        
         systems.delete_cache()
-        self.assertEquals(194,len(data_read ))
+        self.assertEquals(0,len(data_read ))
         self.assertEquals(data_read, data)
-        
+            
     def test_rec(self):
         systems = ListGames()
         myresult = systems.list_all_recursively("test_user")
@@ -198,6 +200,78 @@ class UnittestProject(unittest.TestCase):
     console = logging.StreamHandler()
     # add the handler to the root logger
     logging.getLogger('').addHandler(console)
-       
+
+def setup_folders_for_testing (self):
+    mypath = os.getcwd() + "\\TestDirectory"
+    if os.path.exists(mypath):
+        rmtree(mypath)
+    os.mkdir(mypath)
+    systems = ListGames()
+    #self.cache_filepath = os.path.abspath(mypath,'..','game_cache')
+    systems.delete_cache()
+    updatedconfigs=[]
+    for emulated_system in systems.loaded_systems_configuration:
+        updated_emulated_system=emulated_system.copy()
+        updated_emulated_system["path_regex"]=[]
+        counter=0
+        for current_path in emulated_system["path_regex"]:
+            new_path=mypath+"\\"+emulated_system["name"]+str(counter)
+            if not os.path.exists(new_path):
+                os.mkdir(new_path)
+            updated_emulated_system["path_regex"].append(new_path)
+            counter=counter+1
+        updatedconfigs.append(updated_emulated_system)
+    systems.loaded_systems_configuration=updatedconfigs
+    return systems  
+
+def insert_file_into_folder (self,systems,folder,file):
+    for emulated_system in systems.loaded_systems_configuration:
+        counter=0
+        #logging.warning(emulated_system)
+        for current_path in emulated_system["path_regex"]:
+            #logging.warning("Path")
+            #logging.warning(current_path)
+            #logging.warning("Name")
+            #logging.warning(emulated_system["name"])
+            #logging.warning("Counter")
+            #logging.warning(counter)
+            #logging.warning("Folder")
+            #logging.warning(folder)
+            #logging.warning("Evaluating")
+            #logging.warning(emulated_system["name"]+str(counter))
+            if (emulated_system["name"]+str(counter)) == folder:
+                #logging.warning("true")
+                with open(current_path+"\\"+file, 'w') as file_pointer:
+                    #logging.warning("Writing")
+                    #logging.warning(current_path+"\\"+file)
+                    pass
+                break
+            counter=counter+1
+
+
+class TestParameterized(unittest.TestCase):
+    
+    @parameterized.expand([
+        ["dreamcast valid entry", "dreamcast0", "disc.gdi",1],
+        ["dreamcast invalid entry", "dreamcast0", "mygame.gdi",0],
+        ["dreamcast invalid path", "dreamcast1", "disc.gdi",0],
+        ["gba valid entry", "gba0", "mygame.gba",1],
+        ["gbc valid entry", "gbc0", "mygame.gb",1],
+        ["gbc valid entry alternate extension", "gbc0", "mygame.gbc",1],
+        ["gcn valid entry", "gcn0", "mygame.iso",1],
+    ])    
+    def test_write_data_in_folders(self, name, folder, file, size):
+        systems=setup_folders_for_testing(self)
+        #todo insert function with parameterized files in folders
+        insert_file_into_folder (self,systems,folder,file)
+        data = systems.list_all_recursively("test_user")
+        systems.write_to_cache(data)
+        self.assertTrue(systems.cache_exists())
+        data_read = systems.read_from_cache()
+        systems.delete_cache()
+        self.assertEquals(size,len(data_read ))
+        self.assertEquals(data_read, data)
+
+ 
 if __name__ == '__main__':
     unittest.main()
