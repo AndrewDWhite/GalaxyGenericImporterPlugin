@@ -18,6 +18,8 @@ from datetime import datetime
 
 from galaxy.api.consts import LocalGameState
 
+from parameterized import parameterized
+
 class UnittestProject(unittest.TestCase):
     '''
     classdocs
@@ -56,21 +58,7 @@ class UnittestProject(unittest.TestCase):
         systems.delete_cache()
         self.assertEquals(0,len(data_read ))
         self.assertEquals(data_read, data)
-        
-    def test_write_data_in_folders(self):
-        systems=setup_folders_for_testing(self)
-        #todo insert function with parameterized files in folders
-        folder="gbc0"
-        file="mygame.gb"
-        insert_file_into_folder (self,systems,folder,file)
-        data = systems.list_all_recursively("test_user")
-        systems.write_to_cache(data)
-        self.assertTrue(systems.cache_exists())
-        data_read = systems.read_from_cache()
-        systems.delete_cache()
-        self.assertEquals(1,len(data_read ))
-        self.assertEquals(data_read, data)
-        
+            
     def test_rec(self):
         systems = ListGames()
         myresult = systems.list_all_recursively("test_user")
@@ -259,6 +247,27 @@ def insert_file_into_folder (self,systems,folder,file):
                     pass
                 break
             counter=counter+1
+
+
+class TestParameterized(unittest.TestCase):
+    
+    @parameterized.expand([
+        ["gbc0 valid entry", "gbc0", "mygame.gb",1],
+        ["dreamcast0 valid entry", "dreamcast0", "disc.gdi",1],
+        ["dreamcast0 invalid entry", "dreamcast0", "mygame.gdi",0],
+    ])    
+    def test_write_data_in_folders(self, name, folder, file, size):
+        systems=setup_folders_for_testing(self)
+        #todo insert function with parameterized files in folders
+        insert_file_into_folder (self,systems,folder,file)
+        data = systems.list_all_recursively("test_user")
+        systems.write_to_cache(data)
+        self.assertTrue(systems.cache_exists())
+        data_read = systems.read_from_cache()
+        systems.delete_cache()
+        self.assertEquals(size,len(data_read ))
+        self.assertEquals(data_read, data)
+
  
 if __name__ == '__main__':
     unittest.main()
