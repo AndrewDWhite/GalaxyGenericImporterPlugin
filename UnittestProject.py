@@ -252,9 +252,13 @@ def insert_file_into_folder (self,systems,folder,file):
 class TestParameterized(unittest.TestCase):
     
     @parameterized.expand([
-        ["gbc0 valid entry", "gbc0", "mygame.gb",1],
-        ["dreamcast0 valid entry", "dreamcast0", "disc.gdi",1],
-        ["dreamcast0 invalid entry", "dreamcast0", "mygame.gdi",0],
+        ["dreamcast valid entry", "dreamcast0", "disc.gdi",1],
+        ["dreamcast invalid entry", "dreamcast0", "mygame.gdi",0],
+        ["dreamcast invalid path", "dreamcast1", "disc.gdi",0],
+        ["gba valid entry", "gba0", "mygame.gba",1],
+        ["gbc valid entry", "gbc0", "mygame.gb",1],
+        ["gbc valid entry alternate extension", "gbc0", "mygame.gbc",1],
+        ["gcn valid entry", "gcn0", "mygame.iso",1],
     ])    
     def test_write_data_in_folders(self, name, folder, file, size):
         systems=setup_folders_for_testing(self)
