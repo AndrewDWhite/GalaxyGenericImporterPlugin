@@ -258,12 +258,28 @@ class TestParameterized(unittest.TestCase):
         ["gba valid entry", "gba0", "mygame.gba",1],
         ["gbc valid entry", "gbc0", "mygame.gb",1],
         ["gbc valid entry alternate extension", "gbc0", "mygame.gbc",1],
+        ["gbc valid entry", "gbc1", "mygame.gb",1],
+        ["gbc valid entry alternate extension", "gbc1", "mygame.gbc",1],
         ["gcn valid entry", "gcn0", "mygame.iso",1],
-        #to be added
-        #to be added
-        #to be added
-        #to be added
-        ["amazon ignored entry", "amazon0", "dxwebsetup.exe",0],
+        ["genesis valid entry", "genesis0", "mygame.bin",1],
+        ["n64 valid entry", "n640", "mygame.z64",1],
+        ["nds valid entry", "nds0", "mygame.nds",1],
+        ["nes valid entry", "nes0", "mygame.nes",1],
+        ["ps2 valid entry", "ps20", "mygame.iso",1],
+        ["ps2 valid entry", "ps20", "mygame.bin",1],
+        #to do PS3 to be added ["ps3 valid entry", "ps30", "eboot.bin",1],
+        ["psp valid entry", "psp0", "mygame.iso",1],
+        ["ps1 valid entry", "ps10", "mygame.iso",1],
+        ["ps1 valid entry", "ps10", "mygame.toc",1],
+        ["snes valid entry", "snes0", "mygame.sfc",1],
+        ["wii valid entry", "wii0", "mygame.iso",1],
+        ["xbox valid entry", "xbox0", "default.xbe",1],
+        #to do wiiu to be added ["wiiu valid entry", "wiiu0", "mygame.rpx",1],
+        ["arcade valid entry", "arcade0", "mygame.zip",1],
+        #to do amazon ["amazon ignored entry", "amazon0", "dxwebsetup.exe",0],
+        #to do amazon ["amazon valid entry", "amazon0", "mygame.exe",1],
+        #to do amazon ["amazon ignored entry", "amazon1", "dxwebsetup.exe",0],
+        #to do amazon ["amazon valid entry", "amazon1", "mygame.exe",1],
     ])    
     def test_write_data_in_folders(self, name, folder, file, size):
         systems=setup_folders_for_testing(self)
