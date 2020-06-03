@@ -160,7 +160,9 @@ The following is an example of the configuration of a single entry for a system.
         }
 
 ## Development notes
-See the standard gog plugin https://github.com/gogcom/galaxy-integrations-python-api and utils https://github.com/tylerbrawl/Galaxy-Utils packages for galaxy plugin specific dependencies
+Galaxy plugin specific dependencies:
+ - https://github.com/gogcom/galaxy-integrations-python-api 
+ - https://github.com/tylerbrawl/Galaxy-Utils
 
 Use pip to install the dependencies to your local development copy (windows example below)
 
