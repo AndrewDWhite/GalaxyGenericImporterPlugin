@@ -23,4 +23,10 @@ multidict/
 yarl-1.4.2.dist-info/
 yarl/
 game_cache
-
+galaxy.plugin.api-0.65.1.dist-info/
+multidict-4.7.6.dist-info/
+nose_parameterized/
+parameterized-0.7.4.dist-info/
+parameterized/
+.coverage
+htmlcov/

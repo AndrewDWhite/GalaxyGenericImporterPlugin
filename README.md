@@ -160,9 +160,11 @@ The following is an example of the configuration of a single entry for a system.
         }
 
 ## Development notes
-Will need both the standard gog plugin https://github.com/gogcom/galaxy-integrations-python-api and utils https://github.com/tylerbrawl/Galaxy-Utils packages to be placed as dependencies in the root of the folder
+See the standard gog plugin https://github.com/gogcom/galaxy-integrations-python-api and utils https://github.com/tylerbrawl/Galaxy-Utils packages for galaxy plugin specific dependencies
 
-Also needs escapejson
+Use pip to install the dependencies to your local development copy (windows example below)
 
-    py -m pip install escapejson galaxy.plugin.api galaxyutils --target DIR
+     py -m pip install  -r requirements.txt --target .
 
+Run coverage tests
+	./coverage.sh
