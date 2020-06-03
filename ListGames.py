@@ -52,7 +52,6 @@ class ListGames():
         if self.cache_exists():
             with open(cache_filepath, 'rb') as my_file:
                 return pickle.load(my_file)
-            my_file.close()
         else:
             return []
     

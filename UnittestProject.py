@@ -259,6 +259,11 @@ class TestParameterized(unittest.TestCase):
         ["gbc valid entry", "gbc0", "mygame.gb",1],
         ["gbc valid entry alternate extension", "gbc0", "mygame.gbc",1],
         ["gcn valid entry", "gcn0", "mygame.iso",1],
+        #to be added
+        #to be added
+        #to be added
+        #to be added
+        ["amazon ignored entry", "amazon0", "dxwebsetup.exe",0],
     ])    
     def test_write_data_in_folders(self, name, folder, file, size):
         systems=setup_folders_for_testing(self)
