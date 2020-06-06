@@ -7,7 +7,7 @@ Plugin for GOG Galaxy to allow the generic definition of software using regular 
 The plugin will need to be placed in `%localappdata%\GOG.com\Galaxy\plugins\installed\` as `importer_97543122-7785-4444-2254-711233556699` . The easiest version to install is the lastest version under releases with all of the libraries pre installed and can be unzipped into the installation directory. The following is a Youtube video showing installation using default directories for software. https://www.youtube.com/watch?v=FCrHWRy0fOs
 
 ## Default directories
-If the configuration is not changed to reflect your system, then the following is used by default.
+If the configuration is not changed to reflect your system, then the following is used by default. Your personal `documents\games\` folder will by default be used to house the folders for your systems which will be something like `C:\Users\andyn\Documents\Games\Dreamcast` depending on your username.
 
 ### Sega Dreamcast
 #### emulator
@@ -15,13 +15,15 @@ If the configuration is not changed to reflect your system, then the following i
 This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `flycast_libretro.dll` core.
 #### roms
     F:\Software\games\roms\Dreamcast\Game Name\disc.gdi
-By default the folders in `F:\Software\games\roms\Dreamcast` will be populated as your game names.
+    %USERPROFILE%\Documents\Games\Dreamcast
+By default the folders in `F:\Software\games\roms\Dreamcast` will be populated as your game names. Additionally folders in your `documents\games\Dreamcast` folder will also be populated.
 ### Game Boy Advance
 #### emulator
     %APPDATA%\RetroArch
 This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `mgba_libretro.dll` core.
 #### roms
     F:\Software\games\roms\GBA
+    %USERPROFILE%\Documents\Games\GBA
 ### Game Boy Color
 #### emulator
     %APPDATA%\RetroArch
@@ -29,47 +31,56 @@ This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\
 #### roms
     F:\Software\games\roms\GBC
     F:\Software\games\roms\GB
+    %USERPROFILE%\Documents\Games\GBC
+    %USERPROFILE%\Documents\Games\GB
 ### Gamecube
 #### emulator
     %USERPROFILE%\Downloads\dolphin-master-5.0-11701-x64\Dolphin-x64\Dolphin.exe
 This will end up being something like `C:\Users\andyn\AppData\Downloads\dolphin-master-5.0-11701-x64\Dolphin-x64\Dolphin.exe`.
 #### roms
     F:\Software\games\roms\GameCube
+    %USERPROFILE%\Documents\Games\GameCube
 ### Sega Genesis
 #### emulator
     %APPDATA%\RetroArch
 This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `genesis_plus_gx_libretro.dll` core.
 #### roms
     F:\Software\games\roms\Genesis
+    %USERPROFILE%\Documents\Games\Genesis
 ### Nintendo 64
 #### emulator
     %APPDATA%\RetroArch
 This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `mupen64plus_next_libretro.dll` core.
 #### roms
     F:\Software\games\roms\N64
+    %USERPROFILE%\Documents\Games\N64
 #### Nintendo DS
 #### emulator
     %APPDATA%\RetroArch
 This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `desmume_libretro.dll` core.
 #### roms
     F:\Software\games\roms\nds
+    %USERPROFILE%\Documents\Games\nds
 ### Nintendo Entertainment System
 #### emulator
     %APPDATA%\RetroArch
 This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `nestopia_libretro.dll` core.
 #### roms
     F:\Software\games\roms\nes
+    %USERPROFILE%\Documents\Games\NES
 ### Playstation 2
 #### emulator
     C:\Program Files (x86)\PCSX2\pcsx2.exe
 #### roms
     F:\Software\games\roms\PS2
+    %USERPROFILE%\Documents\Games\PS2
 ### Playstation 3
 #### emulator
     %USERPROFILE%\Downloads\rpcs3-v0.0.7-9236-db4041e0_win64\rpcs3.exe
 This will end up being something like `C:\Users\andyn\Downloads\rpcs3-v0.0.7-9236-db4041e0_win64\rpcs3.exe`.
 #### roms
     F:\Software\games\roms\PS3\out
+    %USERPROFILE%\Documents\Games\PS3
 By default the folders in `F:\Software\games\roms\PS3\out` will be populated as your game names.
 ### Playstation Portable
 #### emulator
@@ -77,30 +88,35 @@ By default the folders in `F:\Software\games\roms\PS3\out` will be populated as 
 This will end up being something like `C:\Users\andyn\Downloads\ppsspp_win\PPSSPPWindows64.exe`.
 #### roms
     F:\Software\games\roms\psp
+    %USERPROFILE%\Documents\Games\psp
 ### Playstation 1
 #### emulator
     %APPDATA%\RetroArch
 This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `pcsx_rearmed_libretro.dll` core.
 #### roms
     F:\Software\games\roms\PS1
+    %USERPROFILE%\Documents\Games\PS1
 ### Super Nintendo Entertainment System
 #### emulator
     %APPDATA%\RetroArch
 This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `snes9x_libretro.dll` core.
 #### roms
     F:\Software\games\roms\SNES
+    %USERPROFILE%\Documents\Games\SNES
 ### Wii
 #### emulator
     %USERPROFILE%\Downloads\dolphin-master-5.0-11701-x64\Dolphin-x64\Dolphin.exe
 This will end up being something like `C:\Users\andyn\AppData\Downloads\dolphin-master-5.0-11701-x64\Dolphin-x64\Dolphin.exe`.
 #### roms
     F:\Software\games\roms\Wii
+    %USERPROFILE%\Documents\Games\Wii
 ### XBOX
 #### emulator
     %USERPROFILE%\Downloads\CxbxReloaded-Release-VS2017\cxbx.exe
 This will end up being something like `C:\Users\andyn\AppData\Downloads\CxbxReloaded-Release-VS2017\cxbx.exe`.
 #### roms
     F:\Software\games\roms\xbox\games
+    %USERPROFILE%\Documents\Games\xbox
 By default the folders in `F:\Software\games\roms\xbox\games` will be populated as your game names.    
 ### Wii U
 #### emulator
@@ -108,6 +124,7 @@ By default the folders in `F:\Software\games\roms\xbox\games` will be populated 
 This will end up being something like `C:\Users\andyn\AppData\Downloads\cemu_1.17.2\Cemu.exe`.
 #### roms
     F:\Software\games\roms\wii u\converted
+    %USERPROFILE%\Documents\Games\wiiu
 By default the folders in `F:\Software\games\roms\wii u\converted` will be populated as your game names.  
 ### Arcade
 #### emulator
@@ -115,10 +132,12 @@ By default the folders in `F:\Software\games\roms\wii u\converted` will be popul
 This will end up being something like `C:\Users\andyn\AppData\Downloads\mame0220b_64bit\mame64.exe`.
 #### roms
     F:\Software\games\roms\arcade
+    %USERPROFILE%\Documents\Games\arcade
 ### Amazon
 #### game library folders
     D:\Amazon Games\Library
     G:\Amazon Games\Library
+    C:\Amazon Games\Library
 This will by default populate any exe files found in the root folder of each game.
 
 ## Configuration

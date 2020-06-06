@@ -104,7 +104,8 @@ class ListGames():
             
             for extension in emulated_system["filename_regex"]:
                 for current_path in emulated_system["path_regex"]:
-                    found_games=glob.glob(os.path.join((current_path), '**',extension),recursive=True)
+                    logging.info(current_path)
+                    found_games=glob.glob(os.path.join(os.path.expandvars(current_path), '**',extension),recursive=True)
                     
                     for my_game in found_games:
                         try:
