@@ -17,14 +17,15 @@ from Backend import Backend, time_tracking, create_game, run_my_selected_game_he
 
 class GenericEmulatorPlugin(Plugin):
     def __init__(self, reader, writer, token):
+        self.configuration = DefaultConfig()
+        
         super().__init__(
-            Platform.Test,  # choose platform from available list
+            Platform(self.configuration.my_platform_to_gog), # choose platform from available list
             "0.1",  # version
             reader,
             writer,
             token
-        )
-        self.configuration = DefaultConfig()                
+        )               
         self.backend = Backend(self.configuration)        
         self.my_threads = []
         self.my_library_thread = threading.Thread(target=update_local_games, args=(self, self.configuration.my_user_to_gog, self.backend.my_game_lister,))

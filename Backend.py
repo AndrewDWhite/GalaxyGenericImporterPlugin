@@ -192,22 +192,25 @@ def finished_game_run(self, start_time, game_id, local_time_cache):
     placed_game = False
     for current_game in local_time_cache:
         if current_game["hash_digest"] == game_id:
+            logging.info("game play time updated")
+            logging.info(game_id)
             #update it if it exists in some form
             my_game_update = created_update(current_game, my_delta, start_time)
             placed_game = True
             my_cache_update.append(my_game_update)
-            self.backend.my_queue_update_game_time.put(GameTime(escapejson(game_id), my_game_update["run_time_total"], my_game_update["last_time_played"]))
         else:
             #This entry doesn't need an update
             my_cache_update.append(current_game)
     if not placed_game:
         #new entry to be placed
+        logging.info("game played for the first time")
         my_game_update = {} 
         my_game_update["run_time_total"] = my_delta
         my_game_update["last_time_played"] = math.floor(start_time.timestamp() )
         my_game_update["hash_digest"] = game_id
         my_cache_update.append(my_game_update)
     update_cache_time(self, my_cache_update, self.backend.cache_times_filepath)
+    self.backend.my_queue_update_game_time.put(GameTime(escapejson(game_id), my_game_update["run_time_total"], my_game_update["last_time_played"]))
 
 def created_update(current_game, my_delta, start_time):
     my_game_update = current_game.copy()
