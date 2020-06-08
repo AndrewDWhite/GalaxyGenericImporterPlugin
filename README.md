@@ -1,5 +1,5 @@
 # GalaxyGenericImporterPlugin
-Plugin for GOG Galaxy to allow the generic definition of software using regular expressions.
+Plugin for GOG Galaxy supporting programmatic importation of multiplatform game libraries. Allows for the generic definition of files to be added using user definable regular expressions. Programmatically imports games from predefined folders while allowing for others to be configured by users. Advanced users can also configure how games are are executed and populated into galaxy by editing the configurable regular expressions.
 
 <img width="894" alt="galaxy_imported" src="https://user-images.githubusercontent.com/972757/83471895-e3d74c00-a453-11ea-8ea9-ac8f0a9c4af0.PNG">
 
@@ -190,3 +190,5 @@ Use pip to install the dependencies to your local development copy (windows exam
 Run coverage tests
 
     ./coverage.sh
+
+![Python package](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/workflows/Python%20package/badge.svg?branch=master)
