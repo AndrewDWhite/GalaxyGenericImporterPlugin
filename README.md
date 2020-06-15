@@ -1,7 +1,10 @@
-# GalaxyGenericImporterPlugin
+# [GalaxyGenericImporterPlugin](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/releases/latest)
 Plugin for GOG Galaxy supporting programmatic importation of multiplatform game libraries. Allows for the generic definition of files to be added using user definable regular expressions. Programmatically imports games from predefined folders while allowing for others to be configured by users. Advanced users can also configure how games are are executed and populated into galaxy by editing the configurable regular expressions.
 
 <img width="894" alt="galaxy_imported" src="https://user-images.githubusercontent.com/972757/83471895-e3d74c00-a453-11ea-8ea9-ac8f0a9c4af0.PNG">
+
+## Known issues
+- Upon galaxy update, the plugin's games may be determined to be unsupported. To resolve this for the current update as of 2020-06-15, disconnect the plugin and then reconnect it again. Contrary to galaxy's messages, your game data including play times will be retained upon reconnecting as they are also cached by the plugin.
 
 ## Installation
 The plugin will need to be placed in `%localappdata%\GOG.com\Galaxy\plugins\installed\` as `importer_97543122-7785-4444-2254-711233556699` . The easiest version to install is the [latest version](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/releases/latest) under releases with all of the libraries pre installed and can be unzipped into the installation directory. The following is a Youtube video showing installation using default directories for software. https://www.youtube.com/watch?v=FCrHWRy0fOs
