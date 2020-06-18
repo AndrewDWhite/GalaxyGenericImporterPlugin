@@ -45,5 +45,5 @@ adodbapi/
 PyWin32.chm
 .gitignore.swp
 escapejson-1.0-py3.7.egg-info/
-TestDirectory2/
+TestDirectory*/
 

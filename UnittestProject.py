@@ -55,7 +55,7 @@ class UnittestProject(unittest.TestCase):
         self.assertEqual([], systems.read_from_cache())
     
     def test_write_no_data_in_folders(self):
-        systems=setup_folders_for_testing(self, "TestDirectory")
+        systems=setup_folders_for_testing(self, "TestDirectory7")
         data = systems.list_all_recursively("test_user")
         systems.write_to_cache(data)
         self.assertTrue(systems.cache_exists())
@@ -65,15 +65,23 @@ class UnittestProject(unittest.TestCase):
         self.assertEqual(data_read, data)
             
     def test_rec(self):
-        systems = ListGames()
+        systems=setup_folders_for_testing(self, "TestDirectory5")
+        insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
+        insert_file_into_folder (self, systems, "gbc0", "game.gb","")
+        insert_file_into_folder (self, systems, "dos0", "game.exe","")
+
         myresult = systems.list_all_recursively("test_user")
         #print(myresult)
         #print(len(myresult))
         #TODO implement tests
-        self.assertEqual(270,len(myresult))
+        self.assertEqual(3,len(myresult))
         
     def test_comp(self):
-        systems = ListGames()
+        systems=setup_folders_for_testing(self, "TestDirectory3")
+        insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
+        insert_file_into_folder (self, systems, "gbc0", "game.gb","")
+        insert_file_into_folder (self, systems, "dos0", "game.exe","mygame")
+        
         new_local = systems.list_all_recursively("test_user")
         for entry in new_local:
             #print("Check")
@@ -86,7 +94,7 @@ class UnittestProject(unittest.TestCase):
         #print (len(myresult["new"].keys() - myresult["old"].keys()))
         self.assertEqual(len(myresult["old"].keys() - myresult["new"].keys()),0)
         #All Added
-        self.assertEqual(len(myresult["new"].keys() - myresult["old"].keys()),270)
+        self.assertEqual(len(myresult["new"].keys() - myresult["old"].keys()),3)
         #print(myresult)
     
     def test_time_delta_calc_minutes(self):
@@ -112,7 +120,11 @@ class UnittestProject(unittest.TestCase):
         #print(myresult)
         
     def test_compRemoved(self):
-        systems = ListGames()
+        systems=setup_folders_for_testing(self, "TestDirectory8")
+        insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
+        insert_file_into_folder (self, systems, "gbc0", "game.gb","")
+        insert_file_into_folder (self, systems, "dos0", "game.exe","mygame")
+
         new_local = systems.list_all_recursively("test_user")
         for entry in new_local:
             #print("Check")
@@ -123,24 +135,29 @@ class UnittestProject(unittest.TestCase):
         #All Removed
         #print (len(myresult["old"].keys() - myresult["new"].keys()))
         #print (len(myresult["new"].keys() - myresult["old"].keys()))
-        self.assertEqual(len(myresult["old"].keys() - myresult["new"].keys()),270)
+        self.assertEqual(len(myresult["old"].keys() - myresult["new"].keys()),3)
         #None Added
         self.assertEqual(len(myresult["new"].keys() - myresult["old"].keys()),0)
 
         #print(myresult)
         
     def test_launch_command(self):
-        systems = ListGames()
+        #systems = ListGames()
+        systems=setup_folders_for_testing(self, "TestDirectory4")
+        insert_file_into_folder (self, systems, "dreamcast0", "disc.gdi","mygame")
+
         myresult = systems.list_all_recursively("test_user")
         self.assertEquals(True, len(myresult) >0 )
         execution_command = get_exe_command(myresult[0]["hash_digest"], myresult)
         #print(execution_command)
         #run_my_selected_game_here(execution_command)
         #TODO implement tests
-        self.assertEqual(execution_command,"\"\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\flycast_libretro.dll\" \"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends\\disc.gdi\"\"")
+        self.assertEqual(execution_command,"\"\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\flycast_libretro.dll\" \"C:\\Users\\andyn\\Documents\\checkout\\GalaxyGenericImporterPlugin\\TestDirectory4\\dreamcast0\\mygame\\disc.gdi\"\"")
     
     def test_returned_dir_data(self):
-        systems = ListGames()
+        systems=setup_folders_for_testing(self, "TestDirectory6")
+        insert_file_into_folder (self, systems, "dreamcast0", "disc.gdi","mygame")
+        
         myresults = systems.list_all_recursively("test_user")
         self.assertEquals(True, len(myresults) >0 )
         myresult = myresults[0]
@@ -154,14 +171,14 @@ class UnittestProject(unittest.TestCase):
         self.assertEqual(len(myresult), len(expected_attributes))
         for attribute_expected in expected_attributes:
             self.assertTrue(attribute_expected in myresult)
-        self.assertEqual(myresult["filename"],"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends\\disc.gdi")
+        self.assertEqual(myresult["filename"],"C:\\Users\\andyn\\Documents\\checkout\\GalaxyGenericImporterPlugin\\TestDirectory6\\dreamcast0\\mygame\\disc.gdi")
         self.assertEqual(myresult["filename_short"],"disc.gdi")
         self.assertEqual(myresult["game_filename"],"disc")
-        self.assertEqual(myresult["game_name"],"Gauntlet Legends")
+        self.assertEqual(myresult["game_name"],"mygame")
         self.assertEqual(myresult["name"],"dreamcast")
         self.assertEqual(myresult["tags"],["retroarch","dreamcast"])
-        self.assertEqual(myresult["path"],"F:\\Software\\games\\roms\\Dreamcast\\Gauntlet Legends")
-        self.assertEqual(myresult["hash_digest"],"af6d2857d1f332323ce954ace3ec5200fe013473")
+        self.assertEqual(myresult["path"],"C:\\Users\\andyn\\Documents\\checkout\\GalaxyGenericImporterPlugin\\TestDirectory6\\dreamcast0\\mygame")
+        self.assertEqual(myresult["hash_digest"],"88275f926b2de179ad0c3d2a7c2d9acf255168c2")
             
     #def test_launch(self):
     #    systems = ListGames()
@@ -220,8 +237,9 @@ class UnittestProject(unittest.TestCase):
         self.assertEqual(game_result.license_info,LicenseInfo(LicenseType.SinglePurchase))
         
     def test_insert_file_into_folder_watch(self): 
-        systems=setup_folders_for_testing(self, "TestDirectory2")
         my_dir = "TestDirectory2"
+        systems=setup_folders_for_testing(self, my_dir)
+        
         my_dir_path = os.getcwd() + "\\"+ my_dir
         
         path = "thread"
@@ -290,11 +308,12 @@ def setup_folders_for_testing (self, my_test_dir):
     systems.loaded_systems_configuration=updatedconfigs
     return systems  
 
-def insert_file_into_folder (self,systems,folder,file):
+def insert_file_into_folder (self, systems, folder, file, subfolder):
     for emulated_system in systems.loaded_systems_configuration:
         counter=0
         #logging.warning(emulated_system)
-        for current_path in emulated_system["path_regex"]:
+        for current_path_entry in emulated_system["path_regex"]:
+            current_path = current_path_entry
             #logging.warning("Path")
             #logging.warning(current_path)
             #logging.warning("Name")
@@ -307,6 +326,14 @@ def insert_file_into_folder (self,systems,folder,file):
             #logging.warning(emulated_system["name"]+str(counter))
             if (emulated_system["name"]+str(counter)) == folder:
                 #logging.warning("true")
+                #logging.error(subfolder)
+                if len(subfolder)>0:
+                    current_path=current_path+"\\"+subfolder
+                    if not os.path.exists(current_path):
+                        os.mkdir(current_path)
+                else:
+                    logging.debug(current_path)
+                #logging.error(current_path)
                 with open(current_path+"\\"+file, 'w') as file_pointer:
                     #logging.warning("Writing")
                     #logging.warning(current_path+"\\"+file)
@@ -318,37 +345,37 @@ def insert_file_into_folder (self,systems,folder,file):
 class TestParameterized(unittest.TestCase):
     
     @parameterized.expand([
-        ["dreamcast valid entry", "dreamcast0", "disc.gdi",1],
-        ["dreamcast invalid entry", "dreamcast0", "mygame.gdi",0],
-        ["dreamcast invalid path", "dreamcast2", "disc.gdi",0],
-        ["gba valid entry", "gba0", "mygame.gba",1],
-        ["gbc valid entry", "gbc0", "mygame.gb",1],
-        ["gbc valid entry alternate extension", "gbc0", "mygame.gbc",1],
-        ["gbc valid entry", "gbc1", "mygame.gb",1],
-        ["gbc valid entry alternate extension", "gbc1", "mygame.gbc",1],
-        ["gcn valid entry", "gcn0", "mygame.iso",1],
-        ["genesis valid entry", "genesis0", "mygame.bin",1],
-        ["n64 valid entry", "n640", "mygame.z64",1],
-        ["nds valid entry", "nds0", "mygame.nds",1],
-        ["nes valid entry", "nes0", "mygame.nes",1],
-        ["ps2 valid entry", "ps20", "mygame.iso",1],
-        ["ps2 valid entry", "ps20", "mygame.bin",1],
+        ["dreamcast valid entry", "dreamcast0", "disc.gdi","mygame",1],
+        ["dreamcast invalid entry", "dreamcast0", "mygame.gdi","mygame",0],
+        ["dreamcast invalid path", "dreamcast2", "disc.gdi","mygame",0],
+        ["gba valid entry", "gba0", "mygame.gba","",1],
+        ["gbc valid entry", "gbc0", "mygame.gb","",1],
+        ["gbc valid entry alternate extension", "gbc0", "mygame.gbc","",1],
+        ["gbc valid entry", "gbc1", "mygame.gb","",1],
+        ["gbc valid entry alternate extension", "gbc1", "mygame.gbc","",1],
+        ["gcn valid entry", "gcn0", "mygame.iso","mygame",1],
+        ["genesis valid entry", "genesis0", "mygame.bin","",1],
+        ["n64 valid entry", "n640", "mygame.z64","",1],
+        ["nds valid entry", "nds0", "mygame.nds","",1],
+        ["nes valid entry", "nes0", "mygame.nes","",1],
+        ["ps2 valid entry", "ps20", "mygame.iso","",1],
+        ["ps2 valid entry", "ps20", "mygame.bin","",1],
         #to do PS3 to be added ["ps3 valid entry", "ps30", "eboot.bin",1],
-        ["psp valid entry", "psp0", "mygame.iso",1],
-        ["ps1 valid entry", "ps10", "mygame.iso",1],
-        ["ps1 valid entry", "ps10", "mygame.toc",1],
-        ["snes valid entry", "snes0", "mygame.sfc",1],
-        ["wii valid entry", "wii0", "mygame.iso",1],
-        ["xbox valid entry", "xbox0", "default.xbe",1],
+        ["psp valid entry", "psp0", "mygame.iso","",1],
+        ["ps1 valid entry", "ps10", "mygame.iso","",1],
+        ["ps1 valid entry", "ps10", "mygame.toc","",1],
+        ["snes valid entry", "snes0", "mygame.sfc","",1],
+        ["wii valid entry", "wii0", "mygame.iso","mygame",1],
+        ["xbox valid entry", "xbox0", "default.xbe","mygame",1],
         #to do wiiu to be added ["wiiu valid entry", "wiiu0", "mygame.rpx",1],
-        ["arcade valid entry", "arcade0", "mygame.zip",1],
-        #to do amazon ["amazon ignored entry", "amazon0", "dxwebsetup.exe",0],
-        #to do amazon ["amazon valid entry", "amazon0", "mygame.exe",1],
-        #to do amazon ["amazon ignored entry", "amazon1", "dxwebsetup.exe",0],
-        #to do amazon ["amazon valid entry", "amazon1", "mygame.exe",1],
+        ["arcade valid entry", "arcade0", "mygame.zip","",1],
+        #to do amazon ["amazon ignored entry", "amazon0", "dxwebsetup.exe","mygame"0],
+        #to do amazon ["amazon valid entry", "amazon0", "mygame.exe","mygame",1],
+        #to do amazon ["amazon ignored entry", "amazon1", "dxwebsetup.exe","mygame",0],
+        #to do amazon ["amazon valid entry", "amazon1", "mygame.exe","mygame",1],
     ])
         
-    def test_write_data_in_folders(self, name, folder, file, size):
+    def test_write_data_in_folders(self, name, folder, file, subfolder, size):
         logging.debug(name)
         logging.debug(folder)
         logging.debug(file)
@@ -356,7 +383,7 @@ class TestParameterized(unittest.TestCase):
         
         systems=setup_folders_for_testing(self, "TestDirectory")
         #todo insert function with parameterized files in folders
-        insert_file_into_folder (self, systems, folder, file)
+        insert_file_into_folder (self, systems, folder, file, subfolder)
         data = systems.list_all_recursively("test_user")
         systems.write_to_cache(data)
         self.assertTrue(systems.cache_exists())
