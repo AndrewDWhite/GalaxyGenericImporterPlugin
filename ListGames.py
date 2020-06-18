@@ -153,14 +153,14 @@ class ListGames():
         return self.mylist      
     
     def disable_monitoring(self):
-        logging.warning("disabling monitoring")
+        logging.info("disabling monitoring")
         self.continue_monitoring = False
         
     def enable_monitoring(self):
         self.continue_monitoring = True
     
     def watcher_update(self, path_to_watch):
-        logging.error("Here")
+        logging.info("Here")
         
         change_handle = win32file.FindFirstChangeNotification (
           path_to_watch,
@@ -168,7 +168,7 @@ class ListGames():
           win32con.FILE_NOTIFY_CHANGE_FILE_NAME
         )
         
-        logging.error("starting to monitor")
+        logging.info("starting to monitor")
         try:
             while self.continue_monitoring:
             
@@ -176,23 +176,23 @@ class ListGames():
         
                 if result == win32con.WAIT_OBJECT_0:
                     #something was updated
-                    logging.warning("Update in folder")
+                    logging.info("Update in folder")
                     self.update_list_pending = True
                     win32file.FindNextChangeNotification (change_handle)
 
         finally:
             win32file.FindCloseChangeNotification (change_handle)
             
-        logging.error("done this")
+        logging.info("done this")
 
     def shutdown_folder_listeners(self):
-        logging.warning("shutdown folder listeners")
+        logging.info("shutdown folder listeners")
         self.disable_monitoring()
         for my_thread in self.my_folder_monitor_threads:
             my_thread.join()
     
     def setup_folder_listeners(self):
-        logging.warning("startup folder listeners")
+        logging.info("startup folder listeners")
         for emulated_system in self.loaded_systems_configuration:
             for current_path in emulated_system["path_regex"]:
                 my_thread = threading.Thread(target=self.watcher_update, args=( os.path.expandvars(current_path), ))
