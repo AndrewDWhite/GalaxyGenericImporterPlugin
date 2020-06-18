@@ -24,8 +24,8 @@ if sys.platform == 'win32':
 if SYSTEM == System.WINDOWS:
         def fast_scandir(dirname):
             subfolders= [f.path for f in os.scandir(dirname) if (f.is_dir() and str(f).find('TestDirectory')==-1  )]
-            for dirname in list(subfolders):
-                subfolders.extend(fast_scandir(dirname))
+            #for dirname in list(subfolders):
+            #    subfolders.extend(fast_scandir(dirname))
             return subfolders
         
         my_program_dir = os.path.abspath(os.path.join(os.path.abspath(__file__),'..'))
