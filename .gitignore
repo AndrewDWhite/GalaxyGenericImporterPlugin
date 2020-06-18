@@ -46,4 +46,7 @@ PyWin32.chm
 .gitignore.swp
 escapejson-1.0-py3.7.egg-info/
 TestDirectory*/
+certifi-2020.4.5.2.dist-info/
+escapejson-1.0-py3.7.egg-info/
+escapejson-1.0-py3.7.egg-infohtmlcov/
 
