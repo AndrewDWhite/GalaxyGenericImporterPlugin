@@ -10,6 +10,7 @@ from shutil import rmtree
 
 import threading
 import time
+import hashlib
 
 #local
 from configuration import DefaultConfig
@@ -187,7 +188,10 @@ class UnittestProject(unittest.TestCase):
         self.assertEqual(myresult["name"],"dreamcast")
         self.assertEqual(myresult["tags"],["retroarch","dreamcast"])
         self.assertEqual(myresult["path"],os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory6\\dreamcast0\\mygame")))
-        self.assertEqual(myresult["hash_digest"],"88275f926b2de179ad0c3d2a7c2d9acf255168c2")
+        myhasher = hashlib.sha1()
+        myhasher.update((myresult["filename"]+"test_user").encode('utf-8'))
+        expected_hash= myhasher.hexdigest()
+        self.assertEqual(myresult["hash_digest"],expected_hash)
             
     #def test_launch(self):
     #    systems = ListGames()
