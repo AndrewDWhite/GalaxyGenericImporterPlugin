@@ -160,7 +160,7 @@ class ListGames():
         self.continue_monitoring = True
     
     def watcher_update(self, path_to_watch):
-        logging.info("Here")
+        logging.info("watcher update")
         
         change_handle = win32file.FindFirstChangeNotification (
           path_to_watch,
@@ -169,6 +169,7 @@ class ListGames():
         )
         
         logging.info("starting to monitor")
+        logging.info(path_to_watch)
         try:
             while self.continue_monitoring:
             
@@ -189,6 +190,8 @@ class ListGames():
         logging.info("shutdown folder listeners")
         self.disable_monitoring()
         for my_thread in self.my_folder_monitor_threads:
+            logging.info("shutting down thread")
+            logging.info(my_thread)
             my_thread.join()
     
     def setup_folder_listeners(self):

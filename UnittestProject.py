@@ -147,7 +147,7 @@ class UnittestProject(unittest.TestCase):
         insert_file_into_folder (self, systems, "dreamcast0", "disc.gdi","mygame")
 
         myresult = systems.list_all_recursively("test_user")
-        self.assertEquals(True, len(myresult) >0 )
+        self.assertEqual(True, len(myresult) >0 )
         execution_command = get_exe_command(myresult[0]["hash_digest"], myresult)
         #print(execution_command)
         #run_my_selected_game_here(execution_command)
@@ -159,7 +159,7 @@ class UnittestProject(unittest.TestCase):
         insert_file_into_folder (self, systems, "dreamcast0", "disc.gdi","mygame")
         
         myresults = systems.list_all_recursively("test_user")
-        self.assertEquals(True, len(myresults) >0 )
+        self.assertEqual(True, len(myresults) >0 )
         myresult = myresults[0]
         
         #print(myresult)

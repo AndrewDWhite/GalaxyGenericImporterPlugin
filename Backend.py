@@ -35,6 +35,9 @@ class Backend():
         logging.info("backend started up")
         
 def shutdown_library(self):
+    logging.info("shutdown folder listeners")
+    self.my_game_lister.shutdown_folder_listeners()
+    
     logging.info("Library update in progress?")
     self.backend.library_run= False
     self.my_library_thread.join() 
