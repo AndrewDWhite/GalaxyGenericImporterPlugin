@@ -42,8 +42,6 @@ if SYSTEM == System.WINDOWS:
         my_module, my_module_filename, my_module_description = imp.find_module('win32con', [win32_lib_path+'\\lib'])#\\win32con.py
         win32con = imp.load_module('win32con', my_module, my_module_filename, my_module_description)
 
-        
-
 class ListGames():
     '''
     classdocs
@@ -155,9 +153,6 @@ class ListGames():
     def disable_monitoring(self):
         logging.info("disabling monitoring")
         self.continue_monitoring = False
-        
-    def enable_monitoring(self):
-        self.continue_monitoring = True
     
     def watcher_update(self, path_to_watch):
         logging.info("watcher update")
@@ -178,6 +173,7 @@ class ListGames():
                 if result == win32con.WAIT_OBJECT_0:
                     #something was updated
                     logging.info("Update in folder")
+                    logging.info(path_to_watch)
                     self.update_list_pending = True
                     win32file.FindNextChangeNotification (change_handle)
 
@@ -198,6 +194,8 @@ class ListGames():
         logging.info("startup folder listeners")
         for emulated_system in self.loaded_systems_configuration:
             for current_path in emulated_system["path_regex"]:
+                logging.info("listening to")
+                logging.info(current_path)
                 my_thread = threading.Thread(target=self.watcher_update, args=( os.path.expandvars(current_path), ))
                 self.my_folder_monitor_threads.append(my_thread)
                 my_thread.start()

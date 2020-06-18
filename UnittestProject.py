@@ -154,6 +154,15 @@ class UnittestProject(unittest.TestCase):
         #TODO implement tests
         self.assertEqual(execution_command,"\"\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\flycast_libretro.dll\" \"C:\\Users\\andyn\\Documents\\checkout\\GalaxyGenericImporterPlugin\\TestDirectory4\\dreamcast0\\mygame\\disc.gdi\"\"")
     
+    def test_setup_and_shutdown_folder_listeners(self):
+        systems=setup_folders_for_testing(self, "TestDirectory9")
+        systems.setup_folder_listeners()
+        insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
+        self.assertEqual(41, len(systems.my_folder_monitor_threads) )
+        systems.shutdown_folder_listeners()
+        self.assertEqual(True, systems.update_list_pending)
+        
+    
     def test_returned_dir_data(self):
         systems=setup_folders_for_testing(self, "TestDirectory6")
         insert_file_into_folder (self, systems, "dreamcast0", "disc.gdi","mygame")
