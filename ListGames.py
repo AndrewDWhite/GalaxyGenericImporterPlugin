@@ -23,12 +23,20 @@ if sys.platform == 'win32':
 
 if SYSTEM == System.WINDOWS:
         win32_lib_path = os.path.abspath(os.path.join(os.path.abspath(__file__),'..'))
-        os.environ['PATH'] = win32_lib_path + os.pathsep + os.environ['PATH']
+        def fast_scandir(dirname):
+            subfolders= [f.path for f in os.scandir(dirname) if f.is_dir()]
+            for dirname in list(subfolders):
+                subfolders.extend(fast_scandir(dirname))
+            return subfolders
+        for folder in fast_scandir(win32_lib_path):
+            os.environ['PATH'] = folder + os.pathsep + os.environ['PATH']
+        
         import imp
         win32file = imp.load_dynamic('win32file', win32_lib_path+'\\win32\\win32file.pyd')
         win32event = imp.load_dynamic('win32event', win32_lib_path+'\\win32\\win32event.pyd')
         my_module, my_module_filename, my_module_description = imp.find_module('win32con', [win32_lib_path+'\\win32\\lib'])#\\win32con.py
         win32con = imp.load_module('win32con', my_module, my_module_filename, my_module_description)
+        
 
 class ListGames():
     '''
