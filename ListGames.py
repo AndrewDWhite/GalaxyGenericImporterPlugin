@@ -10,6 +10,25 @@ import logging
 import re
 import hashlib
 import pickle
+import threading
+import sys
+
+from enum import EnumMeta
+
+class System(EnumMeta):
+    WINDOWS = 1
+
+if sys.platform == 'win32':
+    SYSTEM = System.WINDOWS
+
+if SYSTEM == System.WINDOWS:
+        win32_lib_path = os.path.abspath(os.path.join(os.path.abspath(__file__),'..'))
+        os.environ['PATH'] = win32_lib_path + os.pathsep + os.environ['PATH']
+        import imp
+        win32file = imp.load_dynamic('win32file', win32_lib_path+'\\win32\\win32file.pyd')
+        win32event = imp.load_dynamic('win32event', win32_lib_path+'\\win32\\win32event.pyd')
+        my_module, my_module_filename, my_module_description = imp.find_module('win32con', [win32_lib_path+'\\win32\\lib'])#\\win32con.py
+        win32con = imp.load_module('win32con', my_module, my_module_filename, my_module_description)
 
 class ListGames():
     '''
@@ -29,6 +48,9 @@ class ListGames():
         self.loaded_systems_configuration=parsed_json["systems"]
         logging.info("loading emulators configuration completed")
         logging.info(len(self.loaded_systems_configuration))
+        self.continue_monitoring = True
+        self.my_folder_monitor_threads = []
+        self.update_list_pending = False
     
     def write_to_cache(self, data):
         self.write_to_cache_file(data, self.cache_filepath)
@@ -115,3 +137,51 @@ class ListGames():
                             logging.info("skipping / dropping")
                             logging.info(my_user_warning)
         return self.mylist      
+    
+    def disable_monitoring(self):
+        logging.warning("disabling monitoring")
+        self.continue_monitoring = False
+        
+    def enable_monitoring(self):
+        self.continue_monitoring = True
+    
+    def watcher_update(self, path_to_watch):
+        logging.error("Here")
+        
+        change_handle = win32file.FindFirstChangeNotification (
+          path_to_watch,
+          0,
+          win32con.FILE_NOTIFY_CHANGE_FILE_NAME
+        )
+        
+        logging.error("starting to monitor")
+        try:
+            while self.continue_monitoring:
+            
+                result = win32event.WaitForSingleObject (change_handle, 500)
+        
+                if result == win32con.WAIT_OBJECT_0:
+                    #something was updated
+                    logging.warning("Update in folder")
+                    self.update_list_pending = True
+                    win32file.FindNextChangeNotification (change_handle)
+
+        finally:
+            win32file.FindCloseChangeNotification (change_handle)
+            
+        logging.error("done this")
+
+    def shutdown_folder_listeners(self):
+        logging.warning("shutdown folder listeners")
+        self.disable_monitoring()
+        for my_thread in self.my_folder_monitor_threads:
+            my_thread.join()
+    
+    def setup_folder_listeners(self):
+        logging.warning("startup folder listeners")
+        for emulated_system in self.loaded_systems_configuration:
+            for current_path in emulated_system["path_regex"]:
+                my_thread = threading.Thread(target=self.watcher_update, args=( os.path.expandvars(current_path), ))
+                self.my_folder_monitor_threads.append(my_thread)
+                my_thread.start()
+                

@@ -31,6 +31,7 @@ class Backend():
         self.my_queue_update_local_game_status = queue.Queue()
         self.my_queue_add_game = queue.Queue()
         self.my_queue_update_game_time = queue.Queue()
+        self.not_updating = True
         logging.info("backend started up")
         
 def shutdown_library(self):
@@ -146,13 +147,18 @@ def update_local_games(self, username, my_game_lister):
             #logging.info(time_delta_minutes)
             #logging.info("not run?")
             #logging.info(not_run)
-            if time_delta_minutes>1 or not_run:
+            if not_run or (my_game_lister.update_list_pending and self.not_updating and time_delta_minutes>1):
+                self.not_updating = False
+                my_game_lister.update_list_pending = False
+                if not_run:
+                    my_game_lister.setup_folder_listeners(self)
                 not_run = False
                 self.backend.last_update = datetime.now()
                 logging.info("get local updates")
                 new_local_games_list = my_game_lister.list_all_recursively(username)
                 logging.info("Got new List")
                 prepare_to_send_my_updates(self, new_local_games_list, self.backend.local_game_cache)
+                self.not_updating = True
                 
         logging.info("sleepy")
         time.sleep(10)

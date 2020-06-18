@@ -8,6 +8,9 @@ import asyncio
 import os
 from shutil import rmtree
 
+import threading
+import time
+
 #local
 from configuration import DefaultConfig
 from ListGames import ListGames
@@ -52,7 +55,7 @@ class UnittestProject(unittest.TestCase):
         self.assertEqual([], systems.read_from_cache())
     
     def test_write_no_data_in_folders(self):
-        systems=setup_folders_for_testing(self)
+        systems=setup_folders_for_testing(self, "TestDirectory")
         data = systems.list_all_recursively("test_user")
         systems.write_to_cache(data)
         self.assertTrue(systems.cache_exists())
@@ -212,9 +215,55 @@ class UnittestProject(unittest.TestCase):
         self.assertEqual(game_result.game_title,"Game_Name")
         self.assertEqual(game_result.dlcs,None)
         self.assertEqual(game_result.license_info,LicenseInfo(LicenseType.SinglePurchase))
+        
+    def test_insert_file_into_folder_watch(self): 
+        systems=setup_folders_for_testing(self, "TestDirectory2")
+        my_dir = "TestDirectory2"
+        my_dir_path = os.getcwd() + "\\"+ my_dir
+        
+        path = "thread"
+        my_full_path = my_dir_path +"\\"+path
+        file = "disc.gdi"
+        if os.path.exists(my_full_path):
+            rmtree(my_full_path)
+        os.mkdir(my_full_path)
+        
+        my_thread = threading.Thread(target=systems.watcher_update, args=( my_full_path, ))
+        my_thread.start()
+        time.sleep(2)
+        #new file
+        with open(my_full_path+"\\"+file, 'w') as file_pointer:
+                    #logging.warning("Writing")
+                    #logging.warning(current_path+"\\"+file)
+                    pass
+        time.sleep(1)
+        #no change
+        with open(my_full_path+"\\"+file, 'w') as file_pointer:
+                    #logging.warning("Writing")
+                    #logging.warning(current_path+"\\"+file)
+                    pass
+        time.sleep(1)
+        #second new file
+        with open(my_full_path+"\\"+file+"2", 'w') as file_pointer:
+                    #logging.warning("Writing")
+                    #logging.warning(current_path+"\\"+file)
+                    pass
+        time.sleep(4)
+        
+        systems.disable_monitoring()
+        #new file after monitoring stopped
+        #time.sleep(1)
+        #with open(my_full_path+"\\"+file+"3", 'w') as file_pointer:
+                    #logging.warning("Writing")
+                    #logging.warning(current_path+"\\"+file)
+        #            pass
+        time.sleep(1)
+        my_thread.join()
+        #todo add testing
+        self.assertEqual(True, systems.update_list_pending)
 
-def setup_folders_for_testing (self):
-    mypath = os.getcwd() + "\\TestDirectory"
+def setup_folders_for_testing (self, my_test_dir):
+    mypath = os.getcwd() + "\\" + my_test_dir
     logging.debug(mypath)
     if os.path.exists(mypath):
         rmtree(mypath)
@@ -261,7 +310,7 @@ def insert_file_into_folder (self,systems,folder,file):
                     pass
                 break
             counter=counter+1
-
+    
 
 class TestParameterized(unittest.TestCase):
     
@@ -302,7 +351,7 @@ class TestParameterized(unittest.TestCase):
         logging.debug(file)
         logging.debug(size)
         
-        systems=setup_folders_for_testing(self)
+        systems=setup_folders_for_testing(self, "TestDirectory")
         #todo insert function with parameterized files in folders
         insert_file_into_folder (self, systems, folder, file)
         data = systems.list_all_recursively("test_user")
