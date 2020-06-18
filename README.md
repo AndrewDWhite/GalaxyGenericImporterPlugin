@@ -146,7 +146,7 @@ This will by default populate any exe files found in the root folder of each gam
 #### emulator
     C:\Program Files (x86)\DOSBox-0.74-3\DOSBox.exe
 #### roms
-    %USERPROFILE%\\Documents\\Games\\DOS
+    %USERPROFILE%\Documents\Games\DOS
     F:\Software\games\dos
 
 
