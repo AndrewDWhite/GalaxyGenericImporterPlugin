@@ -161,6 +161,15 @@
             "game_name_regex" : ".*[:][\\\\]Amazon[ ]Games[\\\\]Library[\\\\](?!(_{2,2}))([^\\\\]+?)(?!(_{2,2}))[\\\\]((?!dxwebsetup)(?!vcredist2010_x64)(?!vcredist_x86)[^\\\\]+?)[.](exe)",
             "game_name_regex_group" : 2,
             "filename_regex" : ["*[.]exe"]
+        },
+        {
+            "name" : "dos",
+            "execution" : "\"C:\\Program Files (x86)\\DOSBox-0.74-3\\DOSBox.exe\" \"%ROM_RAW%\" -exit -fullscreen",
+            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\DOS","F:\\Software\\games\\dos"],
+            "tags" : ["dosbox"],
+            "game_name_regex" : ".*[\\\\](.+)[\\\\].*",
+            "game_name_regex_group" : 1,
+            "filename_regex" : ["*[.]exe","*[.]bat"]
         }
     ]
 

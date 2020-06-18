@@ -35,7 +35,7 @@ class UnittestProject(unittest.TestCase):
     def test_emulators(self):
         systems = ListGames()
         #tests if it loaded the default number of emulators
-        self.assertEqual(len(systems.loaded_systems_configuration),18)
+        self.assertEqual(len(systems.loaded_systems_configuration),19)
     
     def test_speed(self):
         systems = ListGames()
@@ -67,7 +67,7 @@ class UnittestProject(unittest.TestCase):
         #print(myresult)
         #print(len(myresult))
         #TODO implement tests
-        self.assertEqual(194,len(myresult))
+        self.assertEqual(270,len(myresult))
         
     def test_comp(self):
         systems = ListGames()
@@ -83,7 +83,7 @@ class UnittestProject(unittest.TestCase):
         #print (len(myresult["new"].keys() - myresult["old"].keys()))
         self.assertEqual(len(myresult["old"].keys() - myresult["new"].keys()),0)
         #All Added
-        self.assertEqual(len(myresult["new"].keys() - myresult["old"].keys()),194)
+        self.assertEqual(len(myresult["new"].keys() - myresult["old"].keys()),270)
         #print(myresult)
     
     def test_time_delta_calc_minutes(self):
@@ -120,7 +120,7 @@ class UnittestProject(unittest.TestCase):
         #All Removed
         #print (len(myresult["old"].keys() - myresult["new"].keys()))
         #print (len(myresult["new"].keys() - myresult["old"].keys()))
-        self.assertEqual(len(myresult["old"].keys() - myresult["new"].keys()),194)
+        self.assertEqual(len(myresult["old"].keys() - myresult["new"].keys()),270)
         #None Added
         self.assertEqual(len(myresult["new"].keys() - myresult["old"].keys()),0)
 
@@ -215,6 +215,7 @@ class UnittestProject(unittest.TestCase):
 
 def setup_folders_for_testing (self):
     mypath = os.getcwd() + "\\TestDirectory"
+    logging.debug(mypath)
     if os.path.exists(mypath):
         rmtree(mypath)
     os.mkdir(mypath)
@@ -228,6 +229,7 @@ def setup_folders_for_testing (self):
         counter=0
         for current_path in emulated_system["path_regex"]:
             new_path=mypath+"\\"+emulated_system["name"]+str(counter)
+            logging.debug(new_path)
             if not os.path.exists(new_path):
                 os.mkdir(new_path)
             updated_emulated_system["path_regex"].append(new_path)
@@ -266,7 +268,7 @@ class TestParameterized(unittest.TestCase):
     @parameterized.expand([
         ["dreamcast valid entry", "dreamcast0", "disc.gdi",1],
         ["dreamcast invalid entry", "dreamcast0", "mygame.gdi",0],
-        ["dreamcast invalid path", "dreamcast1", "disc.gdi",0],
+        ["dreamcast invalid path", "dreamcast2", "disc.gdi",0],
         ["gba valid entry", "gba0", "mygame.gba",1],
         ["gbc valid entry", "gbc0", "mygame.gb",1],
         ["gbc valid entry alternate extension", "gbc0", "mygame.gbc",1],
@@ -292,17 +294,23 @@ class TestParameterized(unittest.TestCase):
         #to do amazon ["amazon valid entry", "amazon0", "mygame.exe",1],
         #to do amazon ["amazon ignored entry", "amazon1", "dxwebsetup.exe",0],
         #to do amazon ["amazon valid entry", "amazon1", "mygame.exe",1],
-    ])    
+    ])
+        
     def test_write_data_in_folders(self, name, folder, file, size):
+        logging.debug(name)
+        logging.debug(folder)
+        logging.debug(file)
+        logging.debug(size)
+        
         systems=setup_folders_for_testing(self)
         #todo insert function with parameterized files in folders
-        insert_file_into_folder (self,systems,folder,file)
+        insert_file_into_folder (self, systems, folder, file)
         data = systems.list_all_recursively("test_user")
         systems.write_to_cache(data)
         self.assertTrue(systems.cache_exists())
         data_read = systems.read_from_cache()
         systems.delete_cache()
-        self.assertEqual(size,len(data_read ))
+        self.assertEqual(size, len(data_read ))
         self.assertEqual(data_read, data)
 
  

@@ -142,6 +142,13 @@ This will end up being something like `C:\Users\andyn\AppData\Downloads\mame0220
     G:\Amazon Games\Library
     C:\Amazon Games\Library
 This will by default populate any exe files found in the root folder of each game.
+### Dos
+#### emulator
+    C:\Program Files (x86)\DOSBox-0.74-3\DOSBox.exe
+#### roms
+    %USERPROFILE%\\Documents\\Games\\DOS
+    F:\Software\games\dos
+
 
 ## Configuration
 Configuration for execution, selection and location of files is located in the `emulators.json` file. See the included for an example and used by default if not changed. You will need to change this. Any platform you do not need can be safetly removed.
@@ -188,7 +195,7 @@ Galaxy plugin specific dependencies:
 
 Use pip to install the dependencies to your local development copy (windows example below)
 
-     py -m pip install  -r requirements.txt --target .
+     py -3.7-32 -m pip install  -r requirements.txt --target .
 
 Run coverage tests
 
