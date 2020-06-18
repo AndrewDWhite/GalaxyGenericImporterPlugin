@@ -152,7 +152,7 @@ class UnittestProject(unittest.TestCase):
         #print(execution_command)
         #run_my_selected_game_here(execution_command)
         #TODO implement tests
-        self.assertEqual(execution_command,"\"\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\flycast_libretro.dll\" \"C:\\Users\\andyn\\Documents\\checkout\\GalaxyGenericImporterPlugin\\TestDirectory4\\dreamcast0\\mygame\\disc.gdi\"\"")
+        self.assertEqual(execution_command,"\"\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\flycast_libretro.dll\" \"" + os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory4\\dreamcast0\\mygame\\disc.gdi")) + "\"\"")
     
     def test_setup_and_shutdown_folder_listeners(self):
         systems=setup_folders_for_testing(self, "TestDirectory9")
@@ -180,13 +180,13 @@ class UnittestProject(unittest.TestCase):
         self.assertEqual(len(myresult), len(expected_attributes))
         for attribute_expected in expected_attributes:
             self.assertTrue(attribute_expected in myresult)
-        self.assertEqual(myresult["filename"],"C:\\Users\\andyn\\Documents\\checkout\\GalaxyGenericImporterPlugin\\TestDirectory6\\dreamcast0\\mygame\\disc.gdi")
+        self.assertEqual(myresult["filename"],os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory6\\dreamcast0\\mygame\\disc.gdi")))
         self.assertEqual(myresult["filename_short"],"disc.gdi")
         self.assertEqual(myresult["game_filename"],"disc")
         self.assertEqual(myresult["game_name"],"mygame")
         self.assertEqual(myresult["name"],"dreamcast")
         self.assertEqual(myresult["tags"],["retroarch","dreamcast"])
-        self.assertEqual(myresult["path"],"C:\\Users\\andyn\\Documents\\checkout\\GalaxyGenericImporterPlugin\\TestDirectory6\\dreamcast0\\mygame")
+        self.assertEqual(myresult["path"],os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory6\\dreamcast0\\mygame")))
         self.assertEqual(myresult["hash_digest"],"88275f926b2de179ad0c3d2a7c2d9acf255168c2")
             
     #def test_launch(self):
