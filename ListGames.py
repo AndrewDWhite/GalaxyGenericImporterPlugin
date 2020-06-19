@@ -10,6 +10,37 @@ import logging
 import re
 import hashlib
 import pickle
+import threading
+import sys
+
+from enum import EnumMeta
+
+class System(EnumMeta):
+    WINDOWS = 1
+
+if sys.platform == 'win32':
+    SYSTEM = System.WINDOWS
+
+if SYSTEM == System.WINDOWS:
+        def fast_scandir(dirname):
+            subfolders= [f.path for f in os.scandir(dirname) if (f.is_dir() and str(f).find('TestDirectory')==-1  )]
+            #for dirname in list(subfolders):
+            #    subfolders.extend(fast_scandir(dirname))
+            return subfolders
+        
+        my_program_dir = os.path.abspath(os.path.join(os.path.abspath(__file__),'..'))
+        for folder in fast_scandir(my_program_dir):
+            os.environ['PATH'] = folder + os.pathsep + os.environ['PATH']
+        
+        os.environ['PATH'] = my_program_dir + os.pathsep + os.environ['PATH']
+        
+        win32_lib_path = os.path.abspath(os.path.join(my_program_dir,"win32"))
+        
+        import imp
+        win32file = imp.load_dynamic('win32file', win32_lib_path+'\\win32file.pyd')
+        win32event = imp.load_dynamic('win32event', win32_lib_path+'\\win32event.pyd')
+        my_module, my_module_filename, my_module_description = imp.find_module('win32con', [win32_lib_path+'\\lib'])#\\win32con.py
+        win32con = imp.load_module('win32con', my_module, my_module_filename, my_module_description)
 
 class ListGames():
     '''
@@ -29,6 +60,8 @@ class ListGames():
         self.loaded_systems_configuration=parsed_json["systems"]
         logging.info("loading emulators configuration completed")
         logging.info(len(self.loaded_systems_configuration))
+        self.continue_monitoring = True
+        self.my_folder_monitor_threads = []
     
     def write_to_cache(self, data):
         self.write_to_cache_file(data, self.cache_filepath)
@@ -115,3 +148,55 @@ class ListGames():
                             logging.info("skipping / dropping")
                             logging.info(my_user_warning)
         return self.mylist      
+    
+    def disable_monitoring(self):
+        logging.info("disabling monitoring")
+        self.continue_monitoring = False
+    
+    def watcher_update(self, path_to_watch, my_queue_folder_awaiting_scan):
+        logging.info("watcher update")
+        
+        change_handle = win32file.FindFirstChangeNotification (
+          path_to_watch,
+          True, #watch tree
+          win32con.FILE_NOTIFY_CHANGE_FILE_NAME | win32con.FILE_NOTIFY_CHANGE_LAST_WRITE | win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES | win32con.FILE_NOTIFY_CHANGE_DIR_NAME | win32con.FILE_NOTIFY_CHANGE_SIZE | win32con.FILE_NOTIFY_CHANGE_SECURITY 
+        )
+        
+        logging.info("starting to monitor")
+        logging.info(path_to_watch)
+        try:
+            while self.continue_monitoring:
+                logging.info("still monitoring")
+                logging.info(path_to_watch)
+                result = win32event.WaitForSingleObject (change_handle, 500)
+        
+                if result == win32con.WAIT_OBJECT_0:
+                    #something was updated
+                    logging.info("Update in folder")
+                    logging.info(path_to_watch)
+                    my_queue_folder_awaiting_scan.put(path_to_watch)
+                    win32file.FindNextChangeNotification (change_handle)
+
+        finally:
+            win32file.FindCloseChangeNotification (change_handle)
+            
+        logging.info("done this")
+
+    def shutdown_folder_listeners(self):
+        logging.info("shutdown folder listeners")
+        self.disable_monitoring()
+        for my_thread in self.my_folder_monitor_threads:
+            logging.info("shutting down thread")
+            logging.info(my_thread)
+            my_thread.join()
+    
+    def setup_folder_listeners(self, my_queue_folder_awaiting_scan):
+        logging.info("startup folder listeners")
+        for emulated_system in self.loaded_systems_configuration:
+            for current_path in emulated_system["path_regex"]:
+                logging.info("listening to")
+                logging.info(current_path)
+                my_thread = threading.Thread(target=self.watcher_update, args=( os.path.expandvars(current_path), my_queue_folder_awaiting_scan, ))
+                self.my_folder_monitor_threads.append(my_thread)
+                my_thread.start()
+                

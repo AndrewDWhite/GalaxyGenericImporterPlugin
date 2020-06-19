@@ -31,9 +31,14 @@ class Backend():
         self.my_queue_update_local_game_status = queue.Queue()
         self.my_queue_add_game = queue.Queue()
         self.my_queue_update_game_time = queue.Queue()
+        self.my_queue_folder_awaiting_scan = queue.Queue()
+        self.not_updating_list_scan = True
         logging.info("backend started up")
         
 def shutdown_library(self):
+    logging.info("shutdown folder listeners")
+    self.backend.my_game_lister.shutdown_folder_listeners()
+    
     logging.info("Library update in progress?")
     self.backend.library_run= False
     self.my_library_thread.join() 
@@ -139,20 +144,40 @@ def update_local_games(self, username, my_game_lister):
     logging.info("update_local_games")
     logging.info(self.backend.library_run)
     while(self.backend.library_run):
+        logging.info("checking for back end library ready")
+        logging.info(self.backend.my_authenticated and self.backend.my_imported_owned and self.backend.my_imported_local)
         if self.backend.my_authenticated and self.backend.my_imported_owned and self.backend.my_imported_local:
             #delta is calculated to ensure that we only run expensive operation no more than once a minute
             time_delta_minutes = time_delta_calc_minutes(self.backend.last_update)
-            #logging.info("delta")
-            #logging.info(time_delta_minutes)
-            #logging.info("not run?")
-            #logging.info(not_run)
-            if time_delta_minutes>1 or not_run:
+            logging.info("delta")
+            logging.info(time_delta_minutes)
+            logging.info("not run?")
+            logging.info(not_run)
+            #TODO could be more specific about rescans
+            logging.info("update list not pending?")
+            logging.info(self.backend.my_queue_folder_awaiting_scan.empty())
+            logging.info("I am not updating?")
+            logging.info(self.backend.not_updating_list_scan)
+            logging.info("lets go in here?")
+            logging.info(not_run)
+            logging.info(not self.backend.my_queue_folder_awaiting_scan.empty() and self.backend.not_updating_list_scan and time_delta_minutes>1)
+            logging.info(not_run or (not self.backend.my_queue_folder_awaiting_scan.empty() and self.backend.not_updating_list_scan and time_delta_minutes>1))
+            if (not_run or (not self.backend.my_queue_folder_awaiting_scan.empty() and self.backend.not_updating_list_scan and time_delta_minutes>1)):
+                logging.info("Starting a full scan")
+                self.backend.not_updating_list_scan = False
+                while not self.backend.my_queue_folder_awaiting_scan.empty(): 
+                    #TODO can limit to these
+                    logging.info(self.backend.my_queue_folder_awaiting_scan.get())
+                if not_run:
+                    logging.info("setting up folder listeners")
+                    my_game_lister.setup_folder_listeners(self.backend.my_queue_folder_awaiting_scan)
                 not_run = False
                 self.backend.last_update = datetime.now()
                 logging.info("get local updates")
                 new_local_games_list = my_game_lister.list_all_recursively(username)
                 logging.info("Got new List")
                 prepare_to_send_my_updates(self, new_local_games_list, self.backend.local_game_cache)
+                self.backend.not_updating_list_scan = True
                 
         logging.info("sleepy")
         time.sleep(10)
