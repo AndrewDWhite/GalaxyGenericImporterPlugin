@@ -16,8 +16,7 @@ import hashlib
 from configuration import DefaultConfig
 from ListGames import ListGames
 from generic import GenericEmulatorPlugin, get_exe_command, run_my_selected_game_here
-from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games,\
-    create_game
+from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games, create_game, shutdown_library
 
 from datetime import datetime
 
@@ -295,6 +294,17 @@ class UnittestProject(unittest.TestCase):
         my_thread.join()
         #todo add testing
         self.assertEqual(True, systems.update_list_pending)
+        
+    def test_start_and_stop_library(self):
+        configuration = DefaultConfig()
+        self.backend = Backend(configuration)
+        self.my_library_thread = threading.Thread(target=update_local_games, args=(self, "test_user", self.backend.my_game_lister,))
+        logging.error("starting")
+        self.my_library_thread.start()
+        shutdown_library(self)
+        del self.backend 
+        #TODO implements tests
+        
 
 def setup_folders_for_testing (self, my_test_dir):
     mypath = os.getcwd() + "\\" + my_test_dir
