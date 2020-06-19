@@ -159,14 +159,15 @@ class ListGames():
         change_handle = win32file.FindFirstChangeNotification (
           path_to_watch,
           True, #watch tree
-          win32con.FILE_NOTIFY_CHANGE_FILE_NAME
+          win32con.FILE_NOTIFY_CHANGE_FILE_NAME | win32con.FILE_NOTIFY_CHANGE_LAST_WRITE | win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES | win32con.FILE_NOTIFY_CHANGE_DIR_NAME | win32con.FILE_NOTIFY_CHANGE_SIZE | win32con.FILE_NOTIFY_CHANGE_SECURITY 
         )
         
         logging.info("starting to monitor")
         logging.info(path_to_watch)
         try:
             while self.continue_monitoring:
-            
+                logging.info("still monitoring")
+                logging.info(path_to_watch)
                 result = win32event.WaitForSingleObject (change_handle, 500)
         
                 if result == win32con.WAIT_OBJECT_0:
