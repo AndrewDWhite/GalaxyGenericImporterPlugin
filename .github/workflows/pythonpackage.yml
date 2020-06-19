@@ -13,7 +13,6 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7]
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python 3.7
@@ -26,7 +25,6 @@ jobs:
     # You can test your matrix by printing the current Python version
     - name: Display Python version
       run: python -c "import sys; print(sys.version)"
-
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
@@ -45,8 +43,8 @@ jobs:
     #    # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
     #    flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test and create code coverage
-      run: |
-        coverage.bat
+      shell: cmd
+      run: coverage.bat
     - name: Zip Release
       uses: TheDoctor0/zip-release@v0.3.0
       with:
