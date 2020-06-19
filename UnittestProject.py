@@ -294,6 +294,7 @@ class UnittestProject(unittest.TestCase):
         self.assertEqual(True, self.my_library_thread.is_alive())
         self.assertEqual(True, self.backend.library_run)
         shutdown_library(self)
+        self.assertEqual(False, self.my_library_thread.is_alive())
         del self.backend 
         #TODO implements tests
         
