@@ -31,6 +31,7 @@ class Backend():
         self.my_queue_update_local_game_status = queue.Queue()
         self.my_queue_add_game = queue.Queue()
         self.my_queue_update_game_time = queue.Queue()
+        self.my_queue_folder_awaiting_scan = queue.Queue()
         self.not_updating_list_scan = True
         logging.info("backend started up")
         
@@ -153,21 +154,23 @@ def update_local_games(self, username, my_game_lister):
             logging.info("not run?")
             logging.info(not_run)
             #TODO could be more specific about rescans
-            logging.info("update list pending?")
-            logging.info(my_game_lister.update_list_pending)
+            logging.info("update list not pending?")
+            logging.info(self.backend.my_queue_folder_awaiting_scan.empty())
             logging.info("I am not updating?")
             logging.info(self.backend.not_updating_list_scan)
             logging.info("lets go in here?")
             logging.info(not_run)
-            logging.info(my_game_lister.update_list_pending and self.backend.not_updating_list_scan and time_delta_minutes>1)
-            logging.info(not_run or (my_game_lister.update_list_pending and self.backend.not_updating_list_scan and time_delta_minutes>1))
-            if (not_run or (my_game_lister.update_list_pending and self.backend.not_updating_list_scan and time_delta_minutes>1)):
+            logging.info(not self.backend.my_queue_folder_awaiting_scan.empty() and self.backend.not_updating_list_scan and time_delta_minutes>1)
+            logging.info(not_run or (not self.backend.my_queue_folder_awaiting_scan.empty() and self.backend.not_updating_list_scan and time_delta_minutes>1))
+            if (not_run or (not self.backend.my_queue_folder_awaiting_scan.empty() and self.backend.not_updating_list_scan and time_delta_minutes>1)):
                 logging.info("Starting a full scan")
                 self.backend.not_updating_list_scan = False
-                my_game_lister.update_list_pending = False
+                while not self.backend.my_queue_folder_awaiting_scan.empty(): 
+                    #TODO can limit to these
+                    logging.info(self.backend.my_queue_folder_awaiting_scan.get())
                 if not_run:
                     logging.info("setting up folder listeners")
-                    my_game_lister.setup_folder_listeners()
+                    my_game_lister.setup_folder_listeners(self.backend.my_queue_folder_awaiting_scan)
                 not_run = False
                 self.backend.last_update = datetime.now()
                 logging.info("get local updates")

@@ -11,6 +11,7 @@ from shutil import rmtree
 import threading
 import time
 import hashlib
+import queue
 
 #local
 from configuration import DefaultConfig
@@ -151,11 +152,15 @@ class UnittestProject(unittest.TestCase):
     
     def test_setup_and_shutdown_folder_listeners(self):
         systems=setup_folders_for_testing(self, "TestDirectory9")
-        systems.setup_folder_listeners()
+        my_queue_folder_awaiting_scan = queue.Queue()
+        systems.setup_folder_listeners(my_queue_folder_awaiting_scan)
         insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
+        insert_file_into_folder (self, systems, "dos0", "mygame.exe","mygame")
         self.assertEqual(41, len(systems.my_folder_monitor_threads) )
         systems.shutdown_folder_listeners()
-        self.assertEqual(True, systems.update_list_pending)
+        self.assertEqual(False, my_queue_folder_awaiting_scan.empty())
+        self.assertEqual(os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory9\\gbc0")),my_queue_folder_awaiting_scan.get())
+        self.assertEqual(os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory9\\dos0")),my_queue_folder_awaiting_scan.get())
         
     
     def test_returned_dir_data(self):
@@ -253,8 +258,8 @@ class UnittestProject(unittest.TestCase):
         if os.path.exists(my_full_path):
             rmtree(my_full_path)
         os.mkdir(my_full_path)
-        
-        my_thread = threading.Thread(target=systems.watcher_update, args=( my_full_path, ))
+        my_queue_folder_awaiting_scan = queue.Queue()
+        my_thread = threading.Thread(target=systems.watcher_update, args=( my_full_path, my_queue_folder_awaiting_scan, ))
         my_thread.start()
         time.sleep(2)
         #new file
@@ -283,7 +288,7 @@ class UnittestProject(unittest.TestCase):
         time.sleep(1)
         my_thread.join()
         #todo add testing
-        self.assertEqual(True, systems.update_list_pending)
+        self.assertEqual(False, my_queue_folder_awaiting_scan.empty())
         
     def test_start_and_stop_library(self):
         configuration = DefaultConfig()

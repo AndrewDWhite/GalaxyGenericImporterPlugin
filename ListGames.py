@@ -62,7 +62,6 @@ class ListGames():
         logging.info(len(self.loaded_systems_configuration))
         self.continue_monitoring = True
         self.my_folder_monitor_threads = []
-        self.update_list_pending = False
     
     def write_to_cache(self, data):
         self.write_to_cache_file(data, self.cache_filepath)
@@ -154,12 +153,12 @@ class ListGames():
         logging.info("disabling monitoring")
         self.continue_monitoring = False
     
-    def watcher_update(self, path_to_watch):
+    def watcher_update(self, path_to_watch, my_queue_folder_awaiting_scan):
         logging.info("watcher update")
         
         change_handle = win32file.FindFirstChangeNotification (
           path_to_watch,
-          0,
+          True, #watch tree
           win32con.FILE_NOTIFY_CHANGE_FILE_NAME
         )
         
@@ -174,7 +173,7 @@ class ListGames():
                     #something was updated
                     logging.info("Update in folder")
                     logging.info(path_to_watch)
-                    self.update_list_pending = True
+                    my_queue_folder_awaiting_scan.put(path_to_watch)
                     win32file.FindNextChangeNotification (change_handle)
 
         finally:
@@ -190,13 +189,13 @@ class ListGames():
             logging.info(my_thread)
             my_thread.join()
     
-    def setup_folder_listeners(self):
+    def setup_folder_listeners(self, my_queue_folder_awaiting_scan):
         logging.info("startup folder listeners")
         for emulated_system in self.loaded_systems_configuration:
             for current_path in emulated_system["path_regex"]:
                 logging.info("listening to")
                 logging.info(current_path)
-                my_thread = threading.Thread(target=self.watcher_update, args=( os.path.expandvars(current_path), ))
+                my_thread = threading.Thread(target=self.watcher_update, args=( os.path.expandvars(current_path), my_queue_folder_awaiting_scan, ))
                 self.my_folder_monitor_threads.append(my_thread)
                 my_thread.start()
                 
