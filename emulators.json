@@ -170,6 +170,15 @@
             "game_name_regex" : ".*[\\\\](.+)[\\\\].*",
             "game_name_regex_group" : 1,
             "filename_regex" : ["*[.]exe","*[.]bat"]
+        },
+		{
+            "name" : "mods",
+            "execution" : "\"%ROM_RAW%\"",
+            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\mods"],
+            "tags" : ["windows"],
+            "game_name_regex" : ".*[\\\\](.+)[.].*",
+            "game_name_regex_group" : 1,
+            "filename_regex" : ["*[.]lnk","*[.]bat"]
         }
     ]
 
