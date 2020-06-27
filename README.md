@@ -152,7 +152,7 @@ This will by default populate any exe files found in the root folder of each gam
     F:\Software\games\dos
 ### mods
 
-#### roms
+#### programs
     %USERPROFILE%\Documents\Games\mods
 This will by default populate batch and link files into galaxy for directly launching programs such as mods.
 
