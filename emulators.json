@@ -171,7 +171,7 @@
             "game_name_regex_group" : 1,
             "filename_regex" : ["*[.]exe","*[.]bat"]
         },
-		{
+	{
             "name" : "mods",
             "execution" : "\"%ROM_RAW%\"",
             "path_regex" : ["%USERPROFILE%\\Documents\\Games\\mods"],
