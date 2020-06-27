@@ -165,7 +165,7 @@ The different platforms names are saved as tags, so you will want to manually im
 ### execution
 The escaped execution command to send to the operating system. Allows for expansion of the following variables.
 #### %ROM_RAW%
-The full filename of the software. Note that if this used without any leading executable, this can be used as the executable; see the mods section for an example.
+The full filename of the software. Note that if this used without any leading executable, this can be used as the executable; see the mods section of the emulators.json file for an example.
 #### %ROM_NAME%
 The filename without the path and extension.
 #### %ROM_DIR%
