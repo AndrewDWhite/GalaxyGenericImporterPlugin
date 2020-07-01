@@ -141,6 +141,7 @@ class ListGames():
                     found_games=glob.glob(os.path.join(os.path.expandvars(current_path), '**',extension),recursive=True)
                     
                     for my_game in found_games:
+                        logging.debug(my_game)
                         try:
                             new_entry = self.setup_entry(emulated_system, my_game, salt, matcher, tags)                        
                             self.mylist.append(new_entry)
