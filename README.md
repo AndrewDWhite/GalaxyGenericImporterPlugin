@@ -155,6 +155,12 @@ This will by default populate any exe files found in the root folder of each gam
 #### programs
     %USERPROFILE%\Documents\Games\mods
 This will by default populate batch and link files into galaxy for directly launching programs such as mods.
+### Xbox 360
+#### emulator
+    %USERPROFILE%\Downloads\xenia_master\xenia.exe
+#### roms
+    %USERPROFILE%\Documents\Games\xbox 360
+    F:\Software\games\roms\xbox 360\games
 
 ## Configuration
 Configuration for execution, selection and location of files is located in the `emulators.json` file. See the included for an example and used by default if not changed. You will need to change this. Any platform you do not need can be safetly removed.
