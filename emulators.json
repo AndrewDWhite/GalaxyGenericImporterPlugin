@@ -171,7 +171,7 @@
             "game_name_regex_group" : 1,
             "filename_regex" : ["*[.]exe","*[.]bat"]
         },
-	{
+        {
             "name" : "mods",
             "execution" : "\"%ROM_RAW%\"",
             "path_regex" : ["%USERPROFILE%\\Documents\\Games\\mods"],
@@ -179,6 +179,15 @@
             "game_name_regex" : ".*[\\\\](.+)[.].*",
             "game_name_regex_group" : 1,
             "filename_regex" : ["*[.]lnk","*[.]bat"]
+        },
+        {
+            "name" : "xbox 360",
+            "execution" : "\"%USERPROFILE%\\Downloads\\xenia_master\\xenia.exe\" \"%ROM_RAW%\"",
+            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\xbox[ ]360","F:\\Software\\games\\roms\\xbox[ ]360\\games"],
+            "tags" : ["xenia"],
+            "game_name_regex" : ".*[\\\\](.+)[\\\\]Content[\\\\]0000000000000000[\\\\]([^\\\\]+?)[\\\\]([^\\\\]+?)[\\\\](([^\\\\])(?!ContentCache[.]pkg|Data|[.]data|[.]log|ontentCache[.]pkg))+(?!(ContentCache[.]pkg|Data|[.]data|[.]log|ontentCache[.]pkg))$",
+            "game_name_regex_group" : 1,
+            "filename_regex" : ["*"]
         }
     ]
 
