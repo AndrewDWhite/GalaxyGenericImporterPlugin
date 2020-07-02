@@ -16,6 +16,7 @@ import asyncio
 #local
 from configuration import DefaultConfig
 from Backend import Backend, time_tracking, create_game, run_my_selected_game_here, get_exe_command, do_auth, shutdown_library, send_events, update_local_games_thread
+from _ast import If
 
 class GenericEmulatorPlugin(Plugin):
     def __init__(self, reader, writer, token):
@@ -27,18 +28,10 @@ class GenericEmulatorPlugin(Plugin):
             reader,
             writer,
             token
-        )               
+        )         
         self.backend = Backend()
-        try:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(self.backend.setup(self.configuration) )      
-        finally:
-            loop.close()
-        self.my_threads = []
-        self.my_library_thread = threading.Thread(target=update_local_games_thread, args=(self, self.configuration.my_user_to_gog, self.backend.my_game_lister,))
-        self.my_library_thread.start()
-        
+        self.my_library_thread = None
+        self.my_threads = []    
 
     # required api interface to authenticate the user with the platform
     async def authenticate(self, stored_credentials=None):
@@ -54,6 +47,8 @@ class GenericEmulatorPlugin(Plugin):
     
     # required api interface to return the owned games
     async def get_owned_games(self):
+        if not self.backend.backend_setup:
+            await self.backend.setup(self.configuration)
         logging.info("get owned")
         list_to_galaxy = []
         found_games = self.backend.local_game_cache
@@ -108,6 +103,9 @@ class GenericEmulatorPlugin(Plugin):
     # api interface to return locally installed games
     # appears that get_owned_games will always run first
     async def get_local_games(self):
+        if not self.backend.backend_setup:
+            await self.backend.setup(self.configuration)
+
         logging.info("get local")
         localgames = []
         for local_game in self.backend.local_game_cache :
@@ -118,20 +116,34 @@ class GenericEmulatorPlugin(Plugin):
     
     # api interface to periodically run processes such as rescanning for library changes
     def tick(self):   
-        logging.info("lib?")
-        logging.info(self.my_library_thread.is_alive())
-        try:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(send_events(self) )      
-        finally:
-            loop.close()  
-        try:
-            my_loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(my_loop)
-            my_loop.run_until_complete(time_tracking(self, self.my_threads) )      
-        finally:
-            my_loop.close()      
+        logging.info("backend?")
+        logging.info(self.backend.backend_setup)
+        if self.backend.backend_setup:
+            if self.my_library_thread == None:
+                self.my_library_thread = threading.Thread(target=update_local_games_thread, args=(self, self.configuration.my_user_to_gog, self.backend.my_game_lister,))
+                self.my_library_thread.start()
+            logging.info("lib?")
+            logging.info(self.my_library_thread.is_alive())
+            #try:
+            try:
+                loop = asyncio.get_event_loop()
+                loop.create_task(send_events(self) )
+            except RuntimeError:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                loop.run_until_complete(send_events(self) )      
+            #finally:
+            #    loop.close()  
+            #try:
+            try:
+                loop = asyncio.get_event_loop()
+                loop.create_task(time_tracking(self, self.my_threads) )
+            except RuntimeError:
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                my_loop.run_until_complete(time_tracking(self, self.my_threads) )      
+            #finally:
+            #    my_loop.close()      
         
 
     # api interface shutdown nicely

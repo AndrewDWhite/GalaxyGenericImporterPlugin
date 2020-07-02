@@ -169,12 +169,17 @@ class ListGames():
         self.continue_monitoring = False
     
     def watcher_update_thread(self, path_to_watch, my_queue_folder_awaiting_scan):
-        try:
+        #try:
+            #loop = asyncio.new_event_loop()
+            #try:
+            #    loop = asyncio.get_event_loop()
+            #    loop.create_task(self.watcher_update(path_to_watch, my_queue_folder_awaiting_scan) )
+            #except RuntimeError:
             loop = asyncio.new_event_loop()
             asyncio.set_event_loop(loop)
             loop.run_until_complete(self.watcher_update(path_to_watch, my_queue_folder_awaiting_scan) )      
-        finally:
-            loop.close()
+        #finally:
+        #    loop.close()
     
     async def watcher_update(self, path_to_watch, my_queue_folder_awaiting_scan):
         logging.info("watcher update")

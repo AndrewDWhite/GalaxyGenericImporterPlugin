@@ -16,27 +16,36 @@ import asyncio
 from syncasync import sync_to_async
 
 class Backend():
-        
-    async def setup(self, configuration):
+    
+    def __init__(self):
+        logging.info("init backend")
+        self.backend_setup = False
         self.last_update = datetime.now()
         self.my_imported_owned = False
         self.my_imported_local = False
         self.my_game_lister =  ListGames()
-        self.local_game_cache = await self.my_game_lister.read_from_cache()
-
         self.cache_times_filepath = self.my_game_lister.cache_filepath+"-times"
         self.local_time_cache = []
-        my_cache_exists = await self.my_game_lister.cache_exists_file(self.cache_times_filepath)
-        if my_cache_exists:
-            self.local_time_cache = await self.my_game_lister.read_from_cache_filename(self.cache_times_filepath)
         self.library_lock = threading.Lock()
-        self.library_run = True
-        self.my_authenticated = False
+        logging.info("Setup queues")
         self.my_queue_update_local_game_status = queue.Queue()
         self.my_queue_add_game = queue.Queue()
         self.my_queue_update_game_time = queue.Queue()
         self.my_queue_folder_awaiting_scan = queue.Queue()
+        self.my_authenticated = False
+        self.not_updating_list_scan = False
+        
+    async def setup(self, configuration):
+        logging.info("Setup backend")
+        self.local_game_cache = await self.my_game_lister.read_from_cache()
+
+        my_cache_exists = await self.my_game_lister.cache_exists_file(self.cache_times_filepath)
+        if my_cache_exists:
+            self.local_time_cache = await self.my_game_lister.read_from_cache_filename(self.cache_times_filepath)
+        
+        self.library_run = True       
         self.not_updating_list_scan = True
+        self.backend_setup = True
         logging.info("backend started up")
         
 async def shutdown_library(self):
@@ -147,12 +156,18 @@ async def get_state_changes(old_list, new_list):
     return result
 
 def update_local_games_thread(self, username, my_game_lister):
-    try:
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        loop.run_until_complete(update_local_games(self, username, my_game_lister) )      
-    finally:
-        loop.close()
+    logging.info("starting thread update local")
+    #try:
+    #try:
+    #        loop = asyncio.get_event_loop()
+    #        loop.create_task(update_local_games(self, username, my_game_lister))
+    #except RuntimeError:
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(update_local_games(self, username, my_game_lister) )      
+    #finally:
+    #    loop.close()
+    logging.info("finished starting thread update local")
 
 async def update_local_games(self, username, my_game_lister):
     not_run = True
