@@ -168,45 +168,34 @@ class ListGames():
         logging.info("disabling monitoring")
         self.continue_monitoring = False
     
-    def watcher_update_thread(self, path_to_watch, my_queue_folder_awaiting_scan):
-        #try:
-            #loop = asyncio.new_event_loop()
-            #try:
-            #    loop = asyncio.get_event_loop()
-            #    loop.create_task(self.watcher_update(path_to_watch, my_queue_folder_awaiting_scan) )
-            #except RuntimeError:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(self.watcher_update(path_to_watch, my_queue_folder_awaiting_scan) )      
-        #finally:
-        #    loop.close()
-    
-    async def watcher_update(self, path_to_watch, my_queue_folder_awaiting_scan):
+    def watcher_update(self, path_to_watch, my_queue_folder_awaiting_scan):
         logging.info("watcher update")
         
-        change_handle = await sync_to_async(win32file.FindFirstChangeNotification) (
-          path_to_watch,
-          True, #watch tree
-          win32con.FILE_NOTIFY_CHANGE_FILE_NAME | win32con.FILE_NOTIFY_CHANGE_LAST_WRITE | win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES | win32con.FILE_NOTIFY_CHANGE_DIR_NAME | win32con.FILE_NOTIFY_CHANGE_SIZE | win32con.FILE_NOTIFY_CHANGE_SECURITY 
-        )
-        
-        logging.info("starting to monitor")
-        logging.info(path_to_watch)
-        try:
-            while self.continue_monitoring:
-                logging.info("still monitoring")
-                logging.info(path_to_watch)
-                result = await sync_to_async (win32event.WaitForSingleObject) (change_handle, 500)
-        
-                if result == win32con.WAIT_OBJECT_0:
-                    #something was updated
-                    logging.info("Update in folder")
+        if (os.path.exists(path_to_watch)) :
+            logging.info ("EXISTS")
+            change_handle = win32file.FindFirstChangeNotification (
+              path_to_watch,
+              True, #watch tree
+              win32con.FILE_NOTIFY_CHANGE_FILE_NAME | win32con.FILE_NOTIFY_CHANGE_LAST_WRITE | win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES | win32con.FILE_NOTIFY_CHANGE_DIR_NAME | win32con.FILE_NOTIFY_CHANGE_SIZE | win32con.FILE_NOTIFY_CHANGE_SECURITY 
+            )
+            
+            logging.info("starting to monitor")
+            logging.info(path_to_watch)
+            try:
+                while self.continue_monitoring:
+                    logging.info("still monitoring")
                     logging.info(path_to_watch)
-                    my_queue_folder_awaiting_scan.put(path_to_watch)
-                    await sync_to_async(win32file.FindNextChangeNotification) (change_handle)
-
-        finally:
-            win32file.FindCloseChangeNotification (change_handle)
+                    result =  win32event.WaitForSingleObject (change_handle, 500)
+            
+                    if result == win32con.WAIT_OBJECT_0:
+                        #something was updated
+                        logging.info("Update in folder")
+                        logging.info(path_to_watch)
+                        my_queue_folder_awaiting_scan.put(path_to_watch)
+                        win32file.FindNextChangeNotification (change_handle)
+    
+            finally:
+                win32file.FindCloseChangeNotification (change_handle)
             
         logging.info("done this")
 
@@ -225,7 +214,7 @@ class ListGames():
             for current_path in emulated_system["path_regex"]:
                 logging.info("listening to")
                 logging.info(current_path)
-                my_thread = threading.Thread(target=self.watcher_update_thread, args=( os.path.expandvars(current_path), my_queue_folder_awaiting_scan, ))
+                my_thread = threading.Thread(target=self.watcher_update, args=( os.path.expandvars(current_path), my_queue_folder_awaiting_scan, ))
                 self.my_folder_monitor_threads.append(my_thread)
                 my_thread.start()
                 
