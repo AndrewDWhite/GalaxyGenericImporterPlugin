@@ -103,7 +103,7 @@ async def send_events(self):
     while not self.backend.my_queue_update_local_game_status.empty():
         my_game_sending = self.backend.my_queue_update_local_game_status.get()
         logging.info(my_game_sending)
-        await self.update_local_game_status(my_game_sending)
+        await sync_to_async(self.update_local_game_status)(my_game_sending)
   
     logging.info("my_queue_update_game_time")
     logging.info(self.backend.my_queue_update_game_time.empty())    
