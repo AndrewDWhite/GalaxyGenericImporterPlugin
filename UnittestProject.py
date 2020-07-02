@@ -413,7 +413,6 @@ class UnittestProject(aiounittest.AsyncTestCase):
                 entry["local_game_state"]=LocalGameState.Installed
         myresult = await get_state_changes(new_local,new_local)
         myresult["old"][list(myresult["old"].keys())[0]] = LocalGameState.Running
-        print (myresult["old"])
         await state_changed(self, myresult["old"],myresult["new"])
                 
         self.assertEqual(False, self.backend.my_queue_update_local_game_status.empty())
