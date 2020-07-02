@@ -10,12 +10,11 @@ from escapejson import escapejson
 import json
 from datetime import datetime
 import threading
-from syncasync import sync_to_async
 import asyncio
 
 #local
 from configuration import DefaultConfig
-from Backend import Backend, time_tracking, create_game, run_my_selected_game_here, get_exe_command, do_auth, shutdown_library, send_events, update_local_games_thread
+from Backend import Backend, time_tracking, create_game, run_my_selected_game_here, get_exe_command, do_auth, shutdown_library, send_events, update_local_games, shutdown_tasks
 from _ast import If
 
 class GenericEmulatorPlugin(Plugin):
@@ -30,9 +29,12 @@ class GenericEmulatorPlugin(Plugin):
             token
         )         
         self.backend = Backend()
-        self.my_library_thread = None
+        #self.my_library_thread = None
+        self.my_library_started = False
         self.my_threads = []    
         self.my_tasks = []
+        self.started_async_tick = False
+        self.keep_ticking = True
 
     # required api interface to authenticate the user with the platform
     async def authenticate(self, stored_credentials=None):
@@ -92,7 +94,7 @@ class GenericEmulatorPlugin(Plugin):
         my_current_game_selected={}
         #call function to update
         for current_game_checking in self.backend.local_game_cache:
-            my_escaped_id = await sync_to_async(escapejson)(current_game_checking["hash_digest"])
+            my_escaped_id = escapejson(current_game_checking["hash_digest"])
             if (my_escaped_id == game_id):
                 my_current_game_selected =  current_game_checking
                 break
@@ -115,43 +117,58 @@ class GenericEmulatorPlugin(Plugin):
         self.backend.my_imported_local = True
         return localgames
     
-    # api interface to periodically run processes such as rescanning for library changes
-    def tick(self):   
-        logging.info("backend?")
-        logging.info(self.backend.backend_setup)
-        if self.backend.backend_setup:
-            if self.my_library_thread == None:
-                self.my_library_thread = threading.Thread(target=update_local_games_thread, args=(self, self.configuration.my_user_to_gog, self.backend.my_game_lister,))
-                self.my_library_thread.daemon = True
-                self.my_library_thread.start()
-            logging.info("lib?")
-            logging.info(self.my_library_thread.is_alive())
-            #try:
-            try:
-                asyncio.get_event_loop()
-                my_task = asyncio.create_task(send_events(self) )
-                self.my_tasks.append(my_task)
-            except RuntimeError:
-                asyncio.run(send_events(self) ) 
-            #finally:
-            #    loop.close()  
-            #try:
-            try:
-                asyncio.get_event_loop()
-                my_task = asyncio.create_task(time_tracking(self, self.my_threads) )
-                self.my_tasks.append(my_task)
-            except RuntimeError:
-                asyncio.run(time_tracking(self, self.my_threads) )      
-            #finally:
-            #    my_loop.close()      
+    # mod of api interface to periodically run processes such as rescanning for library changes
+    def tick(self):
+        if not self.started_async_tick:
+            self.started_async_tick = True
+            asyncio.get_event_loop()
+            my_task = asyncio.create_task(self.tick_async() )
+            self.my_tasks.append(my_task)
+            
+    async def tick_async(self):   
+        while(self.keep_ticking):
+            logging.info("backend?")
+            logging.info(self.backend.backend_setup)
+            if self.backend.backend_setup:
+                #if self.my_library_thread == None:
+                if not self.my_library_started:
+                    #self.my_library_thread = threading.Thread(target=update_local_games_thread, args=(self, self.configuration.my_user_to_gog, self.backend.my_game_lister,))
+                    #self.my_library_thread.daemon = True
+                    #self.my_library_thread.start()
+                    asyncio.get_event_loop()
+                    my_task = asyncio.create_task(update_local_games(self, self.configuration.my_user_to_gog, self.backend.my_game_lister) )
+                    self.my_tasks.append(my_task)
+                    self.my_library_started = True
+                #logging.info("lib?")
+                #logging.info(self.my_library_thread.is_alive())
+                #try:
+                await send_events(self) 
+                #finally:
+                #    loop.close()  
+                #try:
+                await time_tracking(self, self.my_threads)            #finally:
+                #    my_loop.close()   
+            await asyncio.sleep(1)   
         
 
     # api interface shutdown nicely
     async def shutdown(self):
         logging.info("shutdown called")
+        self.keep_ticking = False
+        
+        shutdown_tasks(self, self.my_tasks)
         
         shutdown_library(self)
-
+        
+        tasks = [t for t in asyncio.all_tasks() if t is not
+             asyncio.current_task()]
+        for my_task in tasks:
+            print("still running")
+            print(my_task)
+        
+        #loop = asyncio.get_event_loop()
+        #loop.close()
+        await asyncio.sleep(10)
         logging.info("all done shutdown")
 
     # api interface to startup game

@@ -18,9 +18,9 @@ import math
 from configuration import DefaultConfig
 from ListGames import ListGames
 from generic import GenericEmulatorPlugin, get_exe_command, run_my_selected_game_here
-from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games_thread, create_game, shutdown_library, do_auth, removed_games, added_games, state_changed, setup_queue_to_send_those_changes, send_events, created_update, time_tracking, prepare_to_send_my_updates
+from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games, create_game, shutdown_library, do_auth, removed_games, added_games, state_changed, setup_queue_to_send_those_changes, send_events, created_update, time_tracking, prepare_to_send_my_updates, shutdown_tasks
 
-from datetime import datetime
+from datetime import datetime, timedelta
 import aiounittest
 
 from galaxy.api.consts import LocalGameState, LicenseType
@@ -306,18 +306,28 @@ class UnittestProject(aiounittest.AsyncTestCase):
         self.assertEqual(False, my_queue_folder_awaiting_scan.empty())
         
     async def test_start_and_stop_library(self):
+        #loop = asyncio.new_event_loop()
+        #self.my_library_started = False
         self.my_tasks = []
         self.configuration = DefaultConfig()
         self.backend = Backend()
         await self.backend.setup(self.configuration) 
-        self.my_library_thread = threading.Thread(target=update_local_games_thread, args=(self, "test_user", self.backend.my_game_lister,))
+        #self.my_library_thread = threading.Thread(target=update_local_games_thread, args=(self, "test_user", self.backend.my_game_lister,))
         logging.debug("starting")
-        self.my_library_thread.start()
-        self.assertEqual(True, self.my_library_thread.is_alive())
+        #self.my_library_thread.start()
+        
+        asyncio.get_event_loop()
+        my_task = asyncio.create_task(update_local_games(self, "test_user", self.backend.my_game_lister) )
+        self.my_tasks.append(my_task)
+        #self.assertEqual(True, self.my_library_thread.is_alive())
+        #self.assertEqual(True, self.my_library_started)
         self.assertEqual(True, self.backend.library_run)
         shutdown_library(self)
-        self.assertEqual(False, self.my_library_thread.is_alive())
-        del self.backend 
+        shutdown_tasks(self, self.my_tasks)
+        #self.assertEqual(False, self.my_library_thread.is_alive())
+        self.assertEqual(False, self.backend.library_run)
+        #del self.backend 
+        #loop.close()
         #TODO implements tests
 
     async def test_removed_backend(self):
@@ -383,10 +393,11 @@ class UnittestProject(aiounittest.AsyncTestCase):
         
         my_threads = []
         my_thread = Mock()
-        my_current_time = datetime.now()
-        my_thread.name="{\"time\":\""+str(my_current_time)+"\", \"id\":\"12345A\"}"
         my_thread.is_alive= MagicMock(return_value=False)
         my_threads.append(my_thread)
+        my_current_time = datetime.now() - timedelta(minutes=1)
+        my_thread.name="{\"time\":\""+str(my_current_time)+"\", \"id\":\"12345A\"}"
+        
         await time_tracking(self,my_threads)
         
         #local_time_cache = await self.my_game_lister.read_from_cache_filename(self.backend.cache_times_filepath)
