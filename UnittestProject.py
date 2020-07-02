@@ -12,12 +12,13 @@ import threading
 import time
 import hashlib
 import queue
+import math
 
 #local
 from configuration import DefaultConfig
 from ListGames import ListGames
 from generic import GenericEmulatorPlugin, get_exe_command, run_my_selected_game_here
-from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games_thread, create_game, shutdown_library, do_auth, removed_games, added_games, state_changed, setup_queue_to_send_those_changes, send_events
+from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games_thread, create_game, shutdown_library, do_auth, removed_games, added_games, state_changed, setup_queue_to_send_those_changes, send_events, created_update
 
 from datetime import datetime
 import aiounittest
@@ -404,6 +405,30 @@ class UnittestProject(aiounittest.AsyncTestCase):
         #No changes
         self.assertEqual(0, self.backend.my_queue_update_local_game_status._qsize())
         self.assertEqual(0, self.backend.my_queue_add_game._qsize())
+
+    async def test_created_time_update(self):
+        self.configuration = DefaultConfig()
+        self.backend = Backend()
+        await self.backend.setup(self.configuration) 
+        
+        systems=await setup_folders_for_testing(self, "TestDirectory8")
+        insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
+        new_local = await systems.list_all_recursively("test_user")
+        my_time = datetime.now()
+        for entry in new_local:
+            logging.debug("Check")
+            if("local_game_state" not in entry):
+                logging.debug("should")
+                entry["local_game_state"]=LocalGameState.Installed
+        updated_Time = await created_update(new_local[0],1,my_time)
+        #New
+        self.assertEqual(math.floor(my_time.timestamp() ), updated_Time["last_time_played"])
+        self.assertEqual(1, updated_Time["run_time_total"])
+        updated_Time = await created_update(updated_Time,1,my_time)
+        #Updated
+        self.assertEqual(math.floor(my_time.timestamp() ), updated_Time["last_time_played"])
+        self.assertEqual(2, updated_Time["run_time_total"])
+
     
     async def test_no_updates_send(self):
         self.configuration = DefaultConfig()
