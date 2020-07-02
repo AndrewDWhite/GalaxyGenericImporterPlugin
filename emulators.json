@@ -182,7 +182,7 @@
         },
         {
             "name" : "xbox 360",
-            "execution" : "\"%USERPROFILE%\\Downloads\\xenia_master\\xenia.exe\" \"%ROM_RAW%\"",
+            "execution" : "\"%USERPROFILE%\\Downloads\\xenia_master\\xenia.exe\" --fullscreen \"%ROM_RAW%\"",
             "path_regex" : ["%USERPROFILE%\\Documents\\Games\\xbox[ ]360","F:\\Software\\games\\roms\\xbox[ ]360\\games"],
             "tags" : ["xenia"],
             "game_name_regex" : ".*[\\\\](.+)[\\\\]Content[\\\\]0000000000000000[\\\\]([^\\\\]+?)[\\\\]([^\\\\]+?)[\\\\](([^\\\\])(?!ContentCache[.]pkg|Data|[.]data|[.]log|ontentCache[.]pkg))+(?!(ContentCache[.]pkg|Data|[.]data|[.]log|ontentCache[.]pkg))$",
