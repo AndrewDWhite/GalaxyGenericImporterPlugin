@@ -109,7 +109,7 @@ async def send_events(self):
     while not self.backend.my_queue_update_game_time.empty():    
         my_game_sending = self.backend.my_queue_update_game_time.get()
         logging.info(my_game_sending)
-        await self.update_game_time(my_game_sending)
+        await sync_to_async(self.update_game_time)(my_game_sending)
 
 async def removed_games(self, old_dict, new_dict):
     # removed games
