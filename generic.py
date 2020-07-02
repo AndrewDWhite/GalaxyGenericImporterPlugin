@@ -10,10 +10,12 @@ from escapejson import escapejson
 import json
 from datetime import datetime
 import threading
+from syncasync import sync_to_async
+import asyncio
 
 #local
 from configuration import DefaultConfig
-from Backend import Backend, time_tracking, create_game, run_my_selected_game_here, get_exe_command, do_auth, shutdown_library, send_events, update_local_games
+from Backend import Backend, time_tracking, create_game, run_my_selected_game_here, get_exe_command, do_auth, shutdown_library, send_events, update_local_games_thread
 
 class GenericEmulatorPlugin(Plugin):
     def __init__(self, reader, writer, token):
@@ -26,21 +28,29 @@ class GenericEmulatorPlugin(Plugin):
             writer,
             token
         )               
-        self.backend = Backend(self.configuration)        
+        self.backend = Backend()
+        try:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(self.backend.setup(self.configuration) )      
+        finally:
+            loop.close()
         self.my_threads = []
-        self.my_library_thread = threading.Thread(target=update_local_games, args=(self, self.configuration.my_user_to_gog, self.backend.my_game_lister,))
+        self.my_library_thread = threading.Thread(target=update_local_games_thread, args=(self, self.configuration.my_user_to_gog, self.backend.my_game_lister,))
         self.my_library_thread.start()
         
 
     # required api interface to authenticate the user with the platform
     async def authenticate(self, stored_credentials=None):
         logging.info("authenticate called")
-        return do_auth(self, self.configuration.my_user_to_gog)
+        my_auth = await do_auth(self, self.configuration.my_user_to_gog)
+        return my_auth
 
     # required api interface
     async def pass_login_credentials(self, step, credentials, cookies):
         logging.info("pass_login_credentials called")
-        return do_auth(self, self.configuration.my_user_to_gog)
+        my_auth = await do_auth(self, self.configuration.my_user_to_gog)
+        return my_auth
     
     # required api interface to return the owned games
     async def get_owned_games(self):
@@ -86,7 +96,8 @@ class GenericEmulatorPlugin(Plugin):
         my_current_game_selected={}
         #call function to update
         for current_game_checking in self.backend.local_game_cache:
-            if (escapejson(current_game_checking["hash_digest"]) == game_id):
+            my_escaped_id = await sync_to_async(escapejson)(current_game_checking["hash_digest"])
+            if (my_escaped_id == game_id):
                 my_current_game_selected =  current_game_checking
                 break
         game_tags = my_current_game_selected["tags"]
@@ -116,7 +127,7 @@ class GenericEmulatorPlugin(Plugin):
     async def shutdown(self):
         logging.info("shutdown called")
         
-        shutdown_library(self)
+        await shutdown_library(self)
 
         logging.info("all done shutdown")
 
@@ -124,7 +135,7 @@ class GenericEmulatorPlugin(Plugin):
     # requires get_local_games to have listed the game
     async def launch_game(self, game_id):
         logging.info("launch")
-        execution_command = get_exe_command(game_id, self.backend.local_game_cache)
+        execution_command = await get_exe_command(game_id, self.backend.local_game_cache)
         my_current_time = datetime.now()
         logging.info(execution_command)
         my_thread= threading.Thread(target=run_my_selected_game_here, args=(execution_command,))

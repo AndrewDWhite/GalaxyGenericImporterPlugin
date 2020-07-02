@@ -49,4 +49,12 @@ TestDirectory*/
 certifi-2020.4.5.2.dist-info/
 escapejson-1.0-py3.7.egg-info/
 escapejson-1.0-py3.7.egg-infohtmlcov/
-
+aiounittest-1.4.0.dist-info/
+aiounittest/
+certifi-2020.6.20.dist-info/
+galaxy.plugin.api-0.66.0.dist-info/
+idna-2.10.dist-info/
+syncasync-20180812.dist-info/
+syncasync.py
+wrapt-1.12.1-py3.7.egg-info/
+wrapt/

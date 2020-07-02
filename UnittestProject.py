@@ -17,78 +17,83 @@ import queue
 from configuration import DefaultConfig
 from ListGames import ListGames
 from generic import GenericEmulatorPlugin, get_exe_command, run_my_selected_game_here
-from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games, create_game, shutdown_library
+from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games_thread, create_game, shutdown_library, do_auth
 
 from datetime import datetime
+import aiounittest
 
 from galaxy.api.consts import LocalGameState, LicenseType
 
 from parameterized import parameterized
-from galaxy.api.types import LicenseInfo
+from galaxy.api.types import LicenseInfo, Authentication
 
-class UnittestProject(unittest.TestCase):
+from unittest.mock import Mock
+
+class UnittestProject(aiounittest.AsyncTestCase):
     '''
     classdocs
     '''
         
-    def test_config(self):
+    async def test_config(self):
         config = DefaultConfig()
         logging.debug(config)
         self.assertEqual(config.my_user_to_gog, "username1")
         self.assertEqual(config.my_platform_to_gog, "test")
         
-    def test_emulators(self):
+    async def  test_emulators(self):
         systems = ListGames()
         #tests if it loaded the default number of emulators
         self.assertEqual(len(systems.loaded_systems_configuration),21)
     
-    def test_speed(self):
+    async def test_speed(self):
         systems = ListGames()
         my_initial_time = datetime.now()
         logging.debug(my_initial_time)
-        systems.list_all_recursively("test_user")
+        await systems.list_all_recursively ("test_user")
         #my_delta = GenericEmulatorPlugin.time_delta_calc_minutes(my_initial_time)
         #logging.debug(datetime.now())
         #TODO add some test here
     
-    def test_load_empty(self):
+    async def test_load_empty(self):
         systems = ListGames()
-        systems.delete_cache()
-        self.assertEqual([], systems.read_from_cache())
+        await systems.delete_cache()
+        read_cache = await systems.read_from_cache()
+        self.assertEqual([], read_cache)
     
-    def test_write_no_data_in_folders(self):
-        systems=setup_folders_for_testing(self, "TestDirectory7")
-        data = systems.list_all_recursively("test_user")
-        systems.write_to_cache(data)
-        self.assertTrue(systems.cache_exists())
-        data_read = systems.read_from_cache()
-        systems.delete_cache()
+    async def test_write_no_data_in_folders(self):
+        systems=await setup_folders_for_testing(self, "TestDirectory7")
+        data = await systems.list_all_recursively("test_user")
+        await systems.write_to_cache(data)
+        my_cache_exists = await systems.cache_exists()
+        self.assertTrue(my_cache_exists)
+        data_read = await systems.read_from_cache()
+        await systems.delete_cache()
         self.assertEqual(0,len(data_read ))
         self.assertEqual(data_read, data)
             
-    def test_rec(self):
-        systems=setup_folders_for_testing(self, "TestDirectory5")
+    async def test_rec(self):
+        systems=await setup_folders_for_testing(self, "TestDirectory5")
         insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
         insert_file_into_folder (self, systems, "gbc0", "game.gb","")
         insert_file_into_folder (self, systems, "dos0", "game.exe","")
-        myresult = systems.list_all_recursively("test_user")
+        myresult = await systems.list_all_recursively("test_user")
         logging.debug(myresult)
         logging.debug(len(myresult))
         #TODO implement tests
         self.assertEqual(3,len(myresult))
         
-    def test_comp(self):
-        systems=setup_folders_for_testing(self, "TestDirectory3")
+    async def test_comp(self):
+        systems=await setup_folders_for_testing(self, "TestDirectory3")
         insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
         insert_file_into_folder (self, systems, "gbc0", "game.gb","")
         insert_file_into_folder (self, systems, "dos0", "game.exe","mygame")
-        new_local = systems.list_all_recursively("test_user")
+        new_local = await systems.list_all_recursively("test_user")
         for entry in new_local:
             logging.debug("Check")
             if("local_game_state" not in entry):
                 logging.debug("should")
                 entry["local_game_state"]=LocalGameState.Installed
-        myresult = get_state_changes([],new_local)
+        myresult = await get_state_changes([],new_local)
         #None Removed
         logging.debug(len(myresult["old"].keys() - myresult["new"].keys()))
         logging.debug(len(myresult["new"].keys() - myresult["old"].keys()))
@@ -97,19 +102,19 @@ class UnittestProject(unittest.TestCase):
         self.assertEqual(len(myresult["new"].keys() - myresult["old"].keys()),3)
         logging.debug(myresult)
     
-    def test_time_delta_calc_minutes(self):
-        my_delta = time_delta_calc_minutes(datetime.now())
+    async def test_time_delta_calc_minutes(self):
+        my_delta = await time_delta_calc_minutes(datetime.now())
         self.assertEqual(my_delta,0)
         
-    def test_compSame(self):
+    async def test_compSame(self):
         systems = ListGames()
-        new_local = systems.list_all_recursively("test_user")
+        new_local = await systems.list_all_recursively("test_user")
         for entry in new_local:
             logging.debug("Check")
             if("local_game_state" not in entry):
                 logging.debug("should")
                 entry["local_game_state"]=LocalGameState.Installed
-        myresult = get_state_changes(new_local,new_local)
+        myresult = await get_state_changes(new_local,new_local)
         #None Removed
         logging.debug(len(myresult["old"].keys() - myresult["new"].keys()))
         logging.debug(len(myresult["new"].keys() - myresult["old"].keys()))
@@ -118,18 +123,18 @@ class UnittestProject(unittest.TestCase):
         self.assertEqual(len(myresult["new"].keys() - myresult["old"].keys()),0)
         logging.debug(myresult)
         
-    def test_compRemoved(self):
-        systems=setup_folders_for_testing(self, "TestDirectory8")
+    async def test_compRemoved(self):
+        systems=await setup_folders_for_testing(self, "TestDirectory8")
         insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
         insert_file_into_folder (self, systems, "gbc0", "game.gb","")
         insert_file_into_folder (self, systems, "dos0", "game.exe","mygame")
-        new_local = systems.list_all_recursively("test_user")
+        new_local = await systems.list_all_recursively("test_user")
         for entry in new_local:
             logging.debug("Check")
             if("local_game_state" not in entry):
                 logging.debug("should")
                 entry["local_game_state"]=LocalGameState.Installed
-        myresult = get_state_changes(new_local,[])
+        myresult = await get_state_changes(new_local,[])
         #All Removed
         logging.debug(len(myresult["old"].keys() - myresult["new"].keys()))
         logging.debug(len(myresult["new"].keys() - myresult["old"].keys()))
@@ -138,26 +143,26 @@ class UnittestProject(unittest.TestCase):
         self.assertEqual(len(myresult["new"].keys() - myresult["old"].keys()),0)
         logging.debug(myresult)
         
-    def test_launch_command(self):
+    async def test_launch_command(self):
         #systems = ListGames()
-        systems=setup_folders_for_testing(self, "TestDirectory4")
+        systems=await setup_folders_for_testing(self, "TestDirectory4")
         insert_file_into_folder (self, systems, "dreamcast0", "disc.gdi","mygame")
-        myresult = systems.list_all_recursively("test_user")
+        myresult = await systems.list_all_recursively("test_user")
         self.assertEqual(True, len(myresult) >0 )
-        execution_command = get_exe_command(myresult[0]["hash_digest"], myresult)
+        execution_command = await get_exe_command(myresult[0]["hash_digest"], myresult)
         logging.debug(execution_command)
         #run_my_selected_game_here(execution_command)
         #TODO implement tests
         self.assertEqual(execution_command,"\"\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\flycast_libretro.dll\" \"" + os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory4\\dreamcast0\\mygame\\disc.gdi")) + "\"\"")
     
-    def test_setup_and_shutdown_folder_listeners(self):
-        systems=setup_folders_for_testing(self, "TestDirectory9")
+    async def test_setup_and_shutdown_folder_listeners(self):
+        systems=await setup_folders_for_testing(self, "TestDirectory9")
         my_queue_folder_awaiting_scan = queue.Queue()
-        systems.setup_folder_listeners(my_queue_folder_awaiting_scan)
+        await systems.setup_folder_listeners(my_queue_folder_awaiting_scan)
         insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
         insert_file_into_folder (self, systems, "dos0", "mygame.exe","mygame")
         self.assertEqual(44, len(systems.my_folder_monitor_threads) )
-        systems.shutdown_folder_listeners()
+        await systems.shutdown_folder_listeners()
         self.assertEqual(False, my_queue_folder_awaiting_scan.empty())
         self.assertEqual(os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory9\\gbc0")),my_queue_folder_awaiting_scan.get())
         self.assertEqual(os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory9\\dos0")),my_queue_folder_awaiting_scan.get())
@@ -170,10 +175,10 @@ class UnittestProject(unittest.TestCase):
     #        if "xbox 360" in entry["name"]:
     #            print(entry)
     
-    def test_returned_dir_data(self):
-        systems=setup_folders_for_testing(self, "TestDirectory6")
+    async def test_returned_dir_data(self):
+        systems=await setup_folders_for_testing(self, "TestDirectory6")
         insert_file_into_folder (self, systems, "dreamcast0", "disc.gdi","mygame")
-        myresults = systems.list_all_recursively("test_user")
+        myresults = await systems.list_all_recursively("test_user")
         self.assertEqual(True, len(myresults) >0 )
         myresult = myresults[0]
         logging.debug(myresult)
@@ -221,12 +226,13 @@ class UnittestProject(unittest.TestCase):
     #    self.assertTrue(True)
     
     
-    def test_launch_thread(self):
+    async def test_launch_thread(self):
         self.my_game_lister = ListGames()
-        self.local_game_cache = self.my_game_lister.list_all_recursively("test_user")
+        self.local_game_cache = await self.my_game_lister.list_all_recursively("test_user")
         self.my_authenticated = "test_user"
         self.configuration = DefaultConfig()                
-        self.backend = Backend(self.configuration)        
+        self.backend = Backend()
+        await self.backend.setup(self.configuration)        
         self.my_threads = []
         #GenericEmulatorPlugin.get_owned_games(self)
         #GenericEmulatorPlugin.get_local_games(self)
@@ -243,19 +249,19 @@ class UnittestProject(unittest.TestCase):
     # add the handler to the root logger
     logging.getLogger('').addHandler(console)
     
-    def test_create_game(self):
+    async def test_create_game(self):
         game_dictionary = {}
         game_dictionary["hash_digest"]="hash_digest"
         game_dictionary["game_name"]="Game_Name"
-        game_result = create_game(game_dictionary)
+        game_result = await create_game(game_dictionary)
         self.assertEqual(game_result.game_id,"hash_digest")
         self.assertEqual(game_result.game_title,"Game_Name")
         self.assertEqual(game_result.dlcs,None)
         self.assertEqual(game_result.license_info,LicenseInfo(LicenseType.SinglePurchase))
         
-    def test_insert_file_into_folder_watch(self): 
+    async def test_insert_file_into_folder_watch(self): 
         my_dir = "TestDirectory2"
-        systems=setup_folders_for_testing(self, my_dir)
+        systems=await setup_folders_for_testing(self, my_dir)
         
         my_dir_path = os.getcwd() + "\\"+ my_dir
         
@@ -266,7 +272,7 @@ class UnittestProject(unittest.TestCase):
             rmtree(my_full_path)
         os.mkdir(my_full_path)
         my_queue_folder_awaiting_scan = queue.Queue()
-        my_thread = threading.Thread(target=systems.watcher_update, args=( my_full_path, my_queue_folder_awaiting_scan, ))
+        my_thread = threading.Thread(target=systems.watcher_update_thread, args=( my_full_path, my_queue_folder_awaiting_scan, ))
         my_thread.start()
         time.sleep(2)
         #new file
@@ -285,7 +291,7 @@ class UnittestProject(unittest.TestCase):
                     logging.debug(my_full_path+"\\"+file+"2")
         time.sleep(4)
         
-        systems.disable_monitoring()
+        self.local_game_cache = await systems.disable_monitoring()
         #new file after monitoring stopped
         #time.sleep(1)
         #with open(my_full_path+"\\"+file+"3", 'w') as file_pointer:
@@ -297,21 +303,34 @@ class UnittestProject(unittest.TestCase):
         #todo add testing
         self.assertEqual(False, my_queue_folder_awaiting_scan.empty())
         
-    def test_start_and_stop_library(self):
-        configuration = DefaultConfig()
-        self.backend = Backend(configuration)
-        self.my_library_thread = threading.Thread(target=update_local_games, args=(self, "test_user", self.backend.my_game_lister,))
+    async def test_start_and_stop_library(self):
+        self.configuration = DefaultConfig()
+        self.backend = Backend()
+        await self.backend.setup(self.configuration) 
+        self.my_library_thread = threading.Thread(target=update_local_games_thread, args=(self, "test_user", self.backend.my_game_lister,))
         logging.debug("starting")
         self.my_library_thread.start()
         self.assertEqual(True, self.my_library_thread.is_alive())
         self.assertEqual(True, self.backend.library_run)
-        shutdown_library(self)
+        await shutdown_library(self)
         self.assertEqual(False, self.my_library_thread.is_alive())
         del self.backend 
         #TODO implements tests
-        
 
-def setup_folders_for_testing (self, my_test_dir):
+    async def test_do_auth(self):
+        self.configuration = DefaultConfig()
+        self.backend = Backend()
+        await self.backend.setup(self.configuration) 
+        self.store_credentials = Mock(return_value=None)
+        
+        authenticated_user = await do_auth(self, "test_user")
+        self.assertEqual(Authentication('importer_user', "test_user"), authenticated_user)
+        self.assertEqual(self.backend.my_authenticated, True) 
+        user_data = {}
+        user_data['username'] = "test_user"
+        self.store_credentials.assert_called_with(user_data)
+        
+async def setup_folders_for_testing (self, my_test_dir):
     mypath = os.getcwd() + "\\" + my_test_dir
     logging.debug(mypath)
     if os.path.exists(mypath):
@@ -319,7 +338,7 @@ def setup_folders_for_testing (self, my_test_dir):
     os.mkdir(mypath)
     systems = ListGames()
     #self.cache_filepath = os.path.abspath(mypath,'..','game_cache')
-    systems.delete_cache()
+    await systems.delete_cache()
     updatedconfigs=[]
     for emulated_system in systems.loaded_systems_configuration:
         updated_emulated_system=emulated_system.copy()
@@ -369,6 +388,9 @@ def insert_file_into_folder (self, systems, folder, file, subfolder):
     
 
 class TestParameterized(unittest.TestCase):
+    def setUp(self):
+        self.loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(None)
     
     @parameterized.expand([
         ["dreamcast valid entry", "dreamcast0", "disc.gdi","mygame",1],
@@ -400,24 +422,32 @@ class TestParameterized(unittest.TestCase):
         #to do amazon ["amazon ignored entry", "amazon1", "dxwebsetup.exe","mygame",0],
         #to do amazon ["amazon valid entry", "amazon1", "mygame.exe","mygame",1],
     ])
-        
-    def test_write_data_in_folders(self, name, folder, file, subfolder, size):
-        logging.debug(name)
-        logging.debug(folder)
-        logging.debug(file)
-        logging.debug(size)
-        
-        systems=setup_folders_for_testing(self, "TestDirectory")
-        #todo insert function with parameterized files in folders
-        insert_file_into_folder (self, systems, folder, file, subfolder)
-        data = systems.list_all_recursively("test_user")
-        systems.write_to_cache(data)
-        self.assertTrue(systems.cache_exists())
-        data_read = systems.read_from_cache()
-        systems.delete_cache()
-        self.assertEqual(size, len(data_read ))
-        self.assertEqual(data_read, data)
+    
+    def test_write_data_in_folders_sync(self, name, folder, file, subfolder, size):
 
- 
+        async def test_write_data_in_folders(self, name, folder, file, subfolder, size):
+            logging.debug(name)
+            logging.debug(folder)
+            logging.debug(file)
+            logging.debug(size)
+            
+            systems=await setup_folders_for_testing(self, "TestDirectory")
+            #todo insert function with parameterized files in folders
+            insert_file_into_folder (self, systems, folder, file, subfolder)
+            data = await systems.list_all_recursively("test_user")
+            await systems.write_to_cache(data)
+    
+            loop_result = await systems.cache_exists()
+            self.assertTrue(loop_result)
+            data_read = await systems.read_from_cache()
+            await systems.delete_cache()
+            self.assertEqual(size, len(data_read ))
+            self.assertEqual(data_read, data)
+
+        try:
+            self.loop.run_until_complete(test_write_data_in_folders(self, name, folder, file, subfolder, size))
+        finally:
+            self.loop.close()
+        
 if __name__ == '__main__':
     unittest.main()
