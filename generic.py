@@ -59,7 +59,7 @@ class GenericEmulatorPlugin(Plugin):
         found_games = self.backend.local_game_cache
         
         for game in found_games:
-            this_game=create_game(game)
+            this_game=await create_game(game)
             list_to_galaxy.append(this_game)
         logging.info(len(list_to_galaxy))
         self.backend.my_imported_owned = True

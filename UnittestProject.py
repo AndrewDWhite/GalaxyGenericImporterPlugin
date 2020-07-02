@@ -17,7 +17,7 @@ import queue
 from configuration import DefaultConfig
 from ListGames import ListGames
 from generic import GenericEmulatorPlugin, get_exe_command, run_my_selected_game_here
-from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games_thread, create_game, shutdown_library, do_auth
+from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games_thread, create_game, shutdown_library, do_auth, removed_games, added_games
 
 from datetime import datetime
 import aiounittest
@@ -317,6 +317,53 @@ class UnittestProject(aiounittest.AsyncTestCase):
         del self.backend 
         #TODO implements tests
 
+    async def test_removed_backend(self):
+        self.configuration = DefaultConfig()
+        self.backend = Backend()
+        await self.backend.setup(self.configuration) 
+        
+        systems=await setup_folders_for_testing(self, "TestDirectory8")
+        insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
+        insert_file_into_folder (self, systems, "gbc0", "game.gb","")
+        insert_file_into_folder (self, systems, "dos0", "game.exe","mygame")
+        new_local = await systems.list_all_recursively("test_user")
+        for entry in new_local:
+            logging.debug("Check")
+            if("local_game_state" not in entry):
+                logging.debug("should")
+                entry["local_game_state"]=LocalGameState.Installed
+        myresult = await get_state_changes(new_local,[])
+
+        await removed_games(self, myresult["old"],myresult["new"])
+        self.assertEqual(3, self.backend.my_queue_update_local_game_status._qsize())
+        game_update_from_queue = self.backend.my_queue_update_local_game_status.get()
+        self.assertEqual(game_update_from_queue.local_game_state, LocalGameState.None_)
+        
+    async def test_added_backend(self):
+        self.configuration = DefaultConfig()
+        self.backend = Backend()
+        await self.backend.setup(self.configuration) 
+        
+        systems=await setup_folders_for_testing(self, "TestDirectory8")
+        insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
+        insert_file_into_folder (self, systems, "gbc0", "game.gb","")
+        insert_file_into_folder (self, systems, "dos0", "game.exe","mygame")
+        new_local = await systems.list_all_recursively("test_user")
+        for entry in new_local:
+            logging.debug("Check")
+            if("local_game_state" not in entry):
+                logging.debug("should")
+                entry["local_game_state"]=LocalGameState.Installed
+        myresult = await get_state_changes([],new_local)
+        
+        await added_games(self, new_local, myresult["old"],myresult["new"])
+        self.assertEqual(3, self.backend.my_queue_update_local_game_status._qsize())
+        game_update_from_queue = self.backend.my_queue_update_local_game_status.get()
+        self.assertEqual(game_update_from_queue.local_game_state, LocalGameState.Installed)
+        
+        self.assertEqual(3, self.backend.my_queue_add_game._qsize())
+
+    
     async def test_do_auth(self):
         self.configuration = DefaultConfig()
         self.backend = Backend()
