@@ -273,7 +273,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
             rmtree(my_full_path)
         os.mkdir(my_full_path)
         my_queue_folder_awaiting_scan = queue.Queue()
-        my_thread = threading.Thread(target=systems.watcher_update_thread, args=( my_full_path, my_queue_folder_awaiting_scan, ))
+        my_thread = threading.Thread(target=systems.watcher_update, args=( my_full_path, my_queue_folder_awaiting_scan, ))
         my_thread.start()
         time.sleep(2)
         #new file
@@ -292,7 +292,8 @@ class UnittestProject(aiounittest.AsyncTestCase):
                     logging.debug(my_full_path+"\\"+file+"2")
         time.sleep(4)
         
-        self.local_game_cache = systems.disable_monitoring()
+        systems.disable_monitoring()
+        #self.local_game_cache =
         #new file after monitoring stopped
         #time.sleep(1)
         #with open(my_full_path+"\\"+file+"3", 'w') as file_pointer:
@@ -372,6 +373,8 @@ class UnittestProject(aiounittest.AsyncTestCase):
         self.backend = Backend()
         if os.path.exists(self.backend.cache_times_filepath):
             os.remove(self.backend.cache_times_filepath)
+        self.configuration = DefaultConfig()
+        self.backend = Backend()
         await self.backend.setup(self.configuration) 
         
         my_threads = []
@@ -385,6 +388,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         #local_time_cache = await self.my_game_lister.read_from_cache_filename(self.backend.cache_times_filepath)
         self.assertEqual(1,len(self.backend.local_time_cache))
         my_timed_entry = self.backend.local_time_cache[0]
+        
         self.assertEqual(my_timed_entry["run_time_total"], 1)
         self.assertEqual(my_timed_entry["last_time_played"], math.floor(my_current_time.timestamp() ))
         self.assertEqual(my_timed_entry["hash_digest"], "12345A")
@@ -408,7 +412,8 @@ class UnittestProject(aiounittest.AsyncTestCase):
                 logging.debug("should")
                 entry["local_game_state"]=LocalGameState.Installed
         myresult = await get_state_changes(new_local,new_local)
-        myresult["old"]['e763ebd142be9ab12065d77e9644a45f1a81d4df'] = LocalGameState.Running
+        myresult["old"][list(myresult["old"].keys())[0]] = LocalGameState.Running
+        print (myresult["old"])
         await state_changed(self, myresult["old"],myresult["new"])
                 
         self.assertEqual(False, self.backend.my_queue_update_local_game_status.empty())
