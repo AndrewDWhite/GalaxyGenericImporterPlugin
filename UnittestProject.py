@@ -125,7 +125,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         logging.debug(myresult)
         
     async def test_compRemoved(self):
-        systems=await setup_folders_for_testing(self, "TestDirectory8")
+        systems=await setup_folders_for_testing(self, "TestDirectory14")
         insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
         insert_file_into_folder (self, systems, "gbc0", "game.gb","")
         insert_file_into_folder (self, systems, "dos0", "game.exe","mygame")
@@ -163,7 +163,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
         insert_file_into_folder (self, systems, "dos0", "mygame.exe","mygame")
         self.assertEqual(44, len(systems.my_folder_monitor_threads) )
-        await systems.shutdown_folder_listeners()
+        systems.shutdown_folder_listeners()
         self.assertEqual(False, my_queue_folder_awaiting_scan.empty())
         self.assertEqual(os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory9\\gbc0")),my_queue_folder_awaiting_scan.get())
         self.assertEqual(os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory9\\dos0")),my_queue_folder_awaiting_scan.get())
@@ -292,7 +292,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
                     logging.debug(my_full_path+"\\"+file+"2")
         time.sleep(4)
         
-        self.local_game_cache = await systems.disable_monitoring()
+        self.local_game_cache = systems.disable_monitoring()
         #new file after monitoring stopped
         #time.sleep(1)
         #with open(my_full_path+"\\"+file+"3", 'w') as file_pointer:
@@ -313,7 +313,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         self.my_library_thread.start()
         self.assertEqual(True, self.my_library_thread.is_alive())
         self.assertEqual(True, self.backend.library_run)
-        await shutdown_library(self)
+        shutdown_library(self)
         self.assertEqual(False, self.my_library_thread.is_alive())
         del self.backend 
         #TODO implements tests
@@ -323,7 +323,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         self.backend = Backend()
         await self.backend.setup(self.configuration) 
         
-        systems=await setup_folders_for_testing(self, "TestDirectory8")
+        systems=await setup_folders_for_testing(self, "TestDirectory10")
         insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
         insert_file_into_folder (self, systems, "gbc0", "game.gb","")
         insert_file_into_folder (self, systems, "dos0", "game.exe","mygame")
@@ -345,7 +345,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         self.backend = Backend()
         await self.backend.setup(self.configuration) 
         
-        systems=await setup_folders_for_testing(self, "TestDirectory8")
+        systems=await setup_folders_for_testing(self, "TestDirectory11")
         insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
         insert_file_into_folder (self, systems, "gbc0", "game.gb","")
         insert_file_into_folder (self, systems, "dos0", "game.exe","mygame")
@@ -397,7 +397,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         self.backend = Backend()
         await self.backend.setup(self.configuration) 
         
-        systems=await setup_folders_for_testing(self, "TestDirectory8")
+        systems=await setup_folders_for_testing(self, "TestDirectory12")
         insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
         insert_file_into_folder (self, systems, "gbc0", "game.gb","")
         insert_file_into_folder (self, systems, "dos0", "game.exe","mygame")
@@ -411,6 +411,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         myresult["old"]['e763ebd142be9ab12065d77e9644a45f1a81d4df'] = LocalGameState.Running
         await state_changed(self, myresult["old"],myresult["new"])
                 
+        self.assertEqual(False, self.backend.my_queue_update_local_game_status.empty())
         self.assertEqual(1, self.backend.my_queue_update_local_game_status._qsize())
 
     async def test_setup_queue_to_send_those_changes_backend(self):
@@ -418,7 +419,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         self.backend = Backend()
         await self.backend.setup(self.configuration) 
         
-        systems=await setup_folders_for_testing(self, "TestDirectory8")
+        systems=await setup_folders_for_testing(self, "TestDirectory13")
         insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
         insert_file_into_folder (self, systems, "gbc0", "game.gb","")
         insert_file_into_folder (self, systems, "dos0", "game.exe","mygame")
