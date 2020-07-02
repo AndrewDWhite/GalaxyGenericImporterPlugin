@@ -164,7 +164,7 @@ class ListGames():
                             logging.info(my_user_warning)
         return self.mylist      
     
-    async def disable_monitoring(self):
+    def disable_monitoring(self):
         logging.info("disabling monitoring")
         self.continue_monitoring = False
     
@@ -210,9 +210,9 @@ class ListGames():
             
         logging.info("done this")
 
-    async def shutdown_folder_listeners(self):
+    def shutdown_folder_listeners(self):
         logging.info("shutdown folder listeners")
-        await self.disable_monitoring()
+        self.disable_monitoring()
         for my_thread in self.my_folder_monitor_threads:
             logging.info("shutting down thread")
             logging.info(my_thread)

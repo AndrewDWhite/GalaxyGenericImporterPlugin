@@ -150,7 +150,7 @@ class GenericEmulatorPlugin(Plugin):
     async def shutdown(self):
         logging.info("shutdown called")
         
-        await shutdown_library(self)
+        shutdown_library(self)
 
         logging.info("all done shutdown")
 

@@ -47,13 +47,17 @@ class Backend():
         self.backend_setup = True
         logging.info("backend started up")
         
-async def shutdown_library(self):
+def shutdown_library(self):
     logging.info("shutdown folder listeners")
-    await self.backend.my_game_lister.shutdown_folder_listeners()
+    self.backend.my_game_lister.shutdown_folder_listeners()
     
     logging.info("Library update in progress?")
     self.backend.library_run= False
-    await sync_to_async(self.my_library_thread.join)() 
+    #loop = asyncio.get_event_loop()
+    #loop.close() 
+    
+    self.my_library_thread.join() 
+    logging.info("done with shutdown_library")
 
 async def time_tracking(self, my_threads):
     #for tracking time
