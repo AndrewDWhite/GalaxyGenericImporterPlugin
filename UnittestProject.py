@@ -18,7 +18,7 @@ import math
 from configuration import DefaultConfig
 from ListGames import ListGames
 from generic import GenericEmulatorPlugin, get_exe_command, run_my_selected_game_here
-from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games_thread, create_game, shutdown_library, do_auth, removed_games, added_games, state_changed, setup_queue_to_send_those_changes, send_events, created_update
+from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games_thread, create_game, shutdown_library, do_auth, removed_games, added_games, state_changed, setup_queue_to_send_those_changes, send_events, created_update, time_tracking
 
 from datetime import datetime
 import aiounittest
@@ -363,6 +363,9 @@ class UnittestProject(aiounittest.AsyncTestCase):
         self.assertEqual(game_update_from_queue.local_game_state, LocalGameState.Installed)
         
         self.assertEqual(3, self.backend.my_queue_add_game._qsize())
+
+    async def test_no_time_updates(self):
+        await time_tracking(self,[])
 
     async def test_changed_backend(self):
         self.configuration = DefaultConfig()
