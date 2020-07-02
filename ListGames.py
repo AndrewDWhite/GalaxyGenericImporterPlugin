@@ -206,7 +206,7 @@ class ListGames():
                     await sync_to_async(win32file.FindNextChangeNotification) (change_handle)
 
         finally:
-            await sync_to_async(win32file.FindCloseChangeNotification) (change_handle)
+            win32file.FindCloseChangeNotification (change_handle)
             
         logging.info("done this")
 
