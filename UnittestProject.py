@@ -18,7 +18,7 @@ import math
 from configuration import DefaultConfig
 from ListGames import ListGames
 from generic import GenericEmulatorPlugin, get_exe_command, run_my_selected_game_here
-from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games_thread, create_game, shutdown_library, do_auth, removed_games, added_games, state_changed, setup_queue_to_send_those_changes, send_events, created_update, time_tracking
+from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games_thread, create_game, shutdown_library, do_auth, removed_games, added_games, state_changed, setup_queue_to_send_those_changes, send_events, created_update, time_tracking, prepare_to_send_my_updates
 
 from datetime import datetime
 import aiounittest
@@ -306,6 +306,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         self.assertEqual(False, my_queue_folder_awaiting_scan.empty())
         
     async def test_start_and_stop_library(self):
+        self.my_tasks = []
         self.configuration = DefaultConfig()
         self.backend = Backend()
         await self.backend.setup(self.configuration) 
@@ -369,6 +370,9 @@ class UnittestProject(aiounittest.AsyncTestCase):
         await time_tracking(self,[])
     
     async def test_time_updates(self):
+        self.my_game_lister = ListGames()
+        self.my_game_lister.cache_filepath = self.my_game_lister.cache_filepath+"-test_time_updates"
+        self.my_tasks = []
         self.configuration = DefaultConfig()
         self.backend = Backend()
         if os.path.exists(self.backend.cache_times_filepath):
@@ -438,6 +442,23 @@ class UnittestProject(aiounittest.AsyncTestCase):
         #No changes
         self.assertEqual(0, self.backend.my_queue_update_local_game_status._qsize())
         self.assertEqual(0, self.backend.my_queue_add_game._qsize())
+
+    async def test_prepare_to_send_my_updates(self):
+        self.configuration = DefaultConfig()
+        self.backend = Backend()
+        await self.backend.setup(self.configuration) 
+        
+        systems=await setup_folders_for_testing(self, "TestDirectory3")
+        insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
+        insert_file_into_folder (self, systems, "gbc0", "game.gb","")
+        insert_file_into_folder (self, systems, "dos0", "game.exe","mygame")
+        new_local = await systems.list_all_recursively("test_user")
+        for entry in new_local:
+            logging.debug("Check")
+            if("local_game_state" not in entry):
+                logging.debug("should")
+                entry["local_game_state"]=LocalGameState.Installed
+        await prepare_to_send_my_updates(self, new_local, [])
 
     async def test_created_time_update(self):
         self.configuration = DefaultConfig()
@@ -540,9 +561,6 @@ def insert_file_into_folder (self, systems, folder, file, subfolder):
     
 
 class TestParameterized(unittest.TestCase):
-    def setUp(self):
-        self.loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(None)
     
     @parameterized.expand([
         ["dreamcast valid entry", "dreamcast0", "disc.gdi","mygame",1],
@@ -596,10 +614,7 @@ class TestParameterized(unittest.TestCase):
             self.assertEqual(size, len(data_read ))
             self.assertEqual(data_read, data)
 
-        try:
-            self.loop.run_until_complete(test_write_data_in_folders(self, name, folder, file, subfolder, size))
-        finally:
-            self.loop.close()
+        asyncio.run(test_write_data_in_folders(self, name, folder, file, subfolder, size))
         
 if __name__ == '__main__':
     unittest.main()

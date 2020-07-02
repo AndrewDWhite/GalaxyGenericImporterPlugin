@@ -56,7 +56,10 @@ def shutdown_library(self):
     #loop = asyncio.get_event_loop()
     #loop.close() 
     
-    self.my_library_thread.join() 
+    self.my_library_thread.join()
+    for my_current_future in self.my_tasks:
+        if not my_current_future.done():
+            my_current_future.cancel() 
     logging.info("done with shutdown_library")
 
 async def time_tracking(self, my_threads):
@@ -165,9 +168,12 @@ def update_local_games_thread(self, username, my_game_lister):
     #        loop = asyncio.get_event_loop()
     #        loop.create_task(update_local_games(self, username, my_game_lister))
     #except RuntimeError:
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(update_local_games(self, username, my_game_lister) )      
+    try:
+        asyncio.get_event_loop()
+        my_task = asyncio.create_task(update_local_games(self, username, my_game_lister) )
+        self.my_tasks.append(my_task)
+    except RuntimeError:
+        asyncio.run(update_local_games(self, username, my_game_lister) )      
     #finally:
     #    loop.close()
     logging.info("finished starting thread update local")

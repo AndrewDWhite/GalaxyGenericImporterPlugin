@@ -32,6 +32,7 @@ class GenericEmulatorPlugin(Plugin):
         self.backend = Backend()
         self.my_library_thread = None
         self.my_threads = []    
+        self.my_tasks = []
 
     # required api interface to authenticate the user with the platform
     async def authenticate(self, stored_credentials=None):
@@ -121,27 +122,26 @@ class GenericEmulatorPlugin(Plugin):
         if self.backend.backend_setup:
             if self.my_library_thread == None:
                 self.my_library_thread = threading.Thread(target=update_local_games_thread, args=(self, self.configuration.my_user_to_gog, self.backend.my_game_lister,))
+                self.my_library_thread.daemon = True
                 self.my_library_thread.start()
             logging.info("lib?")
             logging.info(self.my_library_thread.is_alive())
             #try:
             try:
-                loop = asyncio.get_event_loop()
-                loop.create_task(send_events(self) )
+                asyncio.get_event_loop()
+                my_task = asyncio.create_task(send_events(self) )
+                self.my_tasks.append(my_task)
             except RuntimeError:
-                loop = asyncio.new_event_loop()
-                asyncio.set_event_loop(loop)
-                loop.run_until_complete(send_events(self) )      
+                asyncio.run(send_events(self) ) 
             #finally:
             #    loop.close()  
             #try:
             try:
-                loop = asyncio.get_event_loop()
-                loop.create_task(time_tracking(self, self.my_threads) )
+                asyncio.get_event_loop()
+                my_task = asyncio.create_task(time_tracking(self, self.my_threads) )
+                self.my_tasks.append(my_task)
             except RuntimeError:
-                loop = asyncio.new_event_loop()
-                asyncio.set_event_loop(loop)
-                my_loop.run_until_complete(time_tracking(self, self.my_threads) )      
+                asyncio.run(time_tracking(self, self.my_threads) )      
             #finally:
             #    my_loop.close()      
         
@@ -165,6 +165,7 @@ class GenericEmulatorPlugin(Plugin):
         self.my_threads.append(my_thread)
         my_thread.name = json.dumps({"time":my_current_time.isoformat(), "id":game_id})
         logging.info(my_thread.name)
+        my_thread.daemon = True
         my_thread.start()
   
 def main():

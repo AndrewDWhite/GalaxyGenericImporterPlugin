@@ -216,5 +216,6 @@ class ListGames():
                 logging.info(current_path)
                 my_thread = threading.Thread(target=self.watcher_update, args=( os.path.expandvars(current_path), my_queue_folder_awaiting_scan, ))
                 self.my_folder_monitor_threads.append(my_thread)
+                my_thread.daemon = True
                 my_thread.start()
                 
