@@ -305,6 +305,6 @@ async def update_cache(self, my_cache_update):
     try:
         logging.info("locked")
         self.backend.local_game_cache = my_cache_update
-        await self.backend.my_game_lister.write_to_cache(my_cache_update)
+        self.backend.my_game_lister.write_to_cache(my_cache_update)
     finally:
         self.backend.library_lock.release()
