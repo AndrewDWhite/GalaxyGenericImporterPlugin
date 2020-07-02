@@ -17,7 +17,7 @@ import queue
 from configuration import DefaultConfig
 from ListGames import ListGames
 from generic import GenericEmulatorPlugin, get_exe_command, run_my_selected_game_here
-from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games_thread, create_game, shutdown_library, do_auth, removed_games, added_games, state_changed
+from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games_thread, create_game, shutdown_library, do_auth, removed_games, added_games, state_changed, setup_queue_to_send_those_changes
 
 from datetime import datetime
 import aiounittest
@@ -384,6 +384,26 @@ class UnittestProject(aiounittest.AsyncTestCase):
                 
         self.assertEqual(1, self.backend.my_queue_update_local_game_status._qsize())
 
+    async def test_setup_queue_to_send_those_changes_backend(self):
+        self.configuration = DefaultConfig()
+        self.backend = Backend()
+        await self.backend.setup(self.configuration) 
+        
+        systems=await setup_folders_for_testing(self, "TestDirectory8")
+        insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
+        insert_file_into_folder (self, systems, "gbc0", "game.gb","")
+        insert_file_into_folder (self, systems, "dos0", "game.exe","mygame")
+        new_local = await systems.list_all_recursively("test_user")
+        for entry in new_local:
+            logging.debug("Check")
+            if("local_game_state" not in entry):
+                logging.debug("should")
+                entry["local_game_state"]=LocalGameState.Installed
+        myresult = await get_state_changes(new_local,new_local)
+        await setup_queue_to_send_those_changes(self, new_local, myresult["old"],myresult["new"])
+        #No changes
+        self.assertEqual(0, self.backend.my_queue_update_local_game_status._qsize())
+        self.assertEqual(0, self.backend.my_queue_add_game._qsize())
     
     async def test_do_auth(self):
         self.configuration = DefaultConfig()
