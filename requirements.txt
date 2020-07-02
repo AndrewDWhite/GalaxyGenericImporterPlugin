@@ -3,4 +3,6 @@ galaxy.plugin.api
 galaxyutils
 parameterized
 pywin32
+syncasync
+aiounittest
 
