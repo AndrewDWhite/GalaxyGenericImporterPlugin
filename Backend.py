@@ -10,7 +10,6 @@ import json
 from datetime import datetime
 import math
 import threading
-import time
 import queue
 import asyncio
 from syncasync import sync_to_async
@@ -210,7 +209,7 @@ async def update_local_games(self, username, my_game_lister):
                 self.backend.not_updating_list_scan = True
                 
         logging.info("sleepy")
-        await time.sleep(10)
+        await asyncio.sleep(10)
     logging.info("bye")
 
 async def run_my_selected_game_here(execution_command):
