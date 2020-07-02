@@ -212,8 +212,8 @@ async def update_local_games(self, username, my_game_lister):
         await asyncio.sleep(10)
     logging.info("bye")
 
-async def run_my_selected_game_here(execution_command):
-    my_command = await sync_to_async(os.system)(execution_command)
+def run_my_selected_game_here(execution_command):
+    my_command = os.system(execution_command)
     return my_command
 
 async def get_exe_command(game_id,local_game_cache):
