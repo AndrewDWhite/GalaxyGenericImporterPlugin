@@ -28,7 +28,7 @@ from galaxy.api.consts import LocalGameState, LicenseType
 from parameterized import parameterized
 from galaxy.api.types import LicenseInfo, Authentication
 
-from unittest.mock import Mock
+from unittest.mock import Mock, MagicMock
 
 class UnittestProject(aiounittest.AsyncTestCase):
     '''
@@ -64,7 +64,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
     async def test_write_no_data_in_folders(self):
         systems=await setup_folders_for_testing(self, "TestDirectory7")
         data = await systems.list_all_recursively("test_user")
-        await systems.write_to_cache(data)
+        systems.write_to_cache(data)
         my_cache_exists = await systems.cache_exists()
         self.assertTrue(my_cache_exists)
         data_read = await systems.read_from_cache()
@@ -366,6 +366,31 @@ class UnittestProject(aiounittest.AsyncTestCase):
 
     async def test_no_time_updates(self):
         await time_tracking(self,[])
+    
+    async def test_time_updates(self):
+        self.configuration = DefaultConfig()
+        self.backend = Backend()
+        if os.path.exists(self.backend.cache_times_filepath):
+            os.remove(self.backend.cache_times_filepath)
+        await self.backend.setup(self.configuration) 
+        
+        my_threads = []
+        my_thread = Mock()
+        my_current_time = datetime.now()
+        my_thread.name="{\"time\":\""+str(my_current_time)+"\", \"id\":\"12345A\"}"
+        my_thread.is_alive= MagicMock(return_value=False)
+        my_threads.append(my_thread)
+        await time_tracking(self,my_threads)
+        
+        #local_time_cache = await self.my_game_lister.read_from_cache_filename(self.backend.cache_times_filepath)
+        self.assertEqual(1,len(self.backend.local_time_cache))
+        my_timed_entry = self.backend.local_time_cache[0]
+        self.assertEqual(my_timed_entry["run_time_total"], 1)
+        self.assertEqual(my_timed_entry["last_time_played"], math.floor(my_current_time.timestamp() ))
+        self.assertEqual(my_timed_entry["hash_digest"], "12345A")
+        
+        if os.path.exists(self.backend.cache_times_filepath):
+            os.remove(self.backend.cache_times_filepath)
 
     async def test_changed_backend(self):
         self.configuration = DefaultConfig()
@@ -557,7 +582,7 @@ class TestParameterized(unittest.TestCase):
             #todo insert function with parameterized files in folders
             insert_file_into_folder (self, systems, folder, file, subfolder)
             data = await systems.list_all_recursively("test_user")
-            await systems.write_to_cache(data)
+            systems.write_to_cache(data)
     
             loop_result = await systems.cache_exists()
             self.assertTrue(loop_result)

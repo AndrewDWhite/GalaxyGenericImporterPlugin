@@ -66,13 +66,13 @@ class ListGames():
         self.continue_monitoring = True
         self.my_folder_monitor_threads = []
     
-    async def write_to_cache(self, data):
-        await self.write_to_cache_file(data, self.cache_filepath)
+    def write_to_cache(self, data):
+        self.write_to_cache_file(data, self.cache_filepath)
         
-    async def write_to_cache_file(self, data, cache_filepath):
+    def write_to_cache_file(self, data, cache_filepath):
         logging.info(cache_filepath)
         with open(cache_filepath, 'wb') as my_file:
-            await sync_to_async(pickle.dump)(data, my_file)
+            pickle.dump(data, my_file)
         my_file.close()
         
     async def cache_exists(self):
