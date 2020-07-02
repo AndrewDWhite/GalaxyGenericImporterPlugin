@@ -120,8 +120,19 @@ class GenericEmulatorPlugin(Plugin):
     def tick(self):   
         logging.info("lib?")
         logging.info(self.my_library_thread.is_alive())
-        send_events(self)         
-        time_tracking(self, self.my_threads)
+        try:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
+            loop.run_until_complete(send_events(self) )      
+        finally:
+            loop.close()  
+        try:
+            my_loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(my_loop)
+            my_loop.run_until_complete(time_tracking(self, self.my_threads) )      
+        finally:
+            my_loop.close()      
+        
 
     # api interface shutdown nicely
     async def shutdown(self):

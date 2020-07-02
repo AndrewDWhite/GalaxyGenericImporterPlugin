@@ -17,7 +17,7 @@ import queue
 from configuration import DefaultConfig
 from ListGames import ListGames
 from generic import GenericEmulatorPlugin, get_exe_command, run_my_selected_game_here
-from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games_thread, create_game, shutdown_library, do_auth, removed_games, added_games, state_changed, setup_queue_to_send_those_changes
+from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games_thread, create_game, shutdown_library, do_auth, removed_games, added_games, state_changed, setup_queue_to_send_those_changes, send_events
 
 from datetime import datetime
 import aiounittest
@@ -404,6 +404,12 @@ class UnittestProject(aiounittest.AsyncTestCase):
         #No changes
         self.assertEqual(0, self.backend.my_queue_update_local_game_status._qsize())
         self.assertEqual(0, self.backend.my_queue_add_game._qsize())
+    
+    async def test_no_updates_send(self):
+        self.configuration = DefaultConfig()
+        self.backend = Backend()
+        await self.backend.setup(self.configuration) 
+        await send_events(self)
     
     async def test_do_auth(self):
         self.configuration = DefaultConfig()
