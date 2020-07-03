@@ -18,7 +18,7 @@ import math
 from configuration import DefaultConfig
 from ListGames import ListGames
 from generic import GenericEmulatorPlugin, get_exe_command, run_my_selected_game_here
-from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games, create_game, shutdown_library, do_auth, removed_games, added_games, state_changed, setup_queue_to_send_those_changes, send_events, created_update, time_tracking, prepare_to_send_my_updates, shutdown_tasks
+from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games, create_game, shutdown_library, do_auth, removed_games, added_games, state_changed, setup_queue_to_send_those_changes, send_events, created_update, time_tracking, prepare_to_send_my_updates, shutdown_tasks, tick_async, library_thread
 
 from datetime import datetime, timedelta
 import aiounittest
@@ -309,12 +309,20 @@ class UnittestProject(aiounittest.AsyncTestCase):
         #loop = asyncio.new_event_loop()
         #self.my_library_started = False
         self.my_tasks = []
+        self.my_library_started = False
         self.configuration = DefaultConfig()
         self.backend = Backend()
         await self.backend.setup(self.configuration) 
-        #self.my_library_thread = threading.Thread(target=update_local_games_thread, args=(self, "test_user", self.backend.my_game_lister,))
         logging.debug("starting")
-        #self.my_library_thread.start()
+        
+        self.started_async_tick = True
+        asyncio.get_event_loop()
+        my_task = asyncio.create_task(tick_async(self) )
+        self.my_tasks.append(my_task)
+        
+        self.my_library_thread = threading.Thread(target=library_thread, args=(self, ) )
+        self.my_library_thread.daemon = True
+        self.my_library_thread.start() 
         
         asyncio.get_event_loop()
         my_task = asyncio.create_task(update_local_games(self, "test_user", self.backend.my_game_lister) )

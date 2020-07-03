@@ -14,8 +14,7 @@ import asyncio
 
 #local
 from configuration import DefaultConfig
-from Backend import Backend, time_tracking, create_game, run_my_selected_game_here, get_exe_command, do_auth, shutdown_library, send_events, update_local_games, shutdown_tasks
-from _ast import If
+from Backend import Backend, create_game, run_my_selected_game_here, get_exe_command, do_auth, shutdown_library, shutdown_tasks, tick_async, library_thread
 
 class GenericEmulatorPlugin(Plugin):
     def __init__(self, reader, writer, token):
@@ -29,7 +28,7 @@ class GenericEmulatorPlugin(Plugin):
             token
         )         
         self.backend = Backend()
-        #self.my_library_thread = None
+        self.my_library_thread = None
         self.my_library_started = False
         self.my_threads = []    
         self.my_tasks = []
@@ -122,34 +121,13 @@ class GenericEmulatorPlugin(Plugin):
         if not self.started_async_tick:
             self.started_async_tick = True
             asyncio.get_event_loop()
-            my_task = asyncio.create_task(self.tick_async() )
+            my_task = asyncio.create_task(tick_async(self) )
             self.my_tasks.append(my_task)
             
-    async def tick_async(self):   
-        while(self.keep_ticking):
-            logging.info("backend?")
-            logging.info(self.backend.backend_setup)
-            if self.backend.backend_setup:
-                #if self.my_library_thread == None:
-                if not self.my_library_started:
-                    #self.my_library_thread = threading.Thread(target=update_local_games_thread, args=(self, self.configuration.my_user_to_gog, self.backend.my_game_lister,))
-                    #self.my_library_thread.daemon = True
-                    #self.my_library_thread.start()
-                    asyncio.get_event_loop()
-                    my_task = asyncio.create_task(update_local_games(self, self.configuration.my_user_to_gog, self.backend.my_game_lister) )
-                    self.my_tasks.append(my_task)
-                    self.my_library_started = True
-                #logging.info("lib?")
-                #logging.info(self.my_library_thread.is_alive())
-                #try:
-                await send_events(self) 
-                #finally:
-                #    loop.close()  
-                #try:
-                await time_tracking(self, self.my_threads)            #finally:
-                #    my_loop.close()   
-            await asyncio.sleep(1)   
-        
+            logging.info("starting library thread up for the first time")
+            self.my_library_thread = threading.Thread(target=library_thread, args=(self, ) )
+            self.my_library_thread.daemon = True
+            self.my_library_thread.start()    
 
     # api interface shutdown nicely
     async def shutdown(self):

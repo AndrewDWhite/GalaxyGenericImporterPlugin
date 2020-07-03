@@ -55,10 +55,10 @@ def shutdown_library(self):
     #loop = asyncio.get_event_loop()
     #loop.close() 
     
-    #while (self.my_library_thread.isAlive()):
-    #    pass
+    while (self.my_library_thread.isAlive()):
+        pass
     
-    #self.my_library_thread.join()
+    self.my_library_thread.join()
     #for my_current_future in self.my_tasks:
     #    if not my_current_future.done():
     #        my_current_future.cancel() 
@@ -141,6 +141,49 @@ async def state_changed(self, old_dict, new_dict):
         if new_dict[my_id] != old_dict[my_id]:
             logging.info("changed")
             self.backend.my_queue_update_local_game_status.put(LocalGame(my_id, new_dict[my_id]))
+
+def library_thread(self):
+    logging.info("TODO start up thread for library")
+    #Wait for backend to be setup and then we can go
+    while not self.backend.backend_setup:
+        pass
+    self.backend.library_run = True
+    
+    if not self.my_library_started:
+        #loop = asyncio.new_event_loop()
+        #asyncio.set_event_loop(loop)
+        #asyncio.get_event_loop()
+        logging.info("TODO library loop")
+        
+#         try:
+#             loop = asyncio.get_event_loop()
+#             logging.info("library thread has loop and starting")
+#             my_task = asyncio.create_task(update_local_games(self, self.configuration.my_user_to_gog, self.backend.my_game_lister) )
+#             self.my_tasks.append(my_task)
+#         except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        asyncio.run((update_local_games(self, self.configuration.my_user_to_gog, self.backend.my_game_lister) ))      
+
+        self.my_library_started = True
+        logging.info("Finished start up thread for library")
+
+async def tick_async(self):   
+    while(self.keep_ticking):
+        logging.info("backend?")
+        logging.info(self.backend.backend_setup)
+        if self.backend.backend_setup:
+            #if self.my_library_thread == None:
+            #logging.info("lib?")
+            #logging.info(self.my_library_thread.is_alive())
+            #try:
+            await send_events(self) 
+            #finally:
+            #    loop.close()  
+            #try:
+            await time_tracking(self, self.my_threads)            #finally:
+            #    my_loop.close()   
+        await asyncio.sleep(1) 
     
 async def setup_queue_to_send_those_changes(self, new_list, old_dict, new_dict):
     await removed_games(self, old_dict, new_dict)    
