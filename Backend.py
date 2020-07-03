@@ -12,7 +12,6 @@ import math
 import threading
 import queue
 import asyncio
-from syncasync import sync_to_async
 
 class Backend():
     
@@ -56,7 +55,13 @@ def shutdown_library(self):
     #loop = asyncio.get_event_loop()
     #loop.close() 
     
-    self.my_library_thread.join() 
+    while (self.my_library_thread.isAlive()):
+        pass
+    
+    self.my_library_thread.join()
+    #for my_current_future in self.my_tasks:
+    #    if not my_current_future.done():
+    #        my_current_future.cancel() 
     logging.info("done with shutdown_library")
 
 async def time_tracking(self, my_threads):
@@ -70,7 +75,7 @@ async def time_tracking(self, my_threads):
             my_thread_name = my_current_thread.name
             logging.info(my_thread_name)
             logging.info(my_thread_name)
-            my_dictionary_values = await sync_to_async(json.loads)(my_thread_name)
+            my_dictionary_values = json.loads(my_thread_name)
             await finished_game_run(self, datetime.fromisoformat(my_dictionary_values["time"]),my_dictionary_values["id"], self.backend.local_time_cache)
             my_threads_to_remove.append(my_current_thread)
     for my_thread_to_remove in my_threads_to_remove:
@@ -78,8 +83,8 @@ async def time_tracking(self, my_threads):
         my_threads.remove(my_thread_to_remove)
         
 async def create_game(game):
-    my_hash = await sync_to_async(escapejson)(game["hash_digest"])
-    my_game_name = await sync_to_async(escapejson)(game["game_name"])
+    my_hash = escapejson(game["hash_digest"])
+    my_game_name = escapejson(game["game_name"])
     return Game(my_hash, my_game_name, None, LicenseInfo(LicenseType.SinglePurchase))
 
 async def prepare_to_send_my_updates(self, new_local_games_list, local_game_cache):
@@ -99,21 +104,21 @@ async def send_events(self):
     while not self.backend.my_queue_add_game.empty():
         my_game_sending = self.backend.my_queue_add_game.get()
         logging.info(my_game_sending)
-        await sync_to_async(self.add_game)(my_game_sending)
+        self.add_game(my_game_sending)
     
     logging.info("my_queue_update_local_game_status")
     logging.info(self.backend.my_queue_update_local_game_status.empty())    
     while not self.backend.my_queue_update_local_game_status.empty():
         my_game_sending = self.backend.my_queue_update_local_game_status.get()
         logging.info(my_game_sending)
-        await sync_to_async(self.update_local_game_status)(my_game_sending)
+        self.update_local_game_status(my_game_sending)
   
     logging.info("my_queue_update_game_time")
     logging.info(self.backend.my_queue_update_game_time.empty())    
     while not self.backend.my_queue_update_game_time.empty():    
         my_game_sending = self.backend.my_queue_update_game_time.get()
         logging.info(my_game_sending)
-        await sync_to_async(self.update_game_time)(my_game_sending)
+        self.update_game_time(my_game_sending)
 
 async def removed_games(self, old_dict, new_dict):
     # removed games
@@ -136,6 +141,49 @@ async def state_changed(self, old_dict, new_dict):
         if new_dict[my_id] != old_dict[my_id]:
             logging.info("changed")
             self.backend.my_queue_update_local_game_status.put(LocalGame(my_id, new_dict[my_id]))
+
+def library_thread(self):
+    logging.info("TODO start up thread for library")
+    #Wait for backend to be setup and then we can go
+    while not self.backend.backend_setup:
+        pass
+    self.backend.library_run = True
+    
+    if not self.my_library_started:
+        #loop = asyncio.new_event_loop()
+        #asyncio.set_event_loop(loop)
+        #asyncio.get_event_loop()
+        logging.info("TODO library loop")
+        
+#         try:
+#             loop = asyncio.get_event_loop()
+#             logging.info("library thread has loop and starting")
+#             my_task = asyncio.create_task(update_local_games(self, self.configuration.my_user_to_gog, self.backend.my_game_lister) )
+#             self.my_tasks.append(my_task)
+#         except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        asyncio.run((update_local_games(self, self.configuration.my_user_to_gog, self.backend.my_game_lister) ))      
+
+        self.my_library_started = True
+        logging.info("Finished start up thread for library")
+
+async def tick_async(self):   
+    while(self.keep_ticking):
+        logging.info("backend?")
+        logging.info(self.backend.backend_setup)
+        if self.backend.backend_setup:
+            #if self.my_library_thread == None:
+            #logging.info("lib?")
+            #logging.info(self.my_library_thread.is_alive())
+            #try:
+            await send_events(self) 
+            #finally:
+            #    loop.close()  
+            #try:
+            await time_tracking(self, self.my_threads)            #finally:
+            #    my_loop.close()   
+        await asyncio.sleep(1) 
     
 async def setup_queue_to_send_those_changes(self, new_list, old_dict, new_dict):
     await removed_games(self, old_dict, new_dict)    
@@ -158,19 +206,16 @@ async def get_state_changes(old_list, new_list):
     result = {"old":old_dict,"new":new_dict}
     return result
 
-def update_local_games_thread(self, username, my_game_lister):
-    logging.info("starting thread update local")
-    #try:
-    #try:
-    #        loop = asyncio.get_event_loop()
-    #        loop.create_task(update_local_games(self, username, my_game_lister))
-    #except RuntimeError:
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(update_local_games(self, username, my_game_lister) )      
-    #finally:
-    #    loop.close()
-    logging.info("finished starting thread update local")
+def shutdown_tasks(self, tasks):
+        for task in tasks:
+            logging.info("canceling")
+            logging.info(task)
+            task.cancel()
+        
+        for task in tasks:
+            while not task.done:
+                logging.info("waiting for")
+                logging.info(tasks)
 
 async def update_local_games(self, username, my_game_lister):
     not_run = True
@@ -214,6 +259,15 @@ async def update_local_games(self, username, my_game_lister):
                 
         logging.info("sleepy")
         await asyncio.sleep(10)
+    #tasks = [t for t in asyncio.all_tasks() if t is not
+    #         asyncio.current_task()]
+    #for task in tasks:
+    #    logging.info("canceling")
+    #    task.cancel()
+    #for task in tasks:
+    #        while not task.done:
+    #            logging.info("waiting for")
+    #            logging.info(tasks)
     logging.info("bye")
 
 def run_my_selected_game_here(execution_command):
@@ -223,7 +277,7 @@ def run_my_selected_game_here(execution_command):
 async def get_exe_command(game_id,local_game_cache):
     my_game_to_launch={}
     for current_game_checking in local_game_cache:
-        my_hash = await sync_to_async(escapejson)(current_game_checking["hash_digest"])
+        my_hash = escapejson(current_game_checking["hash_digest"])
         if (my_hash == game_id):
             my_game_to_launch =  current_game_checking
             break      
@@ -270,7 +324,7 @@ async def finished_game_run(self, start_time, game_id, local_time_cache):
         my_game_update["hash_digest"] = game_id
         my_cache_update.append(my_game_update)
     await update_cache_time(self, my_cache_update, self.backend.cache_times_filepath)
-    my_game_id = await sync_to_async(escapejson)(game_id)
+    my_game_id = escapejson(game_id)
     self.backend.my_queue_update_game_time.put(GameTime(my_game_id, my_game_update["run_time_total"], my_game_update["last_time_played"]))
 
 async def created_update(current_game, my_delta, start_time):

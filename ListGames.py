@@ -12,8 +12,6 @@ import hashlib
 import pickle
 import threading
 import sys
-from syncasync import sync_to_async
-import asyncio
 
 from enum import EnumMeta
 
@@ -80,7 +78,7 @@ class ListGames():
         return my_cache_exists
     
     async def cache_exists_file(self, cache_filepath):
-        my_path_exists = await sync_to_async(os.path.exists)(cache_filepath)
+        my_path_exists = os.path.exists(cache_filepath)
         return my_path_exists
         
     async def read_from_cache(self):
@@ -91,7 +89,7 @@ class ListGames():
         my_cache_exists = await self.cache_exists()
         if my_cache_exists:
             with open(cache_filepath, 'rb') as my_file:
-                my_cache_data = await sync_to_async(pickle.load)(my_file)
+                my_cache_data = pickle.load(my_file)
                 return my_cache_data
         else:
             return []
@@ -102,12 +100,12 @@ class ListGames():
     async def delete_cache_file(self, cache_filepath):
         my_cache_exists = await self.cache_exists()
         if my_cache_exists:
-            await sync_to_async(os.remove)(cache_filepath)
+            os.remove(cache_filepath)
     
     async def hash_data(self, my_game, salt):
-        myhasher = await sync_to_async(hashlib.sha1)()
-        await sync_to_async(myhasher.update)((my_game+salt).encode('utf-8'))
-        my_hashed_data = await sync_to_async(myhasher.hexdigest)()
+        myhasher = hashlib.sha1()
+        myhasher.update((my_game+salt).encode('utf-8'))
+        my_hashed_data = myhasher.hexdigest()
         return my_hashed_data
     
     async def setup_tags(self, emulated_system):
@@ -122,20 +120,20 @@ class ListGames():
         new_entry["hash_digest"]=await self.hash_data(my_game,salt)
         logging.info(new_entry["hash_digest"])
         new_entry["filename"]=my_game
-        new_entry["filename_short"] = await sync_to_async(os.path.basename)(my_game)
-        raw_entry = await sync_to_async(os.path.splitext)(new_entry["filename_short"])
+        new_entry["filename_short"] = os.path.basename(my_game)
+        raw_entry = os.path.splitext(new_entry["filename_short"])
         new_entry["game_filename"] = raw_entry[0]
-        regex_result = await sync_to_async(matcher.search)(my_game)
+        regex_result = matcher.search(my_game)
         logging.info(regex_result)
         if None is not regex_result:
-            new_entry["game_name"] = await sync_to_async(regex_result.group)(emulated_system["game_name_regex_group"])
+            new_entry["game_name"] = regex_result.group(emulated_system["game_name_regex_group"])
             logging.info(new_entry["game_name"])
         else:
             logging.info("Could not match")
             new_entry["game_name"] = my_game
             logging.info(my_game)
             raise UserWarning("Could not match")
-        raw_path = await sync_to_async(os.path.split)(my_game)
+        raw_path = os.path.split(my_game)
         new_entry["path"] = raw_path[0]
         new_entry["tags"] = tags
         return new_entry
@@ -145,14 +143,14 @@ class ListGames():
         self.mylist=[]
         for emulated_system in self.loaded_systems_configuration:
             tags = await self.setup_tags(emulated_system)
-            matcher = await sync_to_async(re.compile)(emulated_system["game_name_regex"], re.IGNORECASE)
+            matcher = re.compile(emulated_system["game_name_regex"], re.IGNORECASE)
             
             for extension in emulated_system["filename_regex"]:
                 for current_path in emulated_system["path_regex"]:
                     logging.info(current_path)
-                    my_path_expanded = await sync_to_async(os.path.expandvars)(current_path)
-                    my_path_joined = await sync_to_async(os.path.join)(my_path_expanded, '**', extension)
-                    found_games = await sync_to_async(glob.glob)(my_path_joined, recursive=True)
+                    my_path_expanded = os.path.expandvars(current_path)
+                    my_path_joined = os.path.join(my_path_expanded, '**', extension)
+                    found_games = glob.glob(my_path_joined, recursive=True)
                     
                     for my_game in found_games:
                         logging.debug(my_game)
@@ -196,7 +194,6 @@ class ListGames():
     
             finally:
                 win32file.FindCloseChangeNotification (change_handle)
-            
         logging.info("done this")
 
     def shutdown_folder_listeners(self):
@@ -205,6 +202,8 @@ class ListGames():
         for my_thread in self.my_folder_monitor_threads:
             logging.info("shutting down thread")
             logging.info(my_thread)
+            while (my_thread.is_alive()):
+                pass
             #TODO cleanup nicer
             my_thread.join()
     
@@ -216,5 +215,6 @@ class ListGames():
                 logging.info(current_path)
                 my_thread = threading.Thread(target=self.watcher_update, args=( os.path.expandvars(current_path), my_queue_folder_awaiting_scan, ))
                 self.my_folder_monitor_threads.append(my_thread)
+                my_thread.daemon = True
                 my_thread.start()
                 

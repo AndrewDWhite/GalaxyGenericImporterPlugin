@@ -18,9 +18,9 @@ import math
 from configuration import DefaultConfig
 from ListGames import ListGames
 from generic import GenericEmulatorPlugin, get_exe_command, run_my_selected_game_here
-from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games_thread, create_game, shutdown_library, do_auth, removed_games, added_games, state_changed, setup_queue_to_send_those_changes, send_events, created_update, time_tracking
+from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games, create_game, shutdown_library, do_auth, removed_games, added_games, state_changed, setup_queue_to_send_those_changes, send_events, created_update, time_tracking, prepare_to_send_my_updates, shutdown_tasks, tick_async, library_thread
 
-from datetime import datetime
+from datetime import datetime, timedelta
 import aiounittest
 
 from galaxy.api.consts import LocalGameState, LicenseType
@@ -306,17 +306,36 @@ class UnittestProject(aiounittest.AsyncTestCase):
         self.assertEqual(False, my_queue_folder_awaiting_scan.empty())
         
     async def test_start_and_stop_library(self):
+        #loop = asyncio.new_event_loop()
+        #self.my_library_started = False
+        self.my_tasks = []
+        self.my_library_started = False
         self.configuration = DefaultConfig()
         self.backend = Backend()
         await self.backend.setup(self.configuration) 
-        self.my_library_thread = threading.Thread(target=update_local_games_thread, args=(self, "test_user", self.backend.my_game_lister,))
         logging.debug("starting")
-        self.my_library_thread.start()
-        self.assertEqual(True, self.my_library_thread.is_alive())
+        
+        self.started_async_tick = True
+        asyncio.get_event_loop()
+        my_task = asyncio.create_task(tick_async(self) )
+        self.my_tasks.append(my_task)
+        
+        self.my_library_thread = threading.Thread(target=library_thread, args=(self, ) )
+        self.my_library_thread.daemon = True
+        self.my_library_thread.start() 
+        
+        asyncio.get_event_loop()
+        my_task = asyncio.create_task(update_local_games(self, "test_user", self.backend.my_game_lister) )
+        self.my_tasks.append(my_task)
+        #self.assertEqual(True, self.my_library_thread.is_alive())
+        #self.assertEqual(True, self.my_library_started)
         self.assertEqual(True, self.backend.library_run)
         shutdown_library(self)
-        self.assertEqual(False, self.my_library_thread.is_alive())
-        del self.backend 
+        shutdown_tasks(self, self.my_tasks)
+        #self.assertEqual(False, self.my_library_thread.is_alive())
+        self.assertEqual(False, self.backend.library_run)
+        #del self.backend 
+        #loop.close()
         #TODO implements tests
 
     async def test_removed_backend(self):
@@ -369,6 +388,9 @@ class UnittestProject(aiounittest.AsyncTestCase):
         await time_tracking(self,[])
     
     async def test_time_updates(self):
+        self.my_game_lister = ListGames()
+        self.my_game_lister.cache_filepath = self.my_game_lister.cache_filepath+"-test_time_updates"
+        self.my_tasks = []
         self.configuration = DefaultConfig()
         self.backend = Backend()
         if os.path.exists(self.backend.cache_times_filepath):
@@ -379,10 +401,11 @@ class UnittestProject(aiounittest.AsyncTestCase):
         
         my_threads = []
         my_thread = Mock()
-        my_current_time = datetime.now()
-        my_thread.name="{\"time\":\""+str(my_current_time)+"\", \"id\":\"12345A\"}"
         my_thread.is_alive= MagicMock(return_value=False)
         my_threads.append(my_thread)
+        my_current_time = datetime.now() - timedelta(minutes=1)
+        my_thread.name="{\"time\":\""+str(my_current_time)+"\", \"id\":\"12345A\"}"
+        
         await time_tracking(self,my_threads)
         
         #local_time_cache = await self.my_game_lister.read_from_cache_filename(self.backend.cache_times_filepath)
@@ -438,6 +461,23 @@ class UnittestProject(aiounittest.AsyncTestCase):
         #No changes
         self.assertEqual(0, self.backend.my_queue_update_local_game_status._qsize())
         self.assertEqual(0, self.backend.my_queue_add_game._qsize())
+
+    async def test_prepare_to_send_my_updates(self):
+        self.configuration = DefaultConfig()
+        self.backend = Backend()
+        await self.backend.setup(self.configuration) 
+        
+        systems=await setup_folders_for_testing(self, "TestDirectory3")
+        insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
+        insert_file_into_folder (self, systems, "gbc0", "game.gb","")
+        insert_file_into_folder (self, systems, "dos0", "game.exe","mygame")
+        new_local = await systems.list_all_recursively("test_user")
+        for entry in new_local:
+            logging.debug("Check")
+            if("local_game_state" not in entry):
+                logging.debug("should")
+                entry["local_game_state"]=LocalGameState.Installed
+        await prepare_to_send_my_updates(self, new_local, [])
 
     async def test_created_time_update(self):
         self.configuration = DefaultConfig()
@@ -540,9 +580,6 @@ def insert_file_into_folder (self, systems, folder, file, subfolder):
     
 
 class TestParameterized(unittest.TestCase):
-    def setUp(self):
-        self.loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(None)
     
     @parameterized.expand([
         ["dreamcast valid entry", "dreamcast0", "disc.gdi","mygame",1],
@@ -596,10 +633,7 @@ class TestParameterized(unittest.TestCase):
             self.assertEqual(size, len(data_read ))
             self.assertEqual(data_read, data)
 
-        try:
-            self.loop.run_until_complete(test_write_data_in_folders(self, name, folder, file, subfolder, size))
-        finally:
-            self.loop.close()
+        asyncio.run(test_write_data_in_folders(self, name, folder, file, subfolder, size))
         
 if __name__ == '__main__':
     unittest.main()
