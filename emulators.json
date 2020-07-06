@@ -32,7 +32,7 @@
             "execution" : "\"%USERPROFILE%\\Downloads\\dolphin-master-5.0-11701-x64\\Dolphin-x64\\Dolphin.exe\" --config \"Dolphin.Display.Fullscreen=True\" -e \"%ROM_RAW%\"",
             "path_regex" : ["%USERPROFILE%\\Documents\\Games\\GameCube","F:\\Software\\games\\roms\\GameCube"],
             "tags" : ["dolphin"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ][\\(].*[\\)])*[.]iso",
+            "game_name_regex" : ".*[\\\\](.+?)([ ][\\(\\[].*[\\)\\]])*[.]iso",
             "game_name_regex_group" : 1,
             "filename_regex" : ["*[.]iso"]
         },
