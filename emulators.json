@@ -213,7 +213,7 @@
         {
             "name" : "3ds",
             "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\citra_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\3ds","F:\\Software\\games\\roms\\3ds"],
+            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\3ds","F:\\Software\\games\\roms\\3ds\\roms"],
             "tags" : ["retroarch"],
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]3ds",
             "game_name_regex_group" : 1,

@@ -60,7 +60,7 @@ If the configuration is not changed to reflect your system, then the following i
 | mods | | %USERPROFILE%\Documents\Games\mods |
 | Xbox 360 | %USERPROFILE%\Downloads\xenia_master\xenia.exe | %USERPROFILE%\Documents\Games\xbox 360 |
 | | | F:\Software\games\roms\xbox 360\games |
-| Nintendo 3DS | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\3ds |
+| Nintendo 3DS | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\3ds\roms |
 | | | %USERPROFILE%\Documents\Games\3ds |
 
 ### Sega Dreamcast
@@ -216,7 +216,7 @@ This will by default populate batch and link files into galaxy for directly laun
     %APPDATA%\RetroArch\retroarch.exe
 This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `citra_libretro.dll` core.
 #### roms
-    F:\Software\games\roms\3ds
+    F:\Software\games\roms\3ds\roms
     %USERPROFILE%\Documents\Games\3ds
 
 ## Configuration
