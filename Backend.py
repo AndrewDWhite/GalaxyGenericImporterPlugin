@@ -46,7 +46,7 @@ class Backend():
         self.backend_setup = True
         logging.info("backend started up")
         
-def shutdown_library(self):
+async def shutdown_library(self):
     logging.info("shutdown folder listeners")
     self.backend.my_game_lister.shutdown_folder_listeners()
     
@@ -56,9 +56,9 @@ def shutdown_library(self):
     #loop.close() 
     
     while (self.my_library_thread.isAlive()):
-        pass
+        await asyncio.sleep(1)
     
-    self.my_library_thread.join()
+    #self.my_library_thread.join()
     #for my_current_future in self.my_tasks:
     #    if not my_current_future.done():
     #        my_current_future.cancel() 
@@ -206,7 +206,7 @@ async def get_state_changes(old_list, new_list):
     result = {"old":old_dict,"new":new_dict}
     return result
 
-def shutdown_tasks(self, tasks):
+async def shutdown_tasks(self, tasks):
         for task in tasks:
             logging.info("canceling")
             logging.info(task)
@@ -216,6 +216,7 @@ def shutdown_tasks(self, tasks):
             while not task.done:
                 logging.info("waiting for")
                 logging.info(tasks)
+                await asyncio.sleep(1)
 
 async def update_local_games(self, username, my_game_lister):
     not_run = True
