@@ -284,7 +284,14 @@ async def get_exe_command(game_id,local_game_cache):
     logging.info(my_game_to_launch)
     execution_command = ""
     if "execution" in my_game_to_launch.keys():
-        execution_command="\""+my_game_to_launch["execution"].replace("%ROM_RAW%", my_game_to_launch["filename"]).replace("%ROM_DIR%", my_game_to_launch["path"]).replace("%ROM_NAME%", my_game_to_launch["game_filename"])+"\""
+        my_replaced_game_to_launch = my_game_to_launch["execution"]
+        my_replaced_game_to_launch = my_replaced_game_to_launch.replace("%ROM_RAW%", my_game_to_launch["filename"])
+        my_replaced_game_to_launch = my_replaced_game_to_launch.replace("%ROM_DIR%", my_game_to_launch["path"])
+        if None == my_game_to_launch["game_filename"]:
+            logging.error("Invalid game_filename")
+            logging.error(my_game_to_launch)
+        my_replaced_game_to_launch = my_replaced_game_to_launch.replace("%ROM_NAME%", my_game_to_launch["game_filename"])
+        execution_command="\""+my_replaced_game_to_launch+"\""
         logging.info("starting")
         logging.info(execution_command)
     return execution_command    
