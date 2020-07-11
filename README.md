@@ -14,52 +14,54 @@ The plugin will need to be placed in `%localappdata%\GOG.com\Galaxy\plugins\inst
 ## Default directories
 If the configuration is not changed to reflect your system, then the following is used by default. Your personal `documents\games\` folder will by default be used to house the folders for your systems which will be something like `C:\Users\andyn\Documents\Games\Dreamcast` depending on your username.
 
-| Platform | Default Emulator Location | Default Folders
-|---|---|---
-| Sega Dreamcast | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\Dreamcast\Game Name\disc.gdi
-| | | %USERPROFILE%\Documents\Games\Dreamcast
-| Game Boy Advance | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\GBA
-| | | %USERPROFILE%\Documents\Games\GBA
-| Game Boy Color | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\GBC
-| | | F:\Software\games\roms\GB
-| | | %USERPROFILE%\Documents\Games\GBC
-| | | %USERPROFILE%\Documents\Games\GB
-| Gamecube | %USERPROFILE%\Downloads\dolphin-master-5.0-11701-x64\Dolphin-x64\Dolphin.exe | F:\Software\games\roms\GameCube
-| | | %USERPROFILE%\Documents\Games\GameCube
-| Sega Genesis | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\Genesis
-| | | %USERPROFILE%\Documents\Games\Genesis
-| Nintendo 64 | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\N64
-| | | %USERPROFILE%\Documents\Games\N64
-| Nintendo DS | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\nds
-| | | %USERPROFILE%\Documents\Games\nds
-| Nintendo Entertainment System | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\nes
-| | | %USERPROFILE%\Documents\Games\NES
-| Playstation 2 | C:\Program Files (x86)\PCSX2\pcsx2.exe | F:\Software\games\roms\PS2
-| | | %USERPROFILE%\Documents\Games\PS2
-| Playstation 3 | %USERPROFILE%\Downloads\rpcs3-v0.0.7-9236-db4041e0_win64\rpcs3.exe | F:\Software\games\roms\PS3\out
-| | | %USERPROFILE%\Documents\Games\PS3
-| Playstation Portable | %USERPROFILE%\Downloads\ppsspp_win\PPSSPPWindows64.exe | F:\Software\games\roms\psp
-| | | %USERPROFILE%\Documents\Games\psp
-| Playstation 1 | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\PS1
-| | | %USERPROFILE%\Documents\Games\PS1
-| Super Nintendo Entertainment System | %APPDATA%\RetroArch\retroarch.exe  | F:\Software\games\roms\SNES
-| | | %USERPROFILE%\Documents\Games\SNES
-| Wii | %USERPROFILE%\Downloads\dolphin-master-5.0-11701-x64\Dolphin-x64\Dolphin.exe | F:\Software\games\roms\Wii
-| | | %USERPROFILE%\Documents\Games\Wii
-| XBOX | %USERPROFILE%\Downloads\CxbxReloaded-Release-VS2017\cxbx.exe | F:\Software\games\roms\xbox\games
-| | | %USERPROFILE%\Documents\Games\xbox
-| Wii U | %USERPROFILE%\Downloads\cemu_1.17.2\Cemu.exe | F:\Software\games\roms\wii u\converted
-| | |%USERPROFILE%\Documents\Games\wiiu
-| Arcade | %USERPROFILE%\Downloads\mame0220b_64bit\mame64.exe | F:\Software\games\roms\arcade
-| | | %USERPROFILE%\Documents\Games\arcade
-| Amazon | | D:\Amazon Games\Library
-| | | G:\Amazon Games\Library
-| | | C:\Amazon Games\Library
-| DOS | C:\Program Files (x86)\DOSBox-0.74-3\DOSBox.exe | %USERPROFILE%\Documents\Games\DOS
-| | | F:\Software\games\dos
-| mods | | %USERPROFILE%\Documents\Games\mods
-| Xbox 360 | %USERPROFILE%\Downloads\xenia_master\xenia.exe | %USERPROFILE%\Documents\Games\xbox 360
-| | | F:\Software\games\roms\xbox 360\games
+| Platform | Default Emulator Location | Default Folders |
+|---|---|---|
+| Sega Dreamcast | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\Dreamcast\Game Name\disc.gdi |
+| | | %USERPROFILE%\Documents\Games\Dreamcast |
+| Game Boy Advance | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\GBA |
+| | | %USERPROFILE%\Documents\Games\GBA |
+| Game Boy Color | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\GBC |
+| | | F:\Software\games\roms\GB |
+| | | %USERPROFILE%\Documents\Games\GBC |
+| | | %USERPROFILE%\Documents\Games\GB |
+| Gamecube | %USERPROFILE%\Downloads\dolphin-master-5.0-11701-x64\Dolphin-x64\Dolphin.exe | F:\Software\games\roms\GameCube |
+| | | %USERPROFILE%\Documents\Games\GameCube |
+| Sega Genesis | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\Genesis |
+| | | %USERPROFILE%\Documents\Games\Genesis |
+| Nintendo 64 | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\N64 |
+| | | %USERPROFILE%\Documents\Games\N64 |
+| Nintendo DS | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\nds |
+| | | %USERPROFILE%\Documents\Games\nds |
+| Nintendo Entertainment System | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\nes |
+| | | %USERPROFILE%\Documents\Games\NES |
+| Playstation 2 | C:\Program Files (x86)\PCSX2\pcsx2.exe | F:\Software\games\roms\PS2 |
+| | | %USERPROFILE%\Documents\Games\PS2 |
+| Playstation 3 | %USERPROFILE%\Downloads\rpcs3-v0.0.7-9236-db4041e0_win64\rpcs3.exe | F:\Software\games\roms\PS3\out |
+| | | %USERPROFILE%\Documents\Games\PS3 |
+| Playstation Portable | %USERPROFILE%\Downloads\ppsspp_win\PPSSPPWindows64.exe | F:\Software\games\roms\psp |
+| | | %USERPROFILE%\Documents\Games\psp |
+| Playstation 1 | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\PS1 |
+| | | %USERPROFILE%\Documents\Games\PS1 |
+| Super Nintendo Entertainment System | %APPDATA%\RetroArch\retroarch.exe  | F:\Software\games\roms\SNES |
+| | | %USERPROFILE%\Documents\Games\SNES |
+| Wii | %USERPROFILE%\Downloads\dolphin-master-5.0-11701-x64\Dolphin-x64\Dolphin.exe | F:\Software\games\roms\Wii |
+| | | %USERPROFILE%\Documents\Games\Wii |
+| XBOX | %USERPROFILE%\Downloads\CxbxReloaded-Release-VS2017\cxbx.exe | F:\Software\games\roms\xbox\games |
+| | | %USERPROFILE%\Documents\Games\xbox |
+| Wii U | %USERPROFILE%\Downloads\cemu_1.17.2\Cemu.exe | F:\Software\games\roms\wii u\converted |
+| | |%USERPROFILE%\Documents\Games\wiiu |
+| Arcade | %USERPROFILE%\Downloads\mame0220b_64bit\mame64.exe | F:\Software\games\roms\arcade |
+| | | %USERPROFILE%\Documents\Games\arcade |
+| Amazon | | D:\Amazon Games\Library |
+| | | G:\Amazon Games\Library |
+| | | C:\Amazon Games\Library |
+| DOS | C:\Program Files (x86)\DOSBox-0.74-3\DOSBox.exe | %USERPROFILE%\Documents\Games\DOS |
+| | | F:\Software\games\dos |
+| mods | | %USERPROFILE%\Documents\Games\mods |
+| Xbox 360 | %USERPROFILE%\Downloads\xenia_master\xenia.exe | %USERPROFILE%\Documents\Games\xbox 360 |
+| | | F:\Software\games\roms\xbox 360\games |
+| Nintendo 3DS | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\3ds\roms |
+| | | %USERPROFILE%\Documents\Games\3ds |
 
 ### Sega Dreamcast
 #### emulator
@@ -185,6 +187,7 @@ This will end up being something like `C:\Users\andyn\AppData\Downloads\mame0220
 #### roms
     F:\Software\games\roms\arcade
     %USERPROFILE%\Documents\Games\arcade
+By default the folders in `F:\Software\games\roms\arcade` will be populated as your game names.  
 ### Amazon
 #### game library folders
     D:\Amazon Games\Library
@@ -208,6 +211,13 @@ This will by default populate batch and link files into galaxy for directly laun
 #### roms
     %USERPROFILE%\Documents\Games\xbox 360
     F:\Software\games\roms\xbox 360\games
+#### Nintendo 3DS
+#### emulator
+    %APPDATA%\RetroArch\retroarch.exe
+This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `citra_libretro.dll` core.
+#### roms
+    F:\Software\games\roms\3ds\roms
+    %USERPROFILE%\Documents\Games\3ds
 
 ## Configuration
 Configuration for execution, selection and location of files is located in the `emulators.json` file. See the included for an example and used by default if not changed. You will need to change this. Any platform you do not need can be safetly removed.
