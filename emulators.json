@@ -102,7 +102,7 @@
         },
         {
             "name" : "psp",
-            "execution" : "\"%USERPROFILE%\\Downloads\\ppsspp_win\\PPSSPPWindows64.exe\" \"%ROM_RAW%\"",
+            "execution" : "\"%USERPROFILE%\\Downloads\\ppsspp_win\\PPSSPPWindows64.exe\" --fullscreen \"%ROM_RAW%\"",
             "path_regex" : ["%USERPROFILE%\\Documents\\Games\\psp","F:\\Software\\games\\roms\\psp"],
             "tags" : ["ppssp"],
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]iso",
