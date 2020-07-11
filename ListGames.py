@@ -121,12 +121,13 @@ class ListGames():
         logging.info(new_entry["hash_digest"])
         new_entry["filename"]=my_game
         new_entry["filename_short"] = os.path.basename(my_game)
-        raw_entry = os.path.splitext(new_entry["filename_short"])
-        new_entry["game_filename"] = raw_entry[0]
+        #raw_entry = os.path.splitext(new_entry["filename_short"])
+        #new_entry["game_filename"] = raw_entry[0]
         regex_result = matcher.search(my_game)
         logging.info(regex_result)
         if None is not regex_result:
             new_entry["game_name"] = regex_result.group(emulated_system["game_name_regex_group"])
+            new_entry["game_filename"] = regex_result.group(emulated_system["system_rom_name_regex_group"])
             logging.info(new_entry["game_name"])
         else:
             logging.info("Could not match")

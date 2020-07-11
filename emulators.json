@@ -5,8 +5,9 @@
             "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\flycast_libretro.dll\" \"%ROM_RAW%\"",
             "path_regex" : ["%USERPROFILE%\\Documents\\Games\\Dreamcast","F:\\Software\\games\\roms\\Dreamcast"],
             "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\].*",
+            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\](disc)[.]gdi",
             "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 4,
             "filename_regex" : ["disc[.]gdi"]
         },
         {
@@ -16,6 +17,7 @@
             "tags" : ["retroarch"],
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]gba",
             "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
             "filename_regex" : ["*[.]gba"]
         },
         {
@@ -25,6 +27,7 @@
             "tags" : ["retroarch"],
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.](gb|gbc)",
             "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
             "filename_regex" : ["*[.]gb","*[.]gbc"]
         },
         {
@@ -34,6 +37,7 @@
             "tags" : ["dolphin"],
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]iso",
             "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
             "filename_regex" : ["*[.]iso"]
         },
         {
@@ -43,6 +47,7 @@
             "tags" : ["retroarch"],
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]bin",
             "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
             "filename_regex" : ["*[.]bin"]
         },
         {
@@ -52,6 +57,7 @@
             "tags" : ["retroarch"],
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]z64",
             "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
             "filename_regex" : ["*[.]z64"]
         },
         {
@@ -61,6 +67,7 @@
             "tags" : ["retroarch"],
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]nds",
             "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
             "filename_regex" : ["*[.]nds"]
         },
         {
@@ -70,6 +77,7 @@
             "tags" : ["retroarch"],
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]nes",
             "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
             "filename_regex" : ["*[.]nes"]
         },
         {
@@ -79,6 +87,7 @@
             "tags" : ["pcsx2"],
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.](iso|bin)",
             "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
             "filename_regex" : ["*[.]iso","*[.]bin"]
         },
         {
@@ -88,6 +97,7 @@
             "tags" : ["rpcs3"],
             "game_name_regex" : ".*[\\\\]([\\[].*[\\]][ ]*)*(.+)[\\\\]PS3_GAME.*",
             "game_name_regex_group" : 2,
+            "system_rom_name_regex_group" : 2,
             "filename_regex" : ["PS3_GAME\\USRDIR\\EBOOT[.]BIN"]
         },
         {
@@ -97,6 +107,7 @@
             "tags" : ["ppssp"],
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]iso",
             "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
             "filename_regex" : ["*[.]iso"]
         },
         {
@@ -106,6 +117,7 @@
             "tags" : ["retroarch"],
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.](iso|toc)",
             "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
             "filename_regex" :  ["*[.]iso","*[.]toc"]
         },
         {
@@ -115,6 +127,7 @@
             "tags" : ["retroarch"],
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]sfc",
             "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
             "filename_regex" : ["*[.]sfc"]
         },
         {
@@ -124,6 +137,7 @@
             "tags" : ["dolphin"],
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]iso",
             "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
             "filename_regex" : ["*[.]iso"]
         },
         {
@@ -133,6 +147,7 @@
             "tags" : ["cxbxreloaded"],
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\]default[.]xbe",
             "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
             "filename_regex" : ["default[.]xbe"]
         },
         {
@@ -142,6 +157,7 @@
             "tags" : ["cemu"],
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\]code.*",
             "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
             "filename_regex" : ["*[.]rpx"]
         },
         {
@@ -149,8 +165,9 @@
             "execution" : "\"%USERPROFILE%\\Downloads\\mame0220b_64bit\\mame64.exe\" %ROM_NAME% -rompath \"%ROM_DIR%\"",
             "path_regex" : ["%USERPROFILE%\\Documents\\Games\\arcade","F:\\Software\\games\\roms\\arcade"],
             "tags" : ["mame"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]zip",
+            "game_name_regex" : ".*[\\\\]([^\\\\]+?)([ ]*[\\(\\[].*[\\)\\]])*([.]([^\\\\]+?))*[\\\\]([^\\\\]+?)[.]zip",
             "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 5,
             "filename_regex" : ["*[.]zip"]
         },
 		{
@@ -160,6 +177,7 @@
             "tags" : ["twitch", "windows"],
             "game_name_regex" : ".*[:][\\\\]Amazon[ ]Games[\\\\]Library[\\\\](?!(_{2,2}))([^\\\\]+?)(?!(_{2,2}))[\\\\]((?!dxwebsetup)(?!vcredist2010_x64)(?!vcredist_x86)[^\\\\]+?)[.](exe)",
             "game_name_regex_group" : 2,
+            "system_rom_name_regex_group" : 2,
             "filename_regex" : ["*[.]exe"]
         },
         {
@@ -169,6 +187,7 @@
             "tags" : ["dosbox"],
             "game_name_regex" : ".*[\\\\](.+)[\\\\].*",
             "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
             "filename_regex" : ["*[.]exe","*[.]bat"]
         },
         {
@@ -178,6 +197,7 @@
             "tags" : ["windows"],
             "game_name_regex" : ".*[\\\\](.+)[.].*",
             "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
             "filename_regex" : ["*[.]lnk","*[.]bat"]
         },
         {
@@ -187,6 +207,7 @@
             "tags" : ["xenia"],
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\]Content[\\\\]0000000000000000[\\\\]([^\\\\]+?)[\\\\]([^\\\\]+?)[\\\\](([^\\\\])(?!ContentCache[.]pkg|Data|[.]data|[.]log|ontentCache[.]pkg))+(?!(ContentCache[.]pkg|Data|[.]data|[.]log|ontentCache[.]pkg))$",
             "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
             "filename_regex" : ["*"]
         },
         {
@@ -196,6 +217,7 @@
             "tags" : ["retroarch"],
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]3ds",
             "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
             "filename_regex" : ["*[.]3ds"]
         }
     ]

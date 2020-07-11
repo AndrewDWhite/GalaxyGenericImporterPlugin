@@ -187,6 +187,7 @@ This will end up being something like `C:\Users\andyn\AppData\Downloads\mame0220
 #### roms
     F:\Software\games\roms\arcade
     %USERPROFILE%\Documents\Games\arcade
+By default the folders in `F:\Software\games\roms\arcade` will be populated as your game names.  
 ### Amazon
 #### game library folders
     D:\Amazon Games\Library

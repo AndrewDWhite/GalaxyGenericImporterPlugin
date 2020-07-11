@@ -187,7 +187,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
                                "game_name_regex", "game_name_regex_group",
                                "hash_digest", "filename", "filename_short",
                                "game_filename", "game_name", "path",
-                               "tags"]
+                               "tags", "system_rom_name_regex_group"]
         self.assertEqual(len(myresult), len(expected_attributes))
         for attribute_expected in expected_attributes:
             self.assertTrue(attribute_expected in myresult)
@@ -582,44 +582,44 @@ def insert_file_into_folder (self, systems, folder, file, subfolder):
 class TestParameterized(unittest.TestCase):
     
     @parameterized.expand([
-        ["dreamcast valid entry", "dreamcast0", "disc.gdi","mygame",1,"mygame"],
-        ["dreamcast invalid entry", "dreamcast0", "mygame.gdi","mygame",0,""],
-        ["dreamcast invalid path", "dreamcast2", "disc.gdi","mygame",0,""],
-        ["gba valid entry", "gba0", "mygame.gba","",1,"mygame"],
-        ["gba valid entry", "gba0", "mygame[some metadata here].gba","",1,"mygame"],
-        ["gba valid entry", "gba0", "mygame(some metadata here).gba","",1,"mygame"],
-        ["gba valid entry", "gba0", "mygame.some metadata here..gba","",1,"mygame"],
-        ["gbc valid entry", "gbc0", "mygame.gb","",1,"mygame"],
-        ["gbc valid entry alternate extension", "gbc0", "mygame.gbc","",1,"mygame"],
-        ["gbc valid entry", "gbc1", "mygame.gb","",1,"mygame"],
-        ["gbc valid entry alternate extension", "gbc1", "mygame.gbc","",1,"mygame"],
-        ["gcn valid entry", "gcn0", "mygame.iso","mygame",1,"mygame"],
-        ["genesis valid entry", "genesis0", "mygame.bin","",1,"mygame"],
-        ["n64 valid entry", "n640", "mygame.z64","",1,"mygame"],
-        ["nds valid entry", "nds0", "mygame.nds","",1,"mygame"],
-        ["nes valid entry", "nes0", "mygame.nes","",1,"mygame"],
-        ["ps2 valid entry", "ps20", "mygame.iso","",1,"mygame"],
-        ["ps2 valid entry", "ps20", "mygame.bin","",1,"mygame"],
+        ["dreamcast valid entry", "dreamcast0", "disc.gdi","mygame",1,"mygame","disc"],
+        ["dreamcast invalid entry", "dreamcast0", "mygame.gdi","mygame",0,"",""],
+        ["dreamcast invalid path", "dreamcast2", "disc.gdi","mygame",0,"",""],
+        ["gba valid entry", "gba0", "mygame.gba","",1,"mygame","mygame"],
+        ["gba valid entry", "gba0", "mygame[some metadata here].gba","",1,"mygame","mygame"],
+        ["gba valid entry", "gba0", "mygame(some metadata here).gba","",1,"mygame","mygame"],
+        ["gba valid entry", "gba0", "mygame.some metadata here..gba","",1,"mygame","mygame"],
+        ["gbc valid entry", "gbc0", "mygame.gb","",1,"mygame","mygame"],
+        ["gbc valid entry alternate extension", "gbc0", "mygame.gbc","",1,"mygame","mygame"],
+        ["gbc valid entry", "gbc1", "mygame.gb","",1,"mygame","mygame"],
+        ["gbc valid entry alternate extension", "gbc1", "mygame.gbc","",1,"mygame","mygame"],
+        ["gcn valid entry", "gcn0", "mygame.iso","mygame",1,"mygame","mygame"],
+        ["genesis valid entry", "genesis0", "mygame.bin","",1,"mygame","mygame"],
+        ["n64 valid entry", "n640", "mygame.z64","",1,"mygame","mygame"],
+        ["nds valid entry", "nds0", "mygame.nds","",1,"mygame","mygame"],
+        ["nes valid entry", "nes0", "mygame.nes","",1,"mygame","mygame"],
+        ["ps2 valid entry", "ps20", "mygame.iso","",1,"mygame","mygame"],
+        ["ps2 valid entry", "ps20", "mygame.bin","",1,"mygame","mygame"],
         #to do PS3 to be added ["ps3 valid entry", "ps30", "eboot.bin",1],
-        ["psp valid entry", "psp0", "mygame.iso","",1,"mygame"],
-        ["ps1 valid entry", "ps10", "mygame.iso","",1,"mygame"],
-        ["ps1 valid entry", "ps10", "mygame.toc","",1,"mygame"],
-        ["snes valid entry", "snes0", "mygame.sfc","",1,"mygame"],
-        ["wii valid entry", "wii0", "mygame.iso","mygame",1,"mygame"],
-        ["xbox valid entry", "xbox0", "default.xbe","mygame",1,"mygame"],
-        ["3ds valid entry in a sub folder", "3ds0", "mygame.3ds","mygame",1,"mygame"],
-        ["3ds valid entry in a sub folder", "3ds0", "mygame.3ds","",1,"mygame"],
+        ["psp valid entry", "psp0", "mygame.iso","",1,"mygame","mygame"],
+        ["ps1 valid entry", "ps10", "mygame.iso","",1,"mygame","mygame"],
+        ["ps1 valid entry", "ps10", "mygame.toc","",1,"mygame","mygame"],
+        ["snes valid entry", "snes0", "mygame.sfc","",1,"mygame","mygame"],
+        ["wii valid entry", "wii0", "mygame.iso","mygame",1,"mygame","mygame"],
+        ["xbox valid entry", "xbox0", "default.xbe","mygame",1,"mygame","mygame"],
+        ["3ds valid entry in a sub folder", "3ds0", "mygame.3ds","mygame",1,"mygame","mygame"],
+        ["3ds valid entry in a sub folder", "3ds0", "mygame.3ds","",1,"mygame","mygame"],
         #to do wiiu to be added ["wiiu valid entry", "wiiu0", "mygame.rpx",1],
-        ["arcade valid entry", "arcade0", "mygame.zip","",1,"mygame"],
+        ["arcade valid entry", "arcade0", "mygamesystem.zip","gameName",1,"gameName","mygamesystem"],
         #to do amazon ["amazon ignored entry", "amazon0", "dxwebsetup.exe","mygame",0],
         #to do amazon ["amazon valid entry", "amazon0", "mygame.exe","mygame",1],
         #to do amazon ["amazon ignored entry", "amazon1", "dxwebsetup.exe","mygame",0],
         #to do amazon ["amazon valid entry", "amazon1", "mygame.exe","mygame",1],
     ])
     
-    def test_write_data_in_folders_sync(self, name, folder, file, subfolder, size, expected_name):
+    def test_write_data_in_folders_sync(self, name, folder, file, subfolder, size, expected_name, system_rom_name):
 
-        async def test_write_data_in_folders(self, name, folder, file, subfolder, size, expected_name):
+        async def test_write_data_in_folders(self, name, folder, file, subfolder, size, expected_name, system_rom_name):
             logging.debug(name)
             logging.debug(folder)
             logging.debug(file)
@@ -639,8 +639,12 @@ class TestParameterized(unittest.TestCase):
             self.assertEqual(data_read, data)
             if (size>0):
                 self.assertEqual(data[0]["game_name"], expected_name)
+                self.assertEqual(data[0]["game_filename"], system_rom_name)
+            else:
+                self.assertEqual("", expected_name)
+                self.assertEqual("", system_rom_name)
 
-        asyncio.run(test_write_data_in_folders(self, name, folder, file, subfolder, size, expected_name))
+        asyncio.run(test_write_data_in_folders(self, name, folder, file, subfolder, size, expected_name, system_rom_name))
         
 if __name__ == '__main__':
     unittest.main()
