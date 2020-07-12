@@ -200,6 +200,9 @@ This will by default populate any exe files found in the root folder of each gam
 #### roms
     %USERPROFILE%\Documents\Games\DOS
     F:\Software\games\roms\dos
+#### configuration starts
+    %USERPROFILE%\Documents\Games\DOS\configurations
+    F:\Software\games\roms\dos\configurations    
 ### mods
 
 #### programs

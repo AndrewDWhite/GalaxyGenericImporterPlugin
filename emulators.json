@@ -191,6 +191,16 @@
             "filename_regex" : ["*[.]exe","*[.]bat"]
         },
         {
+            "name" : "dos",
+            "execution" : "\"C:\\Program Files (x86)\\DOSBox-0.74-3\\DOSBox.exe\" -conf \"%ROM_RAW%\"",
+            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\DOS\\configurations","F:\\Software\\games\\roms\\dos\\configurations"],
+            "tags" : ["dosbox"],
+            "game_name_regex" : ".*[\\\\](.+)[.]conf",
+            "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
+            "filename_regex" : ["*[.]conf"]
+        },
+        {
             "name" : "mods",
             "execution" : "\"%ROM_RAW%\"",
             "path_regex" : ["%USERPROFILE%\\Documents\\Games\\mods"],
