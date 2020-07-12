@@ -134,9 +134,9 @@ class GenericEmulatorPlugin(Plugin):
         logging.info("shutdown called")
         self.keep_ticking = False
         
-        shutdown_tasks(self, self.my_tasks)
+        await shutdown_tasks(self, self.my_tasks)
         
-        shutdown_library(self)
+        await shutdown_library(self)
         
         tasks = [t for t in asyncio.all_tasks() if t is not
              asyncio.current_task()]
@@ -146,7 +146,7 @@ class GenericEmulatorPlugin(Plugin):
         
         #loop = asyncio.get_event_loop()
         #loop.close()
-        await asyncio.sleep(10)
+        #await asyncio.sleep(3)
         logging.info("all done shutdown")
 
     # api interface to startup game
