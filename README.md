@@ -62,6 +62,9 @@ If the configuration is not changed to reflect your system, then the following i
 | | | F:\Software\games\roms\xbox 360\games |
 | Nintendo 3DS | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\3ds\roms |
 | | | %USERPROFILE%\Documents\Games\3ds |
+| Vita | %USERPROFILE%\Downloads\Vita3K-master-v4761-2020-07-11-3b714115_win64\Vita3K.exe | %USERPROFILE%\Documents\Games\vita |
+| | | F:\Software\games\roms\vita\roms |
+
 
 ### Sega Dreamcast
 #### emulator
@@ -200,6 +203,7 @@ This will by default populate any exe files found in the root folder of each gam
 #### roms
     %USERPROFILE%\Documents\Games\DOS
     F:\Software\games\roms\dos
+By default the folders in `F:\Software\games\roms\dos` will be populated as your game names. 
 #### configuration starts
     %USERPROFILE%\Documents\Games\DOS\configurations
     F:\Software\games\roms\dos\configurations    
@@ -221,6 +225,13 @@ This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\
 #### roms
     F:\Software\games\roms\3ds\roms
     %USERPROFILE%\Documents\Games\3ds
+### Vita
+#### emulator
+    %USERPROFILE%\Downloads\Vita3K-master-v4761-2020-07-11-3b714115_win64\Vita3K.exe
+#### roms
+    %USERPROFILE%\Documents\Games\vita
+    F:\Software\games\roms\vita\roms
+By default the folders in `F:\Software\games\roms\vita\roms` will be populated as your game names. 
 
 ## Configuration
 Configuration for execution, selection and location of files is located in the `emulators.json` file. See the included for an example and used by default if not changed. You will need to change this. Any platform you do not need can be safetly removed.
