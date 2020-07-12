@@ -56,7 +56,7 @@ If the configuration is not changed to reflect your system, then the following i
 | | | G:\Amazon Games\Library |
 | | | C:\Amazon Games\Library |
 | DOS | C:\Program Files (x86)\DOSBox-0.74-3\DOSBox.exe | %USERPROFILE%\Documents\Games\DOS |
-| | | F:\Software\games\dos |
+| | | F:\Software\games\roms\dos |
 | mods | | %USERPROFILE%\Documents\Games\mods |
 | Xbox 360 | %USERPROFILE%\Downloads\xenia_master\xenia.exe | %USERPROFILE%\Documents\Games\xbox 360 |
 | | | F:\Software\games\roms\xbox 360\games |
@@ -199,7 +199,10 @@ This will by default populate any exe files found in the root folder of each gam
     C:\Program Files (x86)\DOSBox-0.74-3\DOSBox.exe
 #### roms
     %USERPROFILE%\Documents\Games\DOS
-    F:\Software\games\dos
+    F:\Software\games\roms\dos
+#### configuration starts
+    %USERPROFILE%\Documents\Games\DOS\configurations
+    F:\Software\games\roms\dos\configurations    
 ### mods
 
 #### programs

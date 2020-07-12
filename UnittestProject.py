@@ -44,7 +44,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
     async def  test_emulators(self):
         systems = ListGames()
         #tests if it loaded the default number of emulators
-        self.assertEqual(len(systems.loaded_systems_configuration),22)
+        self.assertEqual(len(systems.loaded_systems_configuration),23)
     
     async def test_speed(self):
         systems = ListGames()
@@ -162,8 +162,8 @@ class UnittestProject(aiounittest.AsyncTestCase):
         await systems.setup_folder_listeners(my_queue_folder_awaiting_scan)
         insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
         insert_file_into_folder (self, systems, "dos0", "mygame.exe","mygame")
-        self.assertEqual(46, len(systems.my_folder_monitor_threads) )
-        systems.shutdown_folder_listeners()
+        self.assertEqual(48, len(systems.my_folder_monitor_threads) )
+        await systems.shutdown_folder_listeners()
         self.assertEqual(False, my_queue_folder_awaiting_scan.empty())
         self.assertEqual(os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory9\\gbc0")),my_queue_folder_awaiting_scan.get())
         self.assertEqual(os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory9\\dos0")),my_queue_folder_awaiting_scan.get())
@@ -330,8 +330,8 @@ class UnittestProject(aiounittest.AsyncTestCase):
         #self.assertEqual(True, self.my_library_thread.is_alive())
         #self.assertEqual(True, self.my_library_started)
         self.assertEqual(True, self.backend.library_run)
-        shutdown_library(self)
-        shutdown_tasks(self, self.my_tasks)
+        await shutdown_library(self)
+        await shutdown_tasks(self, self.my_tasks)
         #self.assertEqual(False, self.my_library_thread.is_alive())
         self.assertEqual(False, self.backend.library_run)
         #del self.backend 
