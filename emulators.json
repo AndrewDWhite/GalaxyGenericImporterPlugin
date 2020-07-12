@@ -183,7 +183,7 @@
         {
             "name" : "dos",
             "execution" : "\"C:\\Program Files (x86)\\DOSBox-0.74-3\\DOSBox.exe\" \"%ROM_RAW%\" -exit -fullscreen",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\DOS","F:\\Software\\games\\dos\\roms"],
+            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\DOS","F:\\Software\\games\\roms\\dos"],
             "tags" : ["dosbox"],
             "game_name_regex" : ".*[\\\\](.+)[\\\\].*",
             "game_name_regex_group" : 1,
