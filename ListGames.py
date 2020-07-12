@@ -12,6 +12,7 @@ import hashlib
 import pickle
 import threading
 import sys
+import asyncio
 
 from enum import EnumMeta
 
@@ -197,16 +198,16 @@ class ListGames():
                 win32file.FindCloseChangeNotification (change_handle)
         logging.info("done this")
 
-    def shutdown_folder_listeners(self):
+    async def shutdown_folder_listeners(self):
         logging.info("shutdown folder listeners")
         self.disable_monitoring()
         for my_thread in self.my_folder_monitor_threads:
             logging.info("shutting down thread")
             logging.info(my_thread)
             while (my_thread.is_alive()):
-                pass
+                await asyncio.sleep(1)
             #TODO cleanup nicer
-            my_thread.join()
+            #my_thread.join()
     
     async def setup_folder_listeners(self, my_queue_folder_awaiting_scan):
         logging.info("startup folder listeners")

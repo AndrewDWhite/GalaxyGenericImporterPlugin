@@ -183,12 +183,22 @@
         {
             "name" : "dos",
             "execution" : "\"C:\\Program Files (x86)\\DOSBox-0.74-3\\DOSBox.exe\" \"%ROM_RAW%\" -exit -fullscreen",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\DOS","F:\\Software\\games\\dos"],
+            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\DOS","F:\\Software\\games\\roms\\dos"],
             "tags" : ["dosbox"],
             "game_name_regex" : ".*[\\\\](.+)[\\\\].*",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
             "filename_regex" : ["*[.]exe","*[.]bat"]
+        },
+        {
+            "name" : "dos",
+            "execution" : "\"C:\\Program Files (x86)\\DOSBox-0.74-3\\DOSBox.exe\" -conf \"%ROM_RAW%\"",
+            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\DOS\\configurations","F:\\Software\\games\\roms\\dos\\configurations"],
+            "tags" : ["dosbox"],
+            "game_name_regex" : ".*[\\\\](.+)[.]conf",
+            "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
+            "filename_regex" : ["*[.]conf"]
         },
         {
             "name" : "mods",
