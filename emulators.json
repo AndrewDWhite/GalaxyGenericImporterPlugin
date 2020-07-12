@@ -219,6 +219,16 @@
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
             "filename_regex" : ["*[.]3ds"]
+        },
+        {
+            "name" : "psv",
+            "execution" : "\"%USERPROFILE%\\Downloads\\Vita3K-master-v4761-2020-07-11-3b714115_win64\\Vita3K.exe\" \"%ROM_RAW%\"",
+            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\vita","F:\\Software\\games\\roms\\vita\\roms"],
+            "tags" : ["Vita3K"],
+            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]psv",
+            "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
+            "filename_regex" : ["*[.]psv"]
         }
     ]
 
