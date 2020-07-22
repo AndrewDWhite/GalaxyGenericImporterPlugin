@@ -239,6 +239,16 @@
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
             "filename_regex" : ["*[.]zip"]
+        },
+        {
+            "name" : "intellivision",
+            "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\freeintv_libretro.dll\" \"%ROM_RAW%\"",
+            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\intellivision","F:\\Software\\games\\roms\\Intellivision"],
+            "tags" : ["retroarch"],
+            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]bin",
+            "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
+            "filename_regex" : ["*[.]bin"]
         }
     ]
 
