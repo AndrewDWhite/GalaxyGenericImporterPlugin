@@ -202,7 +202,7 @@
         },
         {
             "name" : "mods",
-            "execution" : "\"%ROM_RAW%\"",
+            "execution" : "%windir%\\Sysnative\\cmd.exe /c \"%ROM_RAW%\"",
             "path_regex" : ["%USERPROFILE%\\Documents\\Games\\mods"],
             "tags" : ["windows"],
             "game_name_regex" : ".*[\\\\](.+)[.].*",
