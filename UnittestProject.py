@@ -83,9 +83,34 @@ class UnittestProject(aiounittest.AsyncTestCase):
         #TODO implement tests
         self.assertEqual(3,len(myresult))
         
+    async def test_comp_HashedSame(self):
+        systems=await setup_folders_for_testing(self, "TestDirectory16")
+        insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
+        insert_file_into_folder (self, systems, "gbc0", "game.gb","")
+        new_local = await systems.list_all_recursively("test_user")
+        self.assertTrue(new_local[0]["hashContent"])
+        #Check blank content hash
+        self.assertEqual(new_local[0]["hash_digest"],"da39a3ee5e6b4b0d3255bfef95601890afd80709")
+        for entry in new_local:
+            logging.debug("Check")
+            if("local_game_state" not in entry):
+                logging.debug("should")
+                if(entry["gameShouldBeInstalled"]):
+                    entry["local_game_state"]=LocalGameState.Installed
+                else:
+                    entry["local_game_state"]=LocalGameState.None_
+        myresult = await get_state_changes([],new_local)
+        #None Removed
+        logging.debug(len(myresult["old"].keys() - myresult["new"].keys()))
+        logging.debug(len(myresult["new"].keys() - myresult["old"].keys()))
+        self.assertEqual(len(myresult["old"].keys() - myresult["new"].keys()),0)
+        #All Added
+        self.assertEqual(len(myresult["new"].keys() - myresult["old"].keys()),1)
+        logging.debug(myresult)  
+        
     async def test_comp(self):
         systems=await setup_folders_for_testing(self, "TestDirectory3")
-        insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
+        insert_file_into_folder (self, systems, "gcn0", "mygame.iso","")
         insert_file_into_folder (self, systems, "gbc0", "game.gb","")
         insert_file_into_folder (self, systems, "dos0", "game.exe","mygame")
         new_local = await systems.list_all_recursively("test_user")
@@ -155,7 +180,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         
     async def test_compRemoved(self):
         systems=await setup_folders_for_testing(self, "TestDirectory14")
-        insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
+        insert_file_into_folder (self, systems, "gcn0", "mygame.iso","")
         insert_file_into_folder (self, systems, "gbc0", "game.gb","")
         insert_file_into_folder (self, systems, "dos0", "game.exe","mygame")
         new_local = await systems.list_all_recursively("test_user")
@@ -221,7 +246,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
                                "hash_digest", "filename", "filename_short",
                                "game_filename", "game_name", "path",
                                "tags", "system_rom_name_regex_group",
-                               "gameShouldBeInstalled"]
+                               "gameShouldBeInstalled", "hashContent"]
         self.assertEqual(len(myresult), len(expected_attributes))
         for attribute_expected in expected_attributes:
             self.assertTrue(attribute_expected in myresult)
@@ -379,7 +404,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         await self.backend.setup(self.configuration) 
         
         systems=await setup_folders_for_testing(self, "TestDirectory10")
-        insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
+        insert_file_into_folder (self, systems, "gcn0", "mygame.iso","")
         insert_file_into_folder (self, systems, "gbc0", "game.gb","")
         insert_file_into_folder (self, systems, "dos0", "game.exe","mygame")
         new_local = await systems.list_all_recursively("test_user")

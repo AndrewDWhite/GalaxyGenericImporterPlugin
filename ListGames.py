@@ -8,6 +8,7 @@ import os
 import json
 import logging
 import re
+
 import hashlib
 import pickle
 import threading
@@ -103,11 +104,29 @@ class ListGames():
         if my_cache_exists:
             os.remove(cache_filepath)
     
-    async def hash_data(self, my_game, salt):
-        myhasher = hashlib.sha1()
-        myhasher.update((my_game+salt).encode('utf-8'))
-        my_hashed_data = myhasher.hexdigest()
-        return my_hashed_data
+    async def hash_data(self, my_game, salt, hashContent):       
+        def hashName(self, my_game, salt):
+            myhasher = hashlib.sha1()
+            myhasher.update((my_game+salt).encode('utf-8'))
+            my_hashed_data = myhasher.hexdigest()
+            return my_hashed_data
+    
+        def get_hash(self, file):
+            logging.info("hashing")
+            with open(file, 'rb') as data:
+                myhasher = hashlib.sha1()
+                read_data = data.read()
+                myhasher.update(read_data)
+                return myhasher.hexdigest()
+                #TODO to re-enable hashing
+                #for chunk in iter(lambda: data.read(4096), ""):
+                #    myhasher.update(chunk)
+                
+        if (hashContent):
+            return get_hash(self, my_game)
+        else:
+            return hashName(self, my_game, salt)
+                            
     
     async def setup_tags(self, emulated_system):
         tags = []
@@ -116,9 +135,9 @@ class ListGames():
         tags.append(emulated_system["name"])
         return tags
     
-    async def setup_entry(self, emulated_system, my_game, salt, matcher, tags, gameShouldBeInstalled):
+    async def setup_entry(self, emulated_system, my_game, salt, matcher, tags, gameShouldBeInstalled, hashContent):
         new_entry = emulated_system.copy()
-        new_entry["hash_digest"]=await self.hash_data(my_game,salt)
+        new_entry["hash_digest"]=await self.hash_data(my_game,salt,hashContent)
         logging.info(new_entry["hash_digest"])
         new_entry["filename"]=my_game
         new_entry["filename_short"] = os.path.basename(my_game)
@@ -147,11 +166,13 @@ class ListGames():
         #Iterate through each system's configuration for where we should look for programs and add the metadata to results
         for emulated_system in self.loaded_systems_configuration:
             gameShouldBeInstalled = emulated_system["gameShouldBeInstalled"]
+            hashContent = emulated_system["hashContent"]
             tags = await self.setup_tags(emulated_system)
             matcher = re.compile(emulated_system["game_name_regex"], re.IGNORECASE)
             
             #Below this point the data is unique for each extension and path
             for extension in emulated_system["filename_regex"]:
+
                 for current_path in emulated_system["path_regex"]:
                     logging.info(current_path)
                     my_path_expanded = os.path.expandvars(current_path)
@@ -162,7 +183,7 @@ class ListGames():
                     for my_game in found_games:
                         logging.debug(my_game)
                         try:
-                            new_entry = await self.setup_entry(emulated_system, my_game, salt, matcher, tags, gameShouldBeInstalled)                        
+                            new_entry = await self.setup_entry(emulated_system, my_game, salt, matcher, tags, gameShouldBeInstalled, hashContent)                        
                             self.mylist.append(new_entry)
                         except  UserWarning as my_user_warning:
                             logging.info("skipping / dropping")
@@ -226,3 +247,4 @@ class ListGames():
                 my_thread.daemon = True
                 my_thread.start()
                 
+
