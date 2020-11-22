@@ -285,6 +285,17 @@
             "system_rom_name_regex_group" : 1,
             "filename_regex" : ["*[.]txt"],
             "gameShouldBeInstalled" : false
+        },
+        {
+        	"name" : "ps4",
+            "execution" : "",
+            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\ps4","Z:\\data\\Software\\games\\roms\\ps4"],
+            "tags" : ["ps4"],
+            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]iso",
+            "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
+            "filename_regex" : ["*[.]iso"],
+            "gameShouldBeInstalled" : false
         }
     ]
 
