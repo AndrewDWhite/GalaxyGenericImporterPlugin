@@ -9,12 +9,22 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     strategy:
       matrix:
         python-version: [3.7]
-
     steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v2
+      with:
+        # Semantic version range syntax or exact version of a Python version
+        python-version: '3.7' 
+        # Optional - x64 or x86 architecture, defaults to x64
+        architecture: 'x86' 
+    # You can test your matrix by printing the current Python version
+    - name: Display Python version
+      run: python -c "import sys; print(sys.version)"
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
@@ -24,33 +34,39 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        pip install  -r requirements.txt --target .
+        #if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        py  -3.7-32 -m pip install  -r requirements.txt --target .
     #- name: Lint with flake8
     #  run: |
     #    # stop the build if there are Python syntax errors or undefined names
     #    flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     #    # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
     #    flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    #- name: Test with pytest
-    #  run: |
-    #    pytest
-    - name: Zip Release
-      uses: TheDoctor0/zip-release@v0.3.0
-      with:
+    - name: Test and create code coverage
+      shell: cmd
+      run: coverage.bat
+    #- name: Zip Release
+    #  uses: TheDoctor0/zip-release@v0.3.0
+    #  with:
         # Filename for archive
-        filename: importer_97543122-7785-4444-2254-711233556699.zip
+    #    filename: importer_97543122-7785-4444-2254-711233556699.zip
         # Base path for archive files
-        path: .
+    #    path: .
         # Working directory before zipping
-        directory: .
+    #    directory: .
+    - name: Create zip archive
+      shell: bash
+      env:
+        ZIP_NAME: importer_97543122-7785-4444-2254-711233556699
+      run: |
+        7z a ${ZIP_NAME}.zip * -r
     - name: Upload result
       uses: actions/upload-artifact@v1
       with:
         name: importer_ ${{ github.sha }}
         path: importer_97543122-7785-4444-2254-711233556699.zip
     - name: Automatic Releases
-      uses: marvinpinto/action-automatic-releases@v1.0.0
+      uses: marvinpinto/action-automatic-releases@v1.1.0
       with:
         # GitHub secret token
         repo_token: ${{ secrets.GITHUB_TOKEN }}

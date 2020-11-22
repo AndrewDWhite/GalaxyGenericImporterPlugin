@@ -1,3 +1,7 @@
 escapejson
 galaxy.plugin.api
 galaxyutils
+parameterized
+pywin32
+aiounittest
+
