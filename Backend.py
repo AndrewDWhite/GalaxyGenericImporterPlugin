@@ -91,7 +91,13 @@ async def prepare_to_send_my_updates(self, new_local_games_list, local_game_cach
     logging.info("sending updates")
     for entry in new_local_games_list:
         if("local_game_state" not in entry):
-            entry["local_game_state"]=LocalGameState.Installed
+            #If we haven't added the game and we want it to count as installed
+            if (entry["gameShouldBeInstalled"]):
+                logging.info("Here and installed")
+                entry["local_game_state"]=LocalGameState.Installed
+            else:
+                logging.info("Here but not installed")
+                entry["local_game_state"]=LocalGameState.None_
     state_changes = await get_state_changes(local_game_cache, new_local_games_list)
     await setup_queue_to_send_those_changes(self, new_local_games_list, state_changes["old"], state_changes["new"])
     await update_cache(self, new_local_games_list)
