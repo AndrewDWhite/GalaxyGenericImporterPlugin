@@ -8,7 +8,8 @@
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\](disc)[.]gdi",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 4,
-            "filename_regex" : ["disc[.]gdi"]
+            "filename_regex" : ["disc[.]gdi"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "gba",
@@ -18,7 +19,8 @@
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]gba",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]gba"]
+            "filename_regex" : ["*[.]gba"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "gbc",
@@ -28,7 +30,8 @@
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.](gb|gbc)",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]gb","*[.]gbc"]
+            "filename_regex" : ["*[.]gb","*[.]gbc"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "gcn",
@@ -38,7 +41,8 @@
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]iso",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]iso"]
+            "filename_regex" : ["*[.]iso"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "genesis",
@@ -48,7 +52,8 @@
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]bin",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]bin"]
+            "filename_regex" : ["*[.]bin"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "n64",
@@ -58,7 +63,8 @@
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]z64",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]z64"]
+            "filename_regex" : ["*[.]z64"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "nds",
@@ -68,7 +74,8 @@
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]nds",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]nds"]
+            "filename_regex" : ["*[.]nds"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "nes",
@@ -78,7 +85,8 @@
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]nes",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]nes"]
+            "filename_regex" : ["*[.]nes"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "ps2",
@@ -88,7 +96,8 @@
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.](iso|bin)",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]iso","*[.]bin"]
+            "filename_regex" : ["*[.]iso","*[.]bin"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "ps3",
@@ -98,7 +107,8 @@
             "game_name_regex" : ".*[\\\\]([\\[].*[\\]][ ]*)*(.+)[\\\\]PS3_GAME.*",
             "game_name_regex_group" : 2,
             "system_rom_name_regex_group" : 2,
-            "filename_regex" : ["PS3_GAME\\USRDIR\\EBOOT[.]BIN"]
+            "filename_regex" : ["PS3_GAME\\USRDIR\\EBOOT[.]BIN"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "psp",
@@ -108,7 +118,8 @@
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]iso",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]iso"]
+            "filename_regex" : ["*[.]iso"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "ps1",
@@ -118,7 +129,8 @@
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.](iso|toc)",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" :  ["*[.]iso","*[.]toc"]
+            "filename_regex" :  ["*[.]iso","*[.]toc"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "snes",
@@ -128,7 +140,8 @@
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]sfc",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]sfc"]
+            "filename_regex" : ["*[.]sfc"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "wii",
@@ -138,7 +151,8 @@
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]iso",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]iso"]
+            "filename_regex" : ["*[.]iso"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "xbox",
@@ -148,7 +162,8 @@
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\]default[.]xbe",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["default[.]xbe"]
+            "filename_regex" : ["default[.]xbe"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "wiiu",
@@ -158,7 +173,8 @@
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\]code.*",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]rpx"]
+            "filename_regex" : ["*[.]rpx"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "arcade",
@@ -168,7 +184,8 @@
             "game_name_regex" : ".*[\\\\]([^\\\\]+?)([ ]*[\\(\\[].*[\\)\\]])*([.]([^\\\\]+?))*[\\\\]([^\\\\]+?)[.]zip",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 5,
-            "filename_regex" : ["*[.]zip"]
+            "filename_regex" : ["*[.]zip"],
+            "gameShouldBeInstalled" : true
         },
 		{
             "name" : "amazon",
@@ -178,7 +195,8 @@
             "game_name_regex" : ".*[:][\\\\]Amazon[ ]Games[\\\\]Library[\\\\](?!(_{2,2}))([^\\\\]+?)(?!(_{2,2}))[\\\\]((?!dxwebsetup)(?!vcredist2010_x64)(?!vcredist_x86)[^\\\\]+?)[.](exe)",
             "game_name_regex_group" : 2,
             "system_rom_name_regex_group" : 2,
-            "filename_regex" : ["*[.]exe"]
+            "filename_regex" : ["*[.]exe"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "dos",
@@ -188,7 +206,8 @@
             "game_name_regex" : ".*[\\\\](.+)[\\\\].*",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]exe","*[.]bat"]
+            "filename_regex" : ["*[.]exe","*[.]bat"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "dos",
@@ -198,7 +217,8 @@
             "game_name_regex" : ".*[\\\\](.+)[.]conf",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]conf"]
+            "filename_regex" : ["*[.]conf"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "mods",
@@ -208,7 +228,8 @@
             "game_name_regex" : ".*[\\\\](.+)[.].*",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]lnk","*[.]bat"]
+            "filename_regex" : ["*[.]lnk","*[.]bat"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "xbox 360",
@@ -218,7 +239,8 @@
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\]Content[\\\\]0000000000000000[\\\\]([^\\\\]+?)[\\\\]([^\\\\]+?)[\\\\](([^\\\\])(?!ContentCache[.]pkg|Data|[.]data|[.]log|ontentCache[.]pkg))+(?!(ContentCache[.]pkg|Data|[.]data|[.]log|ontentCache[.]pkg))$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*"]
+            "filename_regex" : ["*"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "3ds",
@@ -228,7 +250,8 @@
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]3ds",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]3ds"]
+            "filename_regex" : ["*[.]3ds"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "psv",
@@ -238,7 +261,8 @@
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\]([^\\\\]+?)[.]zip",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]zip"]
+            "filename_regex" : ["*[.]zip"],
+            "gameShouldBeInstalled" : true
         },
         {
             "name" : "intellivision",
@@ -248,7 +272,19 @@
             "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]bin",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]bin"]
+            "filename_regex" : ["*[.]bin"],
+            "gameShouldBeInstalled" : true
+        },
+        {
+        	"name" : "owned",
+            "execution" : "",
+            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\Owned"],
+            "tags" : ["owned"],
+            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]txt",
+            "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
+            "filename_regex" : ["*[.]txt"],
+            "gameShouldBeInstalled" : false
         }
     ]
 
