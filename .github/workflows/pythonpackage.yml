@@ -61,7 +61,7 @@ jobs:
         #MY_RELEASE_NAME: Prototype_${{ github.sha }}
       run: |
         echo "::stop-commands::importer_97543122-7785-4444-2254-711233556699.zip" >> $ZIP_NAME
-         echo "::stop-commands:: Prototype_${{ github.sha }}" >> $MY_RELEASE_NAME
+        echo "::stop-commands::Prototype_${{ github.sha }}" >> $MY_RELEASE_NAME
         7z a ${ZIP_NAME} * -r
     - name: Upload result
       uses: actions/upload-artifact@v1
