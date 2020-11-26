@@ -55,7 +55,7 @@ async def shutdown_library(self):
     #loop = asyncio.get_event_loop()
     #loop.close() 
     
-    while (self.my_library_thread.isAlive()):
+    while (self.my_library_thread.is_alive()):
         await asyncio.sleep(1)
     
     #self.my_library_thread.join()
@@ -91,7 +91,13 @@ async def prepare_to_send_my_updates(self, new_local_games_list, local_game_cach
     logging.info("sending updates")
     for entry in new_local_games_list:
         if("local_game_state" not in entry):
-            entry["local_game_state"]=LocalGameState.Installed
+            #If we haven't added the game and we want it to count as installed
+            if (entry["gameShouldBeInstalled"]):
+                logging.info("Here and installed")
+                entry["local_game_state"]=LocalGameState.Installed
+            else:
+                logging.info("Here but not installed")
+                entry["local_game_state"]=LocalGameState.None_
     state_changes = await get_state_changes(local_game_cache, new_local_games_list)
     await setup_queue_to_send_those_changes(self, new_local_games_list, state_changes["old"], state_changes["new"])
     await update_cache(self, new_local_games_list)
@@ -133,7 +139,7 @@ async def added_games(self, new_list, old_dict, new_dict):
             logging.info("added")
             my_created_game = await create_game(local_game)
             self.backend.my_queue_add_game.put(my_created_game)
-            self.backend.my_queue_update_local_game_status.put(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
+            self.backend.my_queue_update_local_game_status.put(LocalGame(local_game["hash_digest"], local_game["local_game_state"]))
 
 async def state_changed(self, old_dict, new_dict):
     # state changed

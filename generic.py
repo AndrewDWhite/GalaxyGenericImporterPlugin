@@ -111,7 +111,8 @@ class GenericEmulatorPlugin(Plugin):
         logging.info("get local")
         localgames = []
         for local_game in self.backend.local_game_cache :
-            localgames.append(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
+            if local_game["gameShouldBeInstalled"]:
+                localgames.append(LocalGame(local_game["hash_digest"], local_game["local_game_state"]))
         logging.info(len(localgames))
         self.backend.my_imported_local = True
         return localgames
