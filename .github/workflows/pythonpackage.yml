@@ -56,12 +56,9 @@ jobs:
     #    directory: .
     - name: Create zip archive
       shell: bash
-      #env:
-        #ZIP_NAME: importer_97543122-7785-4444-2254-711233556699.zip
-        #MY_RELEASE_NAME: Prototype_${{ github.sha }}
+      env:
+        ZIP_NAME: importer_97543122-7785-4444-2254-711233556699.zip
       run: |
-        echo "::stop-commands::importer_97543122-7785-4444-2254-711233556699.zip" >> $ZIP_NAME
-        echo "::stop-commands::Prototype_${{ github.sha }}" >> $MY_RELEASE_NAME
         7z a ${ZIP_NAME} * -r
     - name: Upload result
       uses: actions/upload-artifact@v1
@@ -69,15 +66,18 @@ jobs:
         name: importer_ ${{ github.sha }}
         path: importer_97543122-7785-4444-2254-711233556699.zip
     - name: Automatic Releases
+      env:
+        ZIP_NAME: importer_97543122-7785-4444-2254-711233556699.zip
+        MY_TAG: Prototype_${{ github.sha }}
       uses: marvinpinto/action-automatic-releases@v1.1.0
       with:
         # GitHub secret token
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         # Git tag (for automatic releases)
-        automatic_release_tag: ${ MY_RELEASE_NAME }
+        automatic_release_tag: ${MY_TAG}
         # Should this release be marked as a pre-release?
         prerelease: True
         # Release title (for automatic releases)
-        title: ${ MY_RELEASE_NAME }
+        title: ${MY_TAG}
         # Assets to upload to the release
-        files: ${ ZIP_NAME }
+        files: ${ZIP_NAME}
