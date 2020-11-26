@@ -74,10 +74,10 @@ jobs:
         # GitHub secret token
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         # Git tag (for automatic releases)
-        automatic_release_tag: ${MY_TAG}
+        automatic_release_tag: ${{MY_TAG}}
         # Should this release be marked as a pre-release?
         prerelease: True
         # Release title (for automatic releases)
-        title: ${MY_TAG}
+        title: ${{MY_TAG}}
         # Assets to upload to the release
-        files: ${ZIP_NAME}
+        files: ${{ZIP_NAME}}
