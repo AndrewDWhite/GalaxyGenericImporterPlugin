@@ -61,3 +61,13 @@ wrapt-1.12.1-py3.7.egg-info/
 wrapt/
 nest_asyncio.py
 nest_asyncio-1.3.3.dist-info/
+aiohttp-3.7.3.dist-info/
+attrs-20.3.0.dist-info/
+certifi-2020.11.8.dist-info/
+galaxy.plugin.api-0.67.0.dist-info/
+multidict-5.0.2.dist-info/
+py
+pywin32-300.dist-info/
+typing_extensions-3.7.4.3.dist-info/
+typing_extensions.py
+yarl-1.6.3.dist-info/

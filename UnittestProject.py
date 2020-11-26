@@ -38,13 +38,13 @@ class UnittestProject(aiounittest.AsyncTestCase):
     async def test_config(self):
         config = DefaultConfig()
         logging.debug(config)
-        self.assertEqual(config.my_user_to_gog, "username1")
+        self.assertEqual(config.my_user_to_gog, "username01")
         self.assertEqual(config.my_platform_to_gog, "test")
         
     async def  test_emulators(self):
         systems = ListGames()
         #tests if it loaded the default number of emulators
-        self.assertEqual(len(systems.loaded_systems_configuration),23)
+        self.assertEqual(len(systems.loaded_systems_configuration),27)
     
     async def test_speed(self):
         systems = ListGames()
@@ -83,9 +83,34 @@ class UnittestProject(aiounittest.AsyncTestCase):
         #TODO implement tests
         self.assertEqual(3,len(myresult))
         
+    async def test_comp_HashedSame(self):
+        systems=await setup_folders_for_testing(self, "TestDirectory16")
+        insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
+        insert_file_into_folder (self, systems, "gbc0", "game.gb","")
+        new_local = await systems.list_all_recursively("test_user")
+        self.assertTrue(new_local[0]["hashContent"])
+        #Check blank content hash
+        self.assertEqual(new_local[0]["hash_digest"],"da39a3ee5e6b4b0d3255bfef95601890afd80709")
+        for entry in new_local:
+            logging.debug("Check")
+            if("local_game_state" not in entry):
+                logging.debug("should")
+                if(entry["gameShouldBeInstalled"]):
+                    entry["local_game_state"]=LocalGameState.Installed
+                else:
+                    entry["local_game_state"]=LocalGameState.None_
+        myresult = await get_state_changes([],new_local)
+        #None Removed
+        logging.debug(len(myresult["old"].keys() - myresult["new"].keys()))
+        logging.debug(len(myresult["new"].keys() - myresult["old"].keys()))
+        self.assertEqual(len(myresult["old"].keys() - myresult["new"].keys()),0)
+        #All Added
+        self.assertEqual(len(myresult["new"].keys() - myresult["old"].keys()),1)
+        logging.debug(myresult)  
+        
     async def test_comp(self):
         systems=await setup_folders_for_testing(self, "TestDirectory3")
-        insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
+        insert_file_into_folder (self, systems, "gcn0", "mygame.iso","")
         insert_file_into_folder (self, systems, "gbc0", "game.gb","")
         insert_file_into_folder (self, systems, "dos0", "game.exe","mygame")
         new_local = await systems.list_all_recursively("test_user")
@@ -93,7 +118,10 @@ class UnittestProject(aiounittest.AsyncTestCase):
             logging.debug("Check")
             if("local_game_state" not in entry):
                 logging.debug("should")
-                entry["local_game_state"]=LocalGameState.Installed
+                if(entry["gameShouldBeInstalled"]):
+                    entry["local_game_state"]=LocalGameState.Installed
+                else:
+                    entry["local_game_state"]=LocalGameState.None_
         myresult = await get_state_changes([],new_local)
         #None Removed
         logging.debug(len(myresult["old"].keys() - myresult["new"].keys()))
@@ -101,6 +129,29 @@ class UnittestProject(aiounittest.AsyncTestCase):
         self.assertEqual(len(myresult["old"].keys() - myresult["new"].keys()),0)
         #All Added
         self.assertEqual(len(myresult["new"].keys() - myresult["old"].keys()),3)
+        logging.debug(myresult)
+        
+    async def test_own(self):
+        systems=await setup_folders_for_testing(self, "TestDirectory15")
+        insert_file_into_folder (self, systems, "owned0", "game.txt","")
+        new_local = await systems.list_all_recursively("test_user")
+        
+        logging.debug(new_local)
+        self.assertEqual(len(new_local), 1)
+        
+        for entry in new_local:
+            logging.debug("Check")
+            if("local_game_state" not in entry):
+                logging.debug("should")
+                self.assertFalse((entry["gameShouldBeInstalled"]))
+                entry["local_game_state"]=LocalGameState.None_
+        myresult = await get_state_changes([],new_local)
+        #None Removed
+        logging.debug(len(myresult["old"].keys() - myresult["new"].keys()))
+        logging.debug(len(myresult["new"].keys() - myresult["old"].keys()))
+        self.assertEqual(len(myresult["old"].keys() - myresult["new"].keys()),0)
+        #All Added
+        self.assertEqual(len(myresult["new"].keys() - myresult["old"].keys()),1)
         logging.debug(myresult)
     
     async def test_time_delta_calc_minutes(self):
@@ -114,7 +165,10 @@ class UnittestProject(aiounittest.AsyncTestCase):
             logging.debug("Check")
             if("local_game_state" not in entry):
                 logging.debug("should")
-                entry["local_game_state"]=LocalGameState.Installed
+                if(entry["gameShouldBeInstalled"]):
+                    entry["local_game_state"]=LocalGameState.Installed
+                else:
+                    entry["local_game_state"]=LocalGameState.None_
         myresult = await get_state_changes(new_local,new_local)
         #None Removed
         logging.debug(len(myresult["old"].keys() - myresult["new"].keys()))
@@ -126,7 +180,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         
     async def test_compRemoved(self):
         systems=await setup_folders_for_testing(self, "TestDirectory14")
-        insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
+        insert_file_into_folder (self, systems, "gcn0", "mygame.iso","")
         insert_file_into_folder (self, systems, "gbc0", "game.gb","")
         insert_file_into_folder (self, systems, "dos0", "game.exe","mygame")
         new_local = await systems.list_all_recursively("test_user")
@@ -134,7 +188,10 @@ class UnittestProject(aiounittest.AsyncTestCase):
             logging.debug("Check")
             if("local_game_state" not in entry):
                 logging.debug("should")
-                entry["local_game_state"]=LocalGameState.Installed
+                if(entry["gameShouldBeInstalled"]):
+                    entry["local_game_state"]=LocalGameState.Installed
+                else:
+                    entry["local_game_state"]=LocalGameState.None_
         myresult = await get_state_changes(new_local,[])
         #All Removed
         logging.debug(len(myresult["old"].keys() - myresult["new"].keys()))
@@ -162,7 +219,8 @@ class UnittestProject(aiounittest.AsyncTestCase):
         await systems.setup_folder_listeners(my_queue_folder_awaiting_scan)
         insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
         insert_file_into_folder (self, systems, "dos0", "mygame.exe","mygame")
-        self.assertEqual(48, len(systems.my_folder_monitor_threads) )
+        #Number of folders created by setup + 2 for subfolders
+        self.assertEqual(55, len(systems.my_folder_monitor_threads) )
         await systems.shutdown_folder_listeners()
         self.assertEqual(False, my_queue_folder_awaiting_scan.empty())
         self.assertEqual(os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory9\\gbc0")),my_queue_folder_awaiting_scan.get())
@@ -187,7 +245,8 @@ class UnittestProject(aiounittest.AsyncTestCase):
                                "game_name_regex", "game_name_regex_group",
                                "hash_digest", "filename", "filename_short",
                                "game_filename", "game_name", "path",
-                               "tags", "system_rom_name_regex_group"]
+                               "tags", "system_rom_name_regex_group",
+                               "gameShouldBeInstalled", "hashContent"]
         self.assertEqual(len(myresult), len(expected_attributes))
         for attribute_expected in expected_attributes:
             self.assertTrue(attribute_expected in myresult)
@@ -202,6 +261,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         myhasher.update((myresult["filename"]+"test_user").encode('utf-8'))
         expected_hash= myhasher.hexdigest()
         self.assertEqual(myresult["hash_digest"],expected_hash)
+        self.assertEqual(myresult["gameShouldBeInstalled"],True)
             
     #def test_launch(self):
     #    systems = ListGames()
@@ -344,7 +404,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         await self.backend.setup(self.configuration) 
         
         systems=await setup_folders_for_testing(self, "TestDirectory10")
-        insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
+        insert_file_into_folder (self, systems, "gcn0", "mygame.iso","")
         insert_file_into_folder (self, systems, "gbc0", "game.gb","")
         insert_file_into_folder (self, systems, "dos0", "game.exe","mygame")
         new_local = await systems.list_all_recursively("test_user")
@@ -352,7 +412,10 @@ class UnittestProject(aiounittest.AsyncTestCase):
             logging.debug("Check")
             if("local_game_state" not in entry):
                 logging.debug("should")
-                entry["local_game_state"]=LocalGameState.Installed
+                if(entry["gameShouldBeInstalled"]):
+                    entry["local_game_state"]=LocalGameState.Installed
+                else:
+                    entry["local_game_state"]=LocalGameState.None_
         myresult = await get_state_changes(new_local,[])
 
         await removed_games(self, myresult["old"],myresult["new"])
