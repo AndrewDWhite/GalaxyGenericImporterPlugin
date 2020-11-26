@@ -241,6 +241,13 @@ This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\
 #### roms
     F:\Software\games\roms\Intellivision
     %USERPROFILE%\Documents\Games\intellivision
+### Owned
+    %USERPROFILE%\Documents\Games\Owned
+By default this will populate games as ones that you own but cannot run on this device or wish to have marked as installed.
+### PS4
+    %USERPROFILE%\Documents\Games\ps4
+    Z:\data\Software\games\roms\ps4
+By default this will populate games as ones that you own but cannot run on this device or wish to have marked as installed.
 
 
 ## Configuration
@@ -267,18 +274,25 @@ Optional: Additional tags to add to files.
 The regular expression to use to select the name portion of the file. for example, `".*[\\\\](.+)[\\\\].*"` would use the last folder name as the game name.
 #### game_name_regex_group
 The regular expression group to use from the game_name_regex match.
+#### gameShouldBeInstalled
+This allows programs to be listed but not marked as installed when set to false.
+#### hashContent
+This specifies that the game id sent to galaxy should be using a hash of the content of the data instead of the default based on name and path. Currently this requires the entire application to be loaded into ram at once for the hashing. This is planned to be expanded to allow for further identification algorithms to be specified in the future.
 
 #### Example configuration entry
 The following is an example of the configuration of a single entry for a system. These objects should be enclosed in an array. Again see the example file for how this should look all together.
 
        {
             "name" : "dreamcast",
-            "execution" : "\"C:\\Users\\andyn\\AppData\\Roaming\\RetroArch\\retroarch.exe\" -f -L \"C:\\Users\\andyn\\AppData\\Roaming\\RetroArch\\cores\\flycast_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : "F:\\Software\\games\\roms\\Dreamcast",
+            "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\flycast_libretro.dll\" \"%ROM_RAW%\"",
+            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\Dreamcast","F:\\Software\\games\\roms\\Dreamcast"],
             "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+)[\\\\].*",
+            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\](disc)[.]gdi",
             "game_name_regex_group" : 1,
-            "filename_regex" : ["disc[.]gdi"]
+            "system_rom_name_regex_group" : 4,
+            "filename_regex" : ["disc[.]gdi"],
+            "gameShouldBeInstalled" : true,
+            "hashContent" : false
         }
 
 ## Development notes
