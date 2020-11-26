@@ -139,7 +139,7 @@ async def added_games(self, new_list, old_dict, new_dict):
             logging.info("added")
             my_created_game = await create_game(local_game)
             self.backend.my_queue_add_game.put(my_created_game)
-            self.backend.my_queue_update_local_game_status.put(LocalGame(local_game["hash_digest"], LocalGameState.Installed))
+            self.backend.my_queue_update_local_game_status.put(LocalGame(local_game["hash_digest"], local_game["local_game_state"]))
 
 async def state_changed(self, old_dict, new_dict):
     # state changed
