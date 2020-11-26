@@ -69,14 +69,12 @@ jobs:
       env:
         ZIP_NAME: importer_97543122-7785-4444-2254-711233556699.zip
         MY_TAG: Prototype_${{ github.sha }}
-        AUTOMATIC_RELEASES_TAG: ${MY_TAG}
-        AUTOMATIC_RELEASE_TAG: ${MY_TAG}
       uses: marvinpinto/action-automatic-releases@v1.1.0
       with:
         # GitHub secret token
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         # Git tag (for automatic releases)
-        automatic_release_tag: ${AUTOMATIC_RELEASES_TAG}
+        automatic_release_tag: ::add-mask::${MY_TAG}
         # Should this release be marked as a pre-release?
         prerelease: True
         # Release title (for automatic releases)
