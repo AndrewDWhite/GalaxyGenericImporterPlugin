@@ -213,7 +213,7 @@ By default the folders in `F:\Software\games\roms\dos` will be populated as your
 
 #### programs
     %USERPROFILE%\Documents\Games\mods
-This will by default populate batch and link files into galaxy for directly launching programs such as mods.
+This will by default populate batch and link files into galaxy for directly launching programs such as mods. Additionally this folder by default supports launching BlueStacks application links.
 ### Xbox 360
 #### emulator
     %USERPROFILE%\Downloads\xenia_master\xenia.exe
