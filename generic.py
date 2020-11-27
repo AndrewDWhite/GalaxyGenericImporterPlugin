@@ -142,6 +142,13 @@ class GenericEmulatorPlugin(Plugin):
             self.my_library_thread = threading.Thread(target=library_thread, args=(self, ) )
             self.my_library_thread.daemon = True
             self.my_library_thread.start()    
+            
+            #Lets just send the game data once just incase
+            my_task_owned = asyncio.create_task(self.get_owned_games())
+            self.my_tasks.append(my_task_owned)
+            my_task_local = asyncio.create_task(self.get_local_games())
+            self.my_tasks.append(my_task_local)
+            
 
     # api interface shutdown nicely
     async def shutdown(self):
