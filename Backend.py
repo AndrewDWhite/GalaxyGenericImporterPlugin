@@ -32,10 +32,15 @@ class Backend():
         self.my_queue_folder_awaiting_scan = queue.Queue()
         self.my_authenticated = False
         self.not_updating_list_scan = False
+        logging.info("Backend init completed sucessfuly")
         
     async def setup(self, configuration):
         logging.info("Setup backend")
+        logging.info("cache")
         self.local_game_cache = await self.my_game_lister.read_from_cache()
+        
+        logging.info("preparing to seed changes")
+        await self.seedChanges(self.local_game_cache)
 
         my_cache_exists = await self.my_game_lister.cache_exists_file(self.cache_times_filepath)
         if my_cache_exists:
@@ -45,6 +50,11 @@ class Backend():
         self.not_updating_list_scan = True
         self.backend_setup = True
         logging.info("backend started up")
+        
+    async def seedChanges(self, cache):
+        for my_game in cache:
+            logging.info(my_game)
+            self.my_queue_update_local_game_status.put(LocalGame(my_game["hash_digest"], my_game["local_game_state"]))
         
 async def shutdown_library(self):
     logging.info("shutdown folder listeners")
@@ -105,22 +115,25 @@ async def prepare_to_send_my_updates(self, new_local_games_list, local_game_cach
 #Will cause issues it not called from initial thread
 async def send_events(self):
     logging.info("sending events to galaxy")
-    logging.info("my_queue_add_game")
+    logging.info("my_queue_add_game length")
     logging.info(self.backend.my_queue_add_game.empty())
+    logging.info(self.backend.my_queue_add_game.qsize())
     while not self.backend.my_queue_add_game.empty():
         my_game_sending = self.backend.my_queue_add_game.get()
         logging.info(my_game_sending)
         self.add_game(my_game_sending)
     
-    logging.info("my_queue_update_local_game_status")
-    logging.info(self.backend.my_queue_update_local_game_status.empty())    
+    logging.info("my_queue_update_local_game_status update length")
+    logging.info(self.backend.my_queue_update_local_game_status.empty())
+    logging.info(self.backend.my_queue_update_local_game_status.qsize())    
     while not self.backend.my_queue_update_local_game_status.empty():
         my_game_sending = self.backend.my_queue_update_local_game_status.get()
         logging.info(my_game_sending)
         self.update_local_game_status(my_game_sending)
   
-    logging.info("my_queue_update_game_time")
-    logging.info(self.backend.my_queue_update_game_time.empty())    
+    logging.info("my_queue_update_game_time update length")
+    logging.info(self.backend.my_queue_update_game_time.empty())
+    logging.info(self.backend.my_queue_update_game_time.qsize())      
     while not self.backend.my_queue_update_game_time.empty():    
         my_game_sending = self.backend.my_queue_update_game_time.get()
         logging.info(my_game_sending)
@@ -149,7 +162,7 @@ async def state_changed(self, old_dict, new_dict):
             self.backend.my_queue_update_local_game_status.put(LocalGame(my_id, new_dict[my_id]))
 
 def library_thread(self):
-    logging.info("TODO start up thread for library")
+    logging.info("TODO start up thread for library, we may wait for the backend to startup")
     #Wait for backend to be setup and then we can go
     while not self.backend.backend_setup:
         pass
@@ -159,7 +172,7 @@ def library_thread(self):
         #loop = asyncio.new_event_loop()
         #asyncio.set_event_loop(loop)
         #asyncio.get_event_loop()
-        logging.info("TODO library loop")
+        logging.info("TODO library loop: We haven't started it yet so lets do that")
         
 #         try:
 #             loop = asyncio.get_event_loop()
@@ -176,9 +189,11 @@ def library_thread(self):
 
 async def tick_async(self):   
     while(self.keep_ticking):
-        logging.info("backend?")
+        logging.info("backend running for us to get what we need from it?")
         logging.info(self.backend.backend_setup)
-        if self.backend.backend_setup:
+        logging.info("System logged in for us to bother with this?")
+        logging.info(self.backend.my_authenticated)
+        if self.backend.backend_setup and self.backend.my_authenticated:
             #if self.my_library_thread == None:
             #logging.info("lib?")
             #logging.info(self.my_library_thread.is_alive())
@@ -243,7 +258,7 @@ async def update_local_games(self, username, my_game_lister):
             logging.info(self.backend.my_queue_folder_awaiting_scan.empty())
             logging.info("I am not updating?")
             logging.info(self.backend.not_updating_list_scan)
-            logging.info("lets go in here?")
+            logging.info("lets go in here for a scan?")
             logging.info(not_run)
             logging.info(not self.backend.my_queue_folder_awaiting_scan.empty() and self.backend.not_updating_list_scan and time_delta_minutes>1)
             logging.info(not_run or (not self.backend.my_queue_folder_awaiting_scan.empty() and self.backend.not_updating_list_scan and time_delta_minutes>1))
@@ -304,6 +319,7 @@ async def get_exe_command(game_id,local_game_cache):
     return execution_command    
     
 async def time_delta_calc_minutes(last_update):
+    logging.info("time delta calculating")
     current_time = datetime.now()
     logging.info(current_time)
     logging.info(last_update)
@@ -353,7 +369,7 @@ async def created_update(current_game, my_delta, start_time):
     return my_game_update
 
 async def do_auth(self, username):    
-    logging.info("Auth")
+    logging.info("Auth request started")
     user_data = {}
     logging.info(username)
     user_data['username'] = username       
@@ -365,18 +381,20 @@ async def update_cache_time(self, my_cache_update, cache_filepath):
     #Potential race condition here probably want to add semaphores on cache writes or refactor
     self.backend.library_lock.acquire()
     try:
-        logging.info("locked")
+        logging.info("locked for time updates")
         self.backend.local_time_cache = my_cache_update
         self.backend.my_game_lister.write_to_cache_file(my_cache_update, cache_filepath)
     finally:
         self.backend.library_lock.release()
+        logging.info("lock released for time updates")
     
 async def update_cache(self, my_cache_update):
     #Potential race condition here probably want to add semaphores on cache writes or refactor
     self.backend.library_lock.acquire()
     try:
-        logging.info("locked")
+        logging.info("locked for cache updates")
         self.backend.local_game_cache = my_cache_update
         self.backend.my_game_lister.write_to_cache(my_cache_update)
     finally:
         self.backend.library_lock.release()
+        logging.info("lock released for cache updates")

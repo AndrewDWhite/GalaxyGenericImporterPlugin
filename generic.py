@@ -33,7 +33,7 @@ class GenericEmulatorPlugin(Plugin):
         self.my_threads = []    
         self.my_tasks = []
         self.started_async_tick = False
-        self.keep_ticking = True
+        self.keep_ticking = True 
 
     # required api interface to authenticate the user with the platform
     async def authenticate(self, stored_credentials=None):
@@ -49,6 +49,7 @@ class GenericEmulatorPlugin(Plugin):
     
     # required api interface to return the owned games
     async def get_owned_games(self):
+        logging.info("get local games will wait for library to setup if necessary")
         if not self.backend.backend_setup:
             await self.backend.setup(self.configuration)
         logging.info("get owned")
@@ -105,6 +106,7 @@ class GenericEmulatorPlugin(Plugin):
     # api interface to return locally installed games
     # appears that get_owned_games will always run first
     async def get_local_games(self):
+        logging.info("get local games will wait for library to setup if necessary")
         if not self.backend.backend_setup:
             await self.backend.setup(self.configuration)
 
@@ -113,6 +115,9 @@ class GenericEmulatorPlugin(Plugin):
         for local_game in self.backend.local_game_cache :
             if local_game["gameShouldBeInstalled"]:
                 localgames.append(LocalGame(local_game["hash_digest"], local_game["local_game_state"]))
+            else:
+                logging.info("Only Owned:")
+                logging.info(local_game)
         logging.info(len(localgames))
         self.backend.my_imported_local = True
         return localgames
@@ -120,15 +125,33 @@ class GenericEmulatorPlugin(Plugin):
     # mod of api interface to periodically run processes such as rescanning for library changes
     def tick(self):
         if not self.started_async_tick:
+            logging.info("Setup ticking")
             self.started_async_tick = True
             asyncio.get_event_loop()
             my_task = asyncio.create_task(tick_async(self) )
             self.my_tasks.append(my_task)
             
+            
+            logging.info("tick setup will initialize backend setup if necessary")
+            if not self.backend.backend_setup:
+                logging.info("Backend setup was necessary")
+                my_task_update = asyncio.create_task(self.backend.setup(self.configuration) )
+                self.my_tasks.append(my_task_update)
+                
+            else:
+                logging.info("Backend was setup already")
+            
             logging.info("starting library thread up for the first time")
             self.my_library_thread = threading.Thread(target=library_thread, args=(self, ) )
             self.my_library_thread.daemon = True
             self.my_library_thread.start()    
+            
+            #Lets just send the game data once just incase
+            my_task_owned = asyncio.create_task(self.get_owned_games())
+            self.my_tasks.append(my_task_owned)
+            my_task_local = asyncio.create_task(self.get_local_games())
+            self.my_tasks.append(my_task_local)
+            
 
     # api interface shutdown nicely
     async def shutdown(self):
@@ -153,7 +176,7 @@ class GenericEmulatorPlugin(Plugin):
     # api interface to startup game
     # requires get_local_games to have listed the game
     async def launch_game(self, game_id):
-        logging.info("launch")
+        logging.info("launch program")
         execution_command = await get_exe_command(game_id, self.backend.local_game_cache)
         my_current_time = datetime.now()
         logging.info(execution_command)
@@ -163,6 +186,7 @@ class GenericEmulatorPlugin(Plugin):
         logging.info(my_thread.name)
         my_thread.daemon = True
         my_thread.start()
+        #We don't hang the closing of the plugin for this to stop
   
 def main():
     create_and_run_plugin(GenericEmulatorPlugin, sys.argv)
