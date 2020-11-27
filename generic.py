@@ -129,9 +129,9 @@ class GenericEmulatorPlugin(Plugin):
             self.my_tasks.append(my_task)
             
             
-            logging.info("tick setup will wait for backend to setup if necessary")
+            logging.info("tick setup will initialize backend setup if necessary")
             if not self.backend.backend_setup:
-                logging.info("Backend setup necessary")
+                logging.info("Backend setup was necessary")
                 my_task_update = asyncio.create_task(self.backend.setup(self.configuration) )
                 self.my_tasks.append(my_task_update)
                 
