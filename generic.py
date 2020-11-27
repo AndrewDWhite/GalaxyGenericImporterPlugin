@@ -33,7 +33,7 @@ class GenericEmulatorPlugin(Plugin):
         self.my_threads = []    
         self.my_tasks = []
         self.started_async_tick = False
-        self.keep_ticking = True
+        self.keep_ticking = True 
 
     # required api interface to authenticate the user with the platform
     async def authenticate(self, stored_credentials=None):
@@ -115,6 +115,9 @@ class GenericEmulatorPlugin(Plugin):
         for local_game in self.backend.local_game_cache :
             if local_game["gameShouldBeInstalled"]:
                 localgames.append(LocalGame(local_game["hash_digest"], local_game["local_game_state"]))
+            else:
+                logging.info("Only Owned:")
+                logging.info(local_game)
         logging.info(len(localgames))
         self.backend.my_imported_local = True
         return localgames
