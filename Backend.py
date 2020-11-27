@@ -38,6 +38,9 @@ class Backend():
         logging.info("Setup backend")
         logging.info("cache")
         self.local_game_cache = await self.my_game_lister.read_from_cache()
+        
+        logging.info("preparing to seed changes")
+        await self.seedChanges(self.local_game_cache)
 
         my_cache_exists = await self.my_game_lister.cache_exists_file(self.cache_times_filepath)
         if my_cache_exists:
@@ -47,6 +50,11 @@ class Backend():
         self.not_updating_list_scan = True
         self.backend_setup = True
         logging.info("backend started up")
+        
+    async def seedChanges(self, cache):
+        for my_game in cache:
+            logging.info(my_game)
+            self.my_queue_update_local_game_status.put(LocalGame(my_game["hash_digest"], my_game["local_game_state"]))
         
 async def shutdown_library(self):
     logging.info("shutdown folder listeners")
@@ -107,22 +115,25 @@ async def prepare_to_send_my_updates(self, new_local_games_list, local_game_cach
 #Will cause issues it not called from initial thread
 async def send_events(self):
     logging.info("sending events to galaxy")
-    logging.info("my_queue_add_game")
+    logging.info("my_queue_add_game length")
     logging.info(self.backend.my_queue_add_game.empty())
+    logging.info(self.backend.my_queue_add_game.qsize())
     while not self.backend.my_queue_add_game.empty():
         my_game_sending = self.backend.my_queue_add_game.get()
         logging.info(my_game_sending)
         self.add_game(my_game_sending)
     
-    logging.info("my_queue_update_local_game_status")
-    logging.info(self.backend.my_queue_update_local_game_status.empty())    
+    logging.info("my_queue_update_local_game_status update length")
+    logging.info(self.backend.my_queue_update_local_game_status.empty())
+    logging.info(self.backend.my_queue_update_local_game_status.qsize())    
     while not self.backend.my_queue_update_local_game_status.empty():
         my_game_sending = self.backend.my_queue_update_local_game_status.get()
         logging.info(my_game_sending)
         self.update_local_game_status(my_game_sending)
   
-    logging.info("my_queue_update_game_time")
-    logging.info(self.backend.my_queue_update_game_time.empty())    
+    logging.info("my_queue_update_game_time update length")
+    logging.info(self.backend.my_queue_update_game_time.empty())
+    logging.info(self.backend.my_queue_update_game_time.qsize())      
     while not self.backend.my_queue_update_game_time.empty():    
         my_game_sending = self.backend.my_queue_update_game_time.get()
         logging.info(my_game_sending)
@@ -180,7 +191,9 @@ async def tick_async(self):
     while(self.keep_ticking):
         logging.info("backend running for us to get what we need from it?")
         logging.info(self.backend.backend_setup)
-        if self.backend.backend_setup:
+        logging.info("System logged in for us to bother with this?")
+        logging.info(self.backend.my_authenticated)
+        if self.backend.backend_setup and self.backend.my_authenticated:
             #if self.my_library_thread == None:
             #logging.info("lib?")
             #logging.info(self.my_library_thread.is_alive())
