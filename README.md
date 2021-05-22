@@ -11,7 +11,9 @@ Plugin for GOG Galaxy supporting programmatic importation of multiplatform game 
 - Unknown game issues where galaxy refuses a name you provided to it or refuses to update, can sometimes be fixed by changing the username in config.cfg .
 
 ## Installation
-The plugin will need to be placed in `%localappdata%\GOG.com\Galaxy\plugins\installed\` as `importer_97543122-7785-4444-2254-711233556699` . The easiest version to install is the [latest version](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/releases/latest) under releases with all of the libraries pre installed and can be unzipped into the installation directory. The following is a Youtube video showing installation using default directories for software. https://www.youtube.com/watch?v=FCrHWRy0fOs
+The plugin will need to be placed in `%localappdata%\GOG.com\Galaxy\plugins\installed\` as `importer_97543122-7785-4444-2254-711233556699` . The easiest version to install is the [latest version](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/releases/latest) under releases with all of the libraries pre installed and can be unzipped into the installation directory. The a [Youtube video]( https://www.youtube.com/watch?v=FCrHWRy0fOs) showing installation using default directories for software.
+
+<img alt="installation directory with plugins installed" src="https://user-images.githubusercontent.com/972757/119213521-981b1980-ba8d-11eb-9a13-e8a8a2438c14.png">
 
 ## Default directories
 If the configuration is not changed to reflect your system, then the following is used by default. Your personal `documents\games\` folder will by default be used to house the folders for your systems which will be something like `C:\Users\andyn\Documents\Games\Dreamcast` depending on your username. See the PSP example for how to have multiple emulators for the same system for different folders and kinds of images.
@@ -224,6 +226,9 @@ By default the folders in `F:\Software\games\roms\dos` will be populated as your
 #### programs
     %USERPROFILE%\Documents\Games\mods
 This will by default populate batch and link files into galaxy for directly launching programs such as mods. Additionally this folder by default supports launching BlueStacks application links.
+
+<img alt="Mods default folder with a mod and a blustax link" src="https://user-images.githubusercontent.com/972757/119213717-4d9a9c80-ba8f-11eb-8f87-e6be9dc497fb.png">
+
 ### Xbox 360
 #### emulator
     %USERPROFILE%\Downloads\xenia_master\xenia.exe
@@ -261,7 +266,9 @@ By default this will populate games as ones that you own but cannot run on this 
 
 
 ## Configuration
-Configuration for execution, selection and location of files is located in the `emulators.json` file. See the included for an example and used by default if not changed. You will need to change this. Any platform you do not need can be safetly removed.
+Configuration for execution, selection and location of files is located in the `emulators.json` file. See the included for an example and for what is used by default if not changed. You will need to change this. Any platform(s) you do not need can be safely removed.
+
+<img alt="Main configuration file for program execution" src="https://user-images.githubusercontent.com/972757/119213854-46c05980-ba90-11eb-8322-19a442eae03f.png">
 
 ### name
 The different platforms names are saved as tags, so you will want to manually import them to use these filters in GOG Galaxy.
