@@ -44,7 +44,7 @@ If the configuration is not changed to reflect your system, then the following i
 | | | %USERPROFILE%\Documents\Games\PS3 |
 | Playstation Portable | %USERPROFILE%\Downloads\ppsspp_win\PPSSPPWindows64.exe | F:\Software\games\roms\psp |
 | | | %USERPROFILE%\Documents\Games\psp |
-| Playstation Portable | C:\Program Files\PPSSPP\ppsspp_win\PPSSPPWindows64.exe | E:\roms\psp\Digital Downloads |
+| | C:\Program Files\PPSSPP\ppsspp_win\PPSSPPWindows64.exe | E:\roms\psp\Digital Downloads |
 | | | %USERPROFILE%\Documents\Games\psp\Digital Downloads |
 | Playstation 1 | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\PS1 |
 | | | %USERPROFILE%\Documents\Games\PS1 |
