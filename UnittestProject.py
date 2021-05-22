@@ -685,6 +685,7 @@ class TestParameterized(unittest.TestCase):
         #to do amazon ["amazon valid entry", "amazon0", "mygame.exe","mygame",1],
         #to do amazon ["amazon ignored entry", "amazon1", "dxwebsetup.exe","mygame",0],
         #to do amazon ["amazon valid entry", "amazon1", "mygame.exe","mygame",1],
+        ["psp digital valid entry", "psp0", "eboot.pbp","gameName",1,"gameName","gameName"],
     ])
     
     def test_write_data_in_folders_sync(self, name, folder, file, subfolder, size, expected_name, system_rom_name):
