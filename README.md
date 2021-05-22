@@ -1,5 +1,5 @@
 # [GalaxyGenericImporterPlugin](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/releases/latest)
-Plugin for GOG Galaxy supporting programmatic importation of multiplatform game libraries. Allows for the generic definition of files to be added using user definable regular expressions. Programmatically imports games from predefined folders while allowing for others to be configured by users. Advanced users can also configure how games are are executed and populated into galaxy by editing the configurable regular expressions. The provides advantages over manual importation when importing many (hundreds) of programs into galaxy, assigning them tags, removing them and adding in unknown games with human readable names.
+Plug-in for GOG Galaxy supporting programmatic importation of multiple platform game libraries. Allows for the generic definition of files to be added using user definable regular expressions. Programmatically imports games from predefined folders while allowing for others to be configured by users. Advanced users can also configure how games are are executed and populated into galaxy by editing the configurable regular expressions. The provides advantages over manual importation when importing many (hundreds) of programs into galaxy, assigning them tags, removing them and adding in unknown games with human readable names.
 
 <img width="894" alt="galaxy_imported" src="https://user-images.githubusercontent.com/972757/83471895-e3d74c00-a453-11ea-8ea9-ac8f0a9c4af0.PNG">
 
@@ -9,14 +9,15 @@ Plugin for GOG Galaxy supporting programmatic importation of multiplatform game 
 - To preserve configuration between versions ensure to copy the emulators.json file to the updated installation.
 - If you want to allow for metadata to be stripped away between dots, like previous versions, you would add `([.].*)*` before the extension; for example gba would look like `.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]gba` for it's regex. This expression will break games with dots in their name. You can look at the history of the configuration for some [examples](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/blob/01ed3c6976e6cd17e805387fd0a60a5e48918973/emulators.json).
 - Unknown game issues where galaxy refuses a name you provided to it or refuses to update, can sometimes be fixed by changing the username in config.cfg .
+- Galaxy will place all programs under the same platform. Grouping by tags is a decent substitute so ensure to use useful ones. If you only intend to use one platform, you can also update the config.cfg file for that platform.
 
 ## Installation
-The plugin will need to be placed in `%localappdata%\GOG.com\Galaxy\plugins\installed\` as `importer_97543122-7785-4444-2254-711233556699` . The easiest version to install is the [latest version](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/releases/latest) under releases with all of the libraries pre installed and can be unzipped into the installation directory. The a [Youtube video]( https://www.youtube.com/watch?v=FCrHWRy0fOs) showing installation using default directories for software.
+The plug-in will need to be placed in `%localappdata%\GOG.com\Galaxy\plugins\installed\` as `importer_97543122-7785-4444-2254-711233556699` . The easiest version to install is the [latest version](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/releases/latest) under releases with all of the libraries pre installed and can be unzipped into the installation directory. The a [Youtube video]( https://www.youtube.com/watch?v=FCrHWRy0fOs) showing installation using default directories for software.
 
 <img alt="installation directory with plugins installed" src="https://user-images.githubusercontent.com/972757/119213521-981b1980-ba8d-11eb-9a13-e8a8a2438c14.png">
 
 ## Default directories
-If the configuration is not changed to reflect your system, then the following is used by default. Your personal `documents\games\` folder will by default be used to house the folders for your systems which will be something like `C:\Users\andyn\Documents\Games\Dreamcast` depending on your username. See the PSP example for how to have multiple emulators for the same system for different folders and kinds of images.
+If the configuration is not changed to reflect your system, then the following is used by default. Your personal `documents\games\` folder will by default be used to house the folders for your systems which will be something like `C:\Users\andyn\Documents\Games\Dreamcast` depending on your user name. See the PSP example for how to have multiple emulators for the same system for different folders and kinds of images.
 
 | Platform | Default Emulator Location | Default Folders |
 |---|---|---|
@@ -148,13 +149,13 @@ This will end up being something like `C:\Users\andyn\Downloads\rpcs3-v0.0.7-923
     %USERPROFILE%\Documents\Games\PS3
 By default the folders in `F:\Software\games\roms\PS3\out` will be populated as your game names.
 ### Playstation Portable
-This system is setup by default as an example of having two different emulators or versions of one to launch different programs in seperate folders.
+This system is setup by default as an example of having two different emulators or versions of one to launch different programs in separate folders.
 #### emulator
     %USERPROFILE%\Downloads\ppsspp_win\PPSSPPWindows64.exe
 This will end up being something like `C:\Users\andyn\Downloads\ppsspp_win\PPSSPPWindows64.exe`. This instance is setup to load isos of disks.
 
     C:\Program Files\PPSSPP\ppsspp_win\PPSSPPWindows64.exe
-This one is setup for running digital downloaded PBP from the playstation store.
+This one is setup for running digital downloaded PBP from the Playstation store.
 #### roms
     F:\Software\games\roms\psp
     %USERPROFILE%\Documents\Games\psp
@@ -314,7 +315,7 @@ The following is an example of the configuration of a single entry for a system.
         }
 
 ## Development notes
-Galaxy plugin specific dependencies:
+Galaxy plug-in specific dependencies:
  - https://github.com/gogcom/galaxy-integrations-python-api 
  - https://github.com/tylerbrawl/Galaxy-Utils
 
