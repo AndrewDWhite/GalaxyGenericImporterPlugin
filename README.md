@@ -152,6 +152,7 @@ This system is setup by default as an example of having two different emulators 
 #### emulator
     %USERPROFILE%\Downloads\ppsspp_win\PPSSPPWindows64.exe
 This will end up being something like `C:\Users\andyn\Downloads\ppsspp_win\PPSSPPWindows64.exe`. This instance is setup to load isos of disks.
+
     C:\Program Files\PPSSPP\ppsspp_win\PPSSPPWindows64.exe
 This one is setup for running digital downloaded PBP from the playstation store.
 #### roms
