@@ -645,13 +645,20 @@ def insert_file_into_folder (self, systems, folder, file, subfolder):
 class TestParameterized(unittest.TestCase):
     
     @parameterized.expand([
+        #Testing a valid dreamcast entry
         ["dreamcast valid entry", "dreamcast0", "disc.gdi","mygame",1,"mygame","disc"],
+        #Testing an invalid dreamcast entry
         ["dreamcast invalid entry", "dreamcast0", "mygame.gdi","mygame",0,"",""],
         ["dreamcast invalid path", "dreamcast2", "disc.gdi","mygame",0,"",""],
         ["gba valid entry", "gba0", "mygame.gba","",1,"mygame","mygame"],
+        #Testing to ensure that metadata is not captured as a game name using () and [] to denote
         ["gba valid entry", "gba0", "mygame[some metadata here].gba","",1,"mygame","mygame"],
         ["gba valid entry", "gba0", "mygame(some metadata here).gba","",1,"mygame","mygame"],
-        ["gba valid entry", "gba0", "mygame.some metadata here..gba","",1,"mygame","mygame"],
+        #Below line would allow you to test if your dotted metadata lines would work
+        #["gba valid entry dotted metadata", "gba0", "mygame.some metadata here..gba","",1,"mygame","mygame"],
+        #Testing games with dots in their names
+        ["gba valid entry no metadata dots", "gba0", "mygame.no metadata here.gba","",1,"mygame.no metadata here","mygame.no metadata here"],
+        ["gba valid entry another test dotted game name", "gba0", "m.y.game.gba","",1,"m.y.game","m.y.game"],
         ["gbc valid entry", "gbc0", "mygame.gb","",1,"mygame","mygame"],
         ["gbc valid entry alternate extension", "gbc0", "mygame.gbc","",1,"mygame","mygame"],
         ["gbc valid entry", "gbc1", "mygame.gb","",1,"mygame","mygame"],
