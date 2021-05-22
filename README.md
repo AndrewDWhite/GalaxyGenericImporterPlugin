@@ -1,5 +1,5 @@
 # [GalaxyGenericImporterPlugin](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/releases/latest)
-Plugin for GOG Galaxy supporting programmatic importation of multiplatform game libraries. Allows for the generic definition of files to be added using user definable regular expressions. Programmatically imports games from predefined folders while allowing for others to be configured by users. Advanced users can also configure how games are are executed and populated into galaxy by editing the configurable regular expressions.
+Plugin for GOG Galaxy supporting programmatic importation of multiplatform game libraries. Allows for the generic definition of files to be added using user definable regular expressions. Programmatically imports games from predefined folders while allowing for others to be configured by users. Advanced users can also configure how games are are executed and populated into galaxy by editing the configurable regular expressions. The provides advantages over manual importation when importing many (hundreds) of programs into galaxy, assigning them tags, removing them and adding in unknown games with human readable names.
 
 <img width="894" alt="galaxy_imported" src="https://user-images.githubusercontent.com/972757/83471895-e3d74c00-a453-11ea-8ea9-ac8f0a9c4af0.PNG">
 
@@ -7,13 +7,14 @@ Plugin for GOG Galaxy supporting programmatic importation of multiplatform game 
 - Upon galaxy update, the plugin's games may be determined to be unsupported. To resolve this for the current update as of 2020-06-15, disconnect the plugin and then reconnect it again. Contrary to galaxy's messages, your game data including play times will be retained upon reconnecting as they are also cached by the plugin.
 - To preserve game data between updates ensure to copy the game_cache and game_cache-times files to the updated installation.
 - To preserve configuration between versions ensure to copy the emulators.json file to the updated installation.
-- If you want to allow for metadata be be between dots you would add `([.].*)*` before the extension; for example gba would look like `.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]gba` for it's regex. This expression will break games with dots in their name. You can look at the history of the configuration for some examples.
+- If you want to allow for metadata to be stripped away between dots, like previous versions, you would add `([.].*)*` before the extension; for example gba would look like `.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]gba` for it's regex. This expression will break games with dots in their name. You can look at the history of the configuration for some [examples](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/blob/01ed3c6976e6cd17e805387fd0a60a5e48918973/emulators.json).
+- Unknown game issues where galaxy refuses a name you provided to it or refuses to update, can sometimes be fixed by changing the username in config.cfg .
 
 ## Installation
 The plugin will need to be placed in `%localappdata%\GOG.com\Galaxy\plugins\installed\` as `importer_97543122-7785-4444-2254-711233556699` . The easiest version to install is the [latest version](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/releases/latest) under releases with all of the libraries pre installed and can be unzipped into the installation directory. The following is a Youtube video showing installation using default directories for software. https://www.youtube.com/watch?v=FCrHWRy0fOs
 
 ## Default directories
-If the configuration is not changed to reflect your system, then the following is used by default. Your personal `documents\games\` folder will by default be used to house the folders for your systems which will be something like `C:\Users\andyn\Documents\Games\Dreamcast` depending on your username.
+If the configuration is not changed to reflect your system, then the following is used by default. Your personal `documents\games\` folder will by default be used to house the folders for your systems which will be something like `C:\Users\andyn\Documents\Games\Dreamcast` depending on your username. See the PSP example for how to have multiple emulators for the same system for different folders and kinds of images.
 
 | Platform | Default Emulator Location | Default Folders |
 |---|---|---|
@@ -41,6 +42,8 @@ If the configuration is not changed to reflect your system, then the following i
 | | | %USERPROFILE%\Documents\Games\PS3 |
 | Playstation Portable | %USERPROFILE%\Downloads\ppsspp_win\PPSSPPWindows64.exe | F:\Software\games\roms\psp |
 | | | %USERPROFILE%\Documents\Games\psp |
+| Playstation Portable | C:\Program Files\PPSSPP\ppsspp_win\PPSSPPWindows64.exe | E:\roms\psp\Digital Downloads |
+| | | %USERPROFILE%\Documents\Games\psp\Digital Downloads |
 | Playstation 1 | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\PS1 |
 | | | %USERPROFILE%\Documents\Games\PS1 |
 | Super Nintendo Entertainment System | %APPDATA%\RetroArch\retroarch.exe  | F:\Software\games\roms\SNES |
@@ -143,12 +146,18 @@ This will end up being something like `C:\Users\andyn\Downloads\rpcs3-v0.0.7-923
     %USERPROFILE%\Documents\Games\PS3
 By default the folders in `F:\Software\games\roms\PS3\out` will be populated as your game names.
 ### Playstation Portable
+This system is setup by default as an example of having two different emulators or versions of one to launch different programs in seperate folders.
 #### emulator
     %USERPROFILE%\Downloads\ppsspp_win\PPSSPPWindows64.exe
-This will end up being something like `C:\Users\andyn\Downloads\ppsspp_win\PPSSPPWindows64.exe`.
+This will end up being something like `C:\Users\andyn\Downloads\ppsspp_win\PPSSPPWindows64.exe`. This instance is setup to load isos of disks.
+    C:\Program Files\PPSSPP\ppsspp_win\PPSSPPWindows64.exe
+This one is setup for running digital downloaded PBP from the playstation store.
 #### roms
     F:\Software\games\roms\psp
     %USERPROFILE%\Documents\Games\psp
+    E:\roms\psp\Digital Downloads
+    %USERPROFILE%\Documents\Games\psp\Digital Downloads
+The first two are setup for isos while the last two are for PBPs. By default the folders in `%USERPROFILE%\Documents\Games\psp\Digital Downloads` will be populated as your game names.
 ### Playstation 1
 #### emulator
     %APPDATA%\RetroArch\retroarch.exe
