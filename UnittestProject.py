@@ -44,7 +44,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
     async def  test_emulators(self):
         systems = ListGames()
         #tests if it loaded the default number of emulators
-        self.assertEqual(len(systems.loaded_systems_configuration),27)
+        self.assertEqual(len(systems.loaded_systems_configuration),28)
     
     async def test_speed(self):
         systems = ListGames()
@@ -220,7 +220,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
         insert_file_into_folder (self, systems, "dos0", "mygame.exe","mygame")
         #Number of folders created by setup + 2 for subfolders
-        self.assertEqual(55, len(systems.my_folder_monitor_threads) )
+        self.assertEqual(57, len(systems.my_folder_monitor_threads) )
         await systems.shutdown_folder_listeners()
         self.assertEqual(False, my_queue_folder_awaiting_scan.empty())
         self.assertEqual(os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory9\\gbc0")),my_queue_folder_awaiting_scan.get())
@@ -645,13 +645,20 @@ def insert_file_into_folder (self, systems, folder, file, subfolder):
 class TestParameterized(unittest.TestCase):
     
     @parameterized.expand([
+        #Testing a valid dreamcast entry
         ["dreamcast valid entry", "dreamcast0", "disc.gdi","mygame",1,"mygame","disc"],
+        #Testing an invalid dreamcast entry
         ["dreamcast invalid entry", "dreamcast0", "mygame.gdi","mygame",0,"",""],
         ["dreamcast invalid path", "dreamcast2", "disc.gdi","mygame",0,"",""],
         ["gba valid entry", "gba0", "mygame.gba","",1,"mygame","mygame"],
+        #Testing to ensure that metadata is not captured as a game name using () and [] to denote
         ["gba valid entry", "gba0", "mygame[some metadata here].gba","",1,"mygame","mygame"],
         ["gba valid entry", "gba0", "mygame(some metadata here).gba","",1,"mygame","mygame"],
-        ["gba valid entry", "gba0", "mygame.some metadata here..gba","",1,"mygame","mygame"],
+        #Below line would allow you to test if your dotted metadata lines would work
+        #["gba valid entry dotted metadata", "gba0", "mygame.some metadata here..gba","",1,"mygame","mygame"],
+        #Testing games with dots in their names
+        ["gba valid entry no metadata dots", "gba0", "mygame.no metadata here.gba","",1,"mygame.no metadata here","mygame.no metadata here"],
+        ["gba valid entry another test dotted game name", "gba0", "m.y.game.gba","",1,"m.y.game","m.y.game"],
         ["gbc valid entry", "gbc0", "mygame.gb","",1,"mygame","mygame"],
         ["gbc valid entry alternate extension", "gbc0", "mygame.gbc","",1,"mygame","mygame"],
         ["gbc valid entry", "gbc1", "mygame.gb","",1,"mygame","mygame"],
@@ -678,6 +685,7 @@ class TestParameterized(unittest.TestCase):
         #to do amazon ["amazon valid entry", "amazon0", "mygame.exe","mygame",1],
         #to do amazon ["amazon ignored entry", "amazon1", "dxwebsetup.exe","mygame",0],
         #to do amazon ["amazon valid entry", "amazon1", "mygame.exe","mygame",1],
+        ["psp digital valid entry", "psp0", "eboot.pbp","gameName",1,"gameName","gameName"],
     ])
     
     def test_write_data_in_folders_sync(self, name, folder, file, subfolder, size, expected_name, system_rom_name):
