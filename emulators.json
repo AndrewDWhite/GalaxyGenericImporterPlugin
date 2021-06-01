@@ -313,6 +313,18 @@
             "hashContent" : true
         },
         {
+            "name" : "neogeo",
+            "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\mame_libretro.dll\" \"%ROM_RAW%\"",
+            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\neogeo","Z:\\data\\Software\\games\\roms\\neogeo"],
+            "tags" : ["retroarch"],
+            "game_name_regex" : ".*[\\\\]([^\\\\]+?)([ ]*[\\(\\[].*[\\)\\]])*([.]([^\\\\]+?))*[\\\\](?!neogeo)([^\\\\]+?)[.]zip",
+            "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 5,
+            "filename_regex" : ["*[.]zip"],
+            "gameShouldBeInstalled" : true,
+            "hashContent" : false
+        },
+        {
         	"name" : "owned",
             "execution" : "",
             "path_regex" : ["%USERPROFILE%\\Documents\\Games\\Owned"],
