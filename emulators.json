@@ -324,6 +324,18 @@
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
+		{
+            "name" : "amiga",
+            "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\puae_libretro.dll\" \"%ROM_RAW%\"",
+            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\Amiga","Z:\\data\\Software\\games\\roms\\Amiga"],
+            "tags" : ["retroarch"],
+            "game_name_regex" : ".*[\\\\]([^\\\\]+?)([ ]*[\\(\\[].*[\\)\\]])*([.]([^\\\\]+?))*[\\\\]([^\\\\]+?)[.]zip",
+            "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 5,
+            "filename_regex" : ["*[.]zip"],
+            "gameShouldBeInstalled" : true,
+            "hashContent" : false
+        },
         {
         	"name" : "owned",
             "execution" : "",
