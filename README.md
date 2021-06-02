@@ -76,6 +76,8 @@ If the configuration is not changed to reflect your system, then the following i
 | | | %USERPROFILE%\Documents\Games\intellivision |
 | NeoGeo | %APPDATA%\RetroArch\retroarch.exe  | Z:\data\Software\games\roms\neogeo |
 | | | %USERPROFILE%\Documents\Games\neogeo |
+| Amiga | %APPDATA%\RetroArch\retroarch.exe  | Z:\data\Software\games\roms\Amiga |
+| | | %USERPROFILE%\Documents\Games\Amiga |
 
 
 ### Sega Dreamcast
@@ -268,6 +270,13 @@ This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\
     Z:\data\Software\games\roms\neogeo
     %USERPROFILE%\Documents\Games\neogeo
 This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `mame_libretro.dll` core. The folder names will be populated as the game names and the zip files should follow the Mame conventions.
+### Amiga
+#### emulator
+     %APPDATA%\RetroArch\retroarch.exe
+#### roms
+    Z:\data\Software\games\roms\Amiga
+    %USERPROFILE%\Documents\Games\Amiga
+This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `puae_libretro.dll` core. The folder names will be populated as the game names.
 ### Owned
     %USERPROFILE%\Documents\Games\Owned
 By default this will populate games as ones that you own but cannot run on this device or wish to have marked as installed.
