@@ -10,6 +10,7 @@ Plug-in for GOG Galaxy supporting programmatic importation of multiple platform 
 - If you want to allow for metadata to be stripped away between dots, like previous versions, you would add `([.].*)*` before the extension; for example gba would look like `.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]gba` for it's regex. This expression will break games with dots in their name. You can look at the history of the configuration for some [examples](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/blob/01ed3c6976e6cd17e805387fd0a60a5e48918973/emulators.json).
 - Unknown game issues where galaxy refuses a name you provided to it or refuses to update, can sometimes be fixed by changing the username in config.cfg .
 - Galaxy will place all programs under the same platform. Grouping by tags is a decent substitute so ensure to use useful ones. If you only intend to use one platform, you can also update the config.cfg file for that platform.
+- To force the plug-in to re-send every program to galaxy again, useful after updating the configuration manually, remove the caches, game_cache and game_cache-times , and either completely exit and restart galaxy or disable and then re-enable the plug-in.
 
 ## Installation
 The plug-in will need to be placed in `%localappdata%\GOG.com\Galaxy\plugins\installed\` as `importer_97543122-7785-4444-2254-711233556699` . The easiest version to install is the [latest version](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/releases/latest) under releases with all of the libraries pre installed and can be unzipped into the installation directory. The a [Youtube video]( https://www.youtube.com/watch?v=FCrHWRy0fOs) showing installation using default directories for software.
@@ -73,6 +74,8 @@ If the configuration is not changed to reflect your system, then the following i
 | | | F:\Software\games\roms\vita\roms |
 | Mattel Intellivision | %APPDATA%\RetroArch\retroarch.exe  | F:\Software\games\roms\Intellivision |
 | | | %USERPROFILE%\Documents\Games\intellivision |
+| NeoGeo | %APPDATA%\RetroArch\retroarch.exe  | Z:\data\Software\games\roms\neogeo |
+| | | %USERPROFILE%\Documents\Games\neogeo |
 
 
 ### Sega Dreamcast
@@ -258,6 +261,13 @@ This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\
 #### roms
     F:\Software\games\roms\Intellivision
     %USERPROFILE%\Documents\Games\intellivision
+### NeoGeo
+#### emulator
+     %APPDATA%\RetroArch\retroarch.exe
+#### roms
+    Z:\data\Software\games\roms\neogeo
+    %USERPROFILE%\Documents\Games\neogeo
+This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `mame_libretro.dll` core. The folder names will be populated as the game names and the zip files should follow the Mame conventions.
 ### Owned
     %USERPROFILE%\Documents\Games\Owned
 By default this will populate games as ones that you own but cannot run on this device or wish to have marked as installed.
