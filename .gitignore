@@ -71,3 +71,5 @@ pywin32-300.dist-info/
 typing_extensions-3.7.4.3.dist-info/
 typing_extensions.py
 yarl-1.6.3.dist-info/
+test_localsystem.txt
+pytest.xml
