@@ -180,7 +180,7 @@ class GenericEmulatorPlugin(Plugin):
         execution_command = await get_exe_command(game_id, self.backend.local_game_cache)
         my_current_time = datetime.now()
         logging.info(execution_command)
-        my_thread= threading.Thread(target=run_my_selected_game_here, args=(execution_command,))
+        my_thread= threading.Thread(target=run_my_selected_game_here, args=(execution_command,logging,))
         self.my_threads.append(my_thread)
         my_thread.name = json.dumps({"time":my_current_time.isoformat(), "id":game_id})
         logging.info(my_thread.name)
