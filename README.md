@@ -267,7 +267,7 @@ This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\
 #### roms
     Z:\data\Software\games\roms\neogeo
     %USERPROFILE%\Documents\Games\neogeo
-This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `mame_libretro.dll` core.
+This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `mame_libretro.dll` core. The folder names will be populated as the game names and the zip files should follow the Mame conventions.
 ### Owned
     %USERPROFILE%\Documents\Games\Owned
 By default this will populate games as ones that you own but cannot run on this device or wish to have marked as installed.
