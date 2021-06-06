@@ -63,6 +63,7 @@ If the configuration is not changed to reflect your system, then the following i
 | Amazon | | D:\Amazon Games\Library |
 | | | G:\Amazon Games\Library |
 | | | C:\Amazon Games\Library |
+| | | %appdata%\\Microsoft\\Windows\\Start Menu\\Programs\\Amazon Games |
 | DOS | C:\Program Files (x86)\DOSBox-0.74-3\DOSBox.exe | %USERPROFILE%\Documents\Games\DOS |
 | | | F:\Software\games\roms\dos |
 | mods | | %USERPROFILE%\Documents\Games\mods |
@@ -217,7 +218,10 @@ By default the folders in `F:\Software\games\roms\arcade` will be populated as y
     D:\Amazon Games\Library
     G:\Amazon Games\Library
     C:\Amazon Games\Library
-This will by default populate any exe files found in the root folder of each game.
+This will by default populate any exe files found in the root folder of each game. See the second method for the ease of use solution.
+
+    %appdata%\\Microsoft\\Windows\\Start Menu\\Programs\\Amazon Games
+This will by default use the links in the start menu created by amazon games for the applications. Is is recommended to just use this version since it is easier to create and manage.
 ### Dos
 #### emulator
     C:\Program Files (x86)\DOSBox-0.74-3\DOSBox.exe
