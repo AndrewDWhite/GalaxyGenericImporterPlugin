@@ -228,6 +228,18 @@
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
+		{
+            "name" : "amazon",
+            "execution" : "%windir%\\Sysnative\\cmd.exe /c \"%ROM_RAW%\"",
+            "path_regex" : ["%appdata%\\Microsoft\\Windows\\Start Menu\\Programs\\Amazon Games"],
+			"tags" : ["windows"],
+            "game_name_regex" : ".*[\\\\](.+)[.].*",
+            "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
+            "filename_regex" : ["*[.]url"],
+            "gameShouldBeInstalled" : true,
+            "hashContent" : false
+        },
         {
             "name" : "dos",
             "execution" : "\"C:\\Program Files (x86)\\DOSBox-0.74-3\\DOSBox.exe\" \"%ROM_RAW%\" -exit -fullscreen",
