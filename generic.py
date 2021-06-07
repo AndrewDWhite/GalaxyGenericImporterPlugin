@@ -151,6 +151,7 @@ class GenericEmulatorPlugin(Plugin):
             self.my_tasks.append(my_task_owned)
             my_task_local = asyncio.create_task(self.get_local_games())
             self.my_tasks.append(my_task_local)
+            logging.info("end setup ticking")
             
 
     # api interface shutdown nicely
