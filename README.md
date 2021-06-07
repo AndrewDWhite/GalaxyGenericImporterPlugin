@@ -11,6 +11,7 @@ Plug-in for GOG Galaxy supporting programmatic importation of multiple platform 
 - Unknown game issues where galaxy refuses a name you provided to it or refuses to update, can sometimes be fixed by changing the username in config.cfg .
 - Galaxy will place all programs under the same platform. Grouping by tags is a decent substitute so ensure to use useful ones. If you only intend to use one platform, you can also update the config.cfg file for that platform.
 - To force the plug-in to re-send every program to galaxy again, useful after updating the configuration manually, remove the caches, game_cache and game_cache-times , and either completely exit and restart galaxy or disable and then re-enable the plug-in.
+- If you own a lot of games Galaxy may incorrectly report that the plug-in has crashed and force kill it for processing too long.
 
 ## Installation
 The plug-in will need to be placed in `%localappdata%\GOG.com\Galaxy\plugins\installed\` as `importer_97543122-7785-4444-2254-711233556699` . The easiest version to install is the [latest version](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/releases/latest) under releases with all of the libraries pre installed and can be unzipped into the installation directory. The a [Youtube video]( https://www.youtube.com/watch?v=FCrHWRy0fOs) showing installation using default directories for software.
