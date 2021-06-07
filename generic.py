@@ -37,60 +37,60 @@ class GenericEmulatorPlugin(Plugin):
 
     # required api interface to authenticate the user with the platform
     async def authenticate(self, stored_credentials=None):
-        logging.info("authenticate called")
+        logging.debug("authenticate called")
         my_auth = await do_auth(self, self.configuration.my_user_to_gog)
         return my_auth
 
     # required api interface
     async def pass_login_credentials(self, step, credentials, cookies):
-        logging.info("pass_login_credentials called")
+        logging.debug("pass_login_credentials called")
         my_auth = await do_auth(self, self.configuration.my_user_to_gog)
         return my_auth
     
     # required api interface to return the owned games
     async def get_owned_games(self):
-        logging.info("get local games will wait for library to setup if necessary")
+        logging.debug("get local games will wait for library to setup if necessary")
         if not self.backend.backend_setup:
             await self.backend.setup(self.configuration)
-        logging.info("get owned")
+        logging.debug("get owned")
         list_to_galaxy = []
         found_games = self.backend.local_game_cache
         
         for game in found_games:
             this_game=await create_game(game)
             list_to_galaxy.append(this_game)
-        logging.info(len(list_to_galaxy))
+        logging.debug(len(list_to_galaxy))
         self.backend.my_imported_owned = True
         return list_to_galaxy
 
     # api interface to install games
     # Only placeholder so the get_local_games feature is recognized
     async def install_game(self, game_id):
-        logging.info("install called")
-        logging.info(game_id)
+        logging.debug("install called")
+        logging.debug(game_id)
 
     async def get_game_time(self, game_id, context):
-        logging.info("getting play time")
-        logging.info(game_id)
+        logging.debug("getting play time")
+        logging.debug(game_id)
         for current_game in self.backend.local_time_cache:
             if escapejson(current_game["hash_digest"]) == game_id:
-                logging.info(current_game["last_time_played"])
-                logging.info(current_game["run_time_total"])
+                logging.debug(current_game["last_time_played"])
+                logging.debug(current_game["run_time_total"])
                 return GameTime(game_id, current_game["run_time_total"], current_game["last_time_played"])
         #not in cache so never played
-        logging.info("never played")
+        logging.debug("never played")
         return GameTime(game_id, 0, None)
 
     # api interface to uninstall games
     # Only placeholder so the get_local_games feature is recognized
     async def uninstall_game(self, game_id):
-        logging.info("uninstall called")
-        logging.info(game_id)
+        logging.debug("uninstall called")
+        logging.debug(game_id)
     
     # api interface to update game library data with tags
     # assumes that library has already been imported
     async def get_game_library_settings(self, game_id: str, context: Any)  -> GameLibrarySettings:
-        logging.info("Updating library "+game_id)
+        logging.debug("Updating library "+game_id)
         my_current_game_selected={}
         #call function to update
         for current_game_checking in self.backend.local_game_cache:
@@ -99,49 +99,49 @@ class GenericEmulatorPlugin(Plugin):
                 my_current_game_selected =  current_game_checking
                 break
         game_tags = my_current_game_selected["tags"]
-        logging.info(game_tags)
+        logging.debug(game_tags)
         game_settings = GameLibrarySettings(game_id, game_tags, False)
         return game_settings
 
     # api interface to return locally installed games
     # appears that get_owned_games will always run first
     async def get_local_games(self):
-        logging.info("get local games will wait for library to setup if necessary")
+        logging.debug("get local games will wait for library to setup if necessary")
         if not self.backend.backend_setup:
             await self.backend.setup(self.configuration)
 
-        logging.info("get local")
+        logging.debug("get local")
         localgames = []
         for local_game in self.backend.local_game_cache :
             if local_game["gameShouldBeInstalled"]:
                 localgames.append(LocalGame(local_game["hash_digest"], local_game["local_game_state"]))
             else:
-                logging.info("Only Owned:")
-                logging.info(local_game)
-        logging.info(len(localgames))
+                logging.debug("Only Owned:")
+                logging.debug(local_game)
+        logging.debug(len(localgames))
         self.backend.my_imported_local = True
         return localgames
     
     # mod of api interface to periodically run processes such as rescanning for library changes
     def tick(self):
         if not self.started_async_tick:
-            logging.info("Setup ticking")
+            logging.debug("Setup ticking")
             self.started_async_tick = True
             asyncio.get_event_loop()
             my_task = asyncio.create_task(tick_async(self) )
             self.my_tasks.append(my_task)
             
             
-            logging.info("tick setup will initialize backend setup if necessary")
+            logging.debug("tick setup will initialize backend setup if necessary")
             if not self.backend.backend_setup:
-                logging.info("Backend setup was necessary")
+                logging.debug("Backend setup was necessary")
                 my_task_update = asyncio.create_task(self.backend.setup(self.configuration) )
                 self.my_tasks.append(my_task_update)
                 
             else:
-                logging.info("Backend was setup already")
+                logging.debug("Backend was setup already")
             
-            logging.info("starting library thread up for the first time")
+            logging.debug("starting library thread up for the first time")
             self.my_library_thread = threading.Thread(target=library_thread, args=(self, ) )
             self.my_library_thread.daemon = True
             self.my_library_thread.start()    
@@ -151,11 +151,12 @@ class GenericEmulatorPlugin(Plugin):
             self.my_tasks.append(my_task_owned)
             my_task_local = asyncio.create_task(self.get_local_games())
             self.my_tasks.append(my_task_local)
+            logging.debug("end setup ticking")
             
 
     # api interface shutdown nicely
     async def shutdown(self):
-        logging.info("shutdown called")
+        logging.debug("shutdown called")
         self.keep_ticking = False
         
         await shutdown_tasks(self, self.my_tasks)
@@ -171,19 +172,19 @@ class GenericEmulatorPlugin(Plugin):
         #loop = asyncio.get_event_loop()
         #loop.close()
         #await asyncio.sleep(3)
-        logging.info("all done shutdown")
+        logging.debug("all done shutdown")
 
     # api interface to startup game
     # requires get_local_games to have listed the game
     async def launch_game(self, game_id):
-        logging.info("launch program")
+        logging.debug("launch program")
         execution_command = await get_exe_command(game_id, self.backend.local_game_cache)
         my_current_time = datetime.now()
-        logging.info(execution_command)
+        logging.debug(execution_command)
         my_thread= threading.Thread(target=run_my_selected_game_here, args=(execution_command,logging,))
         self.my_threads.append(my_thread)
         my_thread.name = json.dumps({"time":my_current_time.isoformat(), "id":game_id})
-        logging.info(my_thread.name)
+        logging.debug(my_thread.name)
         my_thread.daemon = True
         my_thread.start()
         #We don't hang the closing of the plugin for this to stop
