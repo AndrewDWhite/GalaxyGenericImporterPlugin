@@ -3,372 +3,619 @@
         {
             "name" : "dreamcast",
             "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\flycast_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\Dreamcast","F:\\Software\\games\\roms\\Dreamcast"],
-            "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\](disc)[.]gdi",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\Dreamcast",
+            	"F:\\Software\\games\\roms\\Dreamcast",
+            	"Z:\\data\\Software\\games\\roms\\Dreamcast"
+            ],
+            "tags" : [
+            	"retroarch"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\](disc)[.]gdi$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 4,
-            "filename_regex" : ["disc[.]gdi"],
+            "filename_regex" : [
+            	"disc[.]gdi"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
         {
             "name" : "gba",
             "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\mgba_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\GBA","F:\\Software\\games\\roms\\GBA"],
-            "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]gba",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\GBA",
+            	"F:\\Software\\games\\roms\\GBA",
+            	"Z:\\data\\Software\\games\\roms\\GBA"
+            ],
+            "tags" : [
+            	"retroarch"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]gba$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]gba"],
+            "filename_regex" : [
+            	"*[.]gba"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : true
         },
         {
             "name" : "gbc",
             "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\gambatte_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\GBC","%USERPROFILE%\\Documents\\Games\\GB","F:\\Software\\games\\roms\\GBC","F:\\Software\\games\\roms\\GB"],
-            "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.](gb|gbc)",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\GBC",
+            	"%USERPROFILE%\\Documents\\Games\\GB",
+            	"F:\\Software\\games\\roms\\GBC",
+            	"F:\\Software\\games\\roms\\GB",
+            	"Z:\\data\\Software\\games\\roms\\GBC",
+            	"Z:\\data\\Software\\games\\roms\\GB"
+            ],
+            "tags" : [
+            	"retroarch"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.](gb|gbc)$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]gb","*[.]gbc"],
+            "filename_regex" : [
+            	"*[.]gb",
+            	"*[.]gbc"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : true
         },
         {
             "name" : "gcn",
             "execution" : "\"%USERPROFILE%\\Downloads\\dolphin-master-5.0-11701-x64\\Dolphin-x64\\Dolphin.exe\" --config \"Dolphin.Display.Fullscreen=True\" -e \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\GameCube","F:\\Software\\games\\roms\\GameCube"],
-            "tags" : ["dolphin"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]iso",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\GameCube",
+            	"F:\\Software\\games\\roms\\GameCube",
+            	"Z:\\data\\Software\\games\\roms\\GameCube"
+            ],
+            "tags" : [
+            	"dolphin"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]iso$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]iso"],
+            "filename_regex" : [
+            	"*[.]iso"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
         {
             "name" : "genesis",
             "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\genesis_plus_gx_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\Genesis","F:\\Software\\games\\roms\\Genesis"],
-            "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]bin",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\Genesis",
+            	"F:\\Software\\games\\roms\\Genesis",
+            	"Z:\\data\\Software\\games\\roms\\Genesis"
+            ],
+            "tags" : [
+            	"retroarch"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]bin$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]bin"],
+            "filename_regex" : [
+            	"*[.]bin"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : true
         },
         {
             "name" : "n64",
             "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\mupen64plus_next_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\N64","F:\\Software\\games\\roms\\N64"],
-            "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]z64",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\N64",
+            	"F:\\Software\\games\\roms\\N64",
+            	"Z:\\data\\Software\\games\\roms\\N64"
+            ],
+            "tags" : [
+            	"retroarch"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]z64$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]z64"],
+            "filename_regex" : [
+            	"*[.]z64"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : true
         },
         {
             "name" : "nds",
             "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\desmume_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\nds","F:\\Software\\games\\roms\\nds"],
-            "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]nds",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\nds",
+            	"F:\\Software\\games\\roms\\nds",
+            	"Z:\\data\\Software\\games\\roms\\nds"
+            ],
+            "tags" : [
+            	"retroarch"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]nds$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]nds"],
+            "filename_regex" : [
+            	"*[.]nds"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
         {
             "name" : "nes",
             "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\nestopia_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\NES","F:\\Software\\games\\roms\\nes\\roms"],
-            "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]nes",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\NES",
+            	"F:\\Software\\games\\roms\\nes\\roms",
+            	"Z:\\data\\Software\\games\\roms\\nes\\roms"
+            ],
+            "tags" : [
+            	"retroarch"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]nes$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]nes"],
+            "filename_regex" : [
+            	"*[.]nes"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : true
         },
         {
             "name" : "ps2",
             "execution" : "\"C:\\Program Files (x86)\\PCSX2\\pcsx2.exe\" --fullscreen \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\PS2","F:\\Software\\games\\roms\\PS2"],
-            "tags" : ["pcsx2"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.](iso|bin)",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\PS2",
+            	"F:\\Software\\games\\roms\\PS2",
+            	"Z:\\data\\Software\\games\\roms\\PS2"
+            ],
+            "tags" : [
+            	"pcsx2"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.](iso|bin)$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]iso","*[.]bin"],
+            "filename_regex" : [
+            	"*[.]iso",
+            	"*[.]bin"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
         {
             "name" : "ps3",
             "execution" : "\"%USERPROFILE%\\Downloads\\rpcs3-v0.0.7-9236-db4041e0_win64\\rpcs3.exe\" --no-gui \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\PS3","F:\\Software\\games\\roms\\PS3\\\\out"],
-            "tags" : ["rpcs3"],
-            "game_name_regex" : ".*[\\\\]([\\[].*[\\]][ ]*)*(.+)[\\\\]PS3_GAME.*",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\PS3",
+            	"F:\\Software\\games\\roms\\PS3\\\\out",
+            	"Z:\\data\\Software\\games\\roms\\PS3\\\\out"
+            ],
+            "tags" : [
+            	"rpcs3"
+            ],
+            "game_name_regex" : "^.*[\\\\]([\\[].*[\\]][ ]*)*(.+)[\\\\]PS3_GAME.*$",
             "game_name_regex_group" : 2,
             "system_rom_name_regex_group" : 2,
-            "filename_regex" : ["PS3_GAME\\USRDIR\\EBOOT[.]BIN"],
+            "filename_regex" : [
+            	"PS3_GAME\\USRDIR\\EBOOT[.]BIN"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
         {
             "name" : "psp",
             "execution" : "\"%USERPROFILE%\\Downloads\\ppsspp_win\\PPSSPPWindows64.exe\" --fullscreen \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\psp","F:\\Software\\games\\roms\\psp"],
-            "tags" : ["ppssp"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]iso",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\psp",
+            	"F:\\Software\\games\\roms\\psp",
+            	"Z:\\data\\Software\\games\\roms\\psp"
+            ],
+            "tags" : [
+            	"ppssp"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]iso$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]iso"],
+            "filename_regex" : [
+            	"*[.]iso"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
 		{
             "name" : "psp",
             "execution" : "\"C:\\Program Files\\PPSSPP\\PPSSPPWindows64.exe\" --fullscreen \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\psp\\Digital Downloads","E:\\roms\\psp\\Digital Downloads"],
-            "tags" : ["ppssp"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\]EBOOT[.]PBP",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\psp\\Digital Downloads",
+            	"E:\\roms\\psp\\Digital Downloads"
+            ],
+            "tags" : [
+            	"ppssp"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\]EBOOT[.]PBP$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*EBOOT[.]PBP"],
+            "filename_regex" : [
+            	"*EBOOT[.]PBP"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
         {
             "name" : "ps1",
             "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\pcsx_rearmed_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\PS1","F:\\Software\\games\\roms\\PS1"],
-            "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.](iso|toc)",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\PS1",
+            	"F:\\Software\\games\\roms\\PS1",
+            	"Z:\\data\\Software\\games\\roms\\PS1"
+            ],
+            "tags" : [
+            	"retroarch"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.](iso|toc)$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" :  ["*[.]iso","*[.]toc"],
+            "filename_regex" :  [
+            	"*[.]iso",
+            	"*[.]toc"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
         {
             "name" : "snes",
             "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\snes9x_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\SNES","F:\\Software\\games\\roms\\SNES"],
-            "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]sfc",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\SNES",
+            	"F:\\Software\\games\\roms\\SNES",
+            	"Z:\\data\\Software\\games\\roms\\SNES"
+            ],
+            "tags" : [
+            	"retroarch"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]sfc$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]sfc"],
+            "filename_regex" : [
+            	"*[.]sfc"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : true
         },
         {
             "name" : "wii",
             "execution" : "\"%USERPROFILE%\\Downloads\\dolphin-master-5.0-11701-x64\\Dolphin-x64\\Dolphin.exe\" --config \"Dolphin.Display.Fullscreen=True\" -e \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\Wii","F:\\Software\\games\\roms\\Wii"],
-            "tags" : ["dolphin"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]iso",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\Wii",
+            	"F:\\Software\\games\\roms\\Wii",
+            	"Z:\\data\\Software\\games\\roms\\Wii"
+            ],
+            "tags" : [
+            	"dolphin"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]iso$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]iso"],
+            "filename_regex" : [
+            	"*[.]iso"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
         {
             "name" : "xbox",
             "execution" : "\"%USERPROFILE%\\Downloads\\CxbxReloaded-Release-VS2017\\cxbx.exe\" \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\xbox","F:\\Software\\games\\roms\\xbox\\games"],
-            "tags" : ["cxbxreloaded"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\]default[.]xbe",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\xbox",
+            	"F:\\Software\\games\\roms\\xbox\\games",
+            	"Z:\\data\\Software\\games\\roms\\xbox\\games"
+            ],
+            "tags" : [
+            	"cxbxreloaded"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\]default[.]xbe$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["default[.]xbe"],
+            "filename_regex" : [
+            	"default[.]xbe"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
         {
             "name" : "wiiu",
             "execution" : "\"%USERPROFILE%\\Downloads\\cemu_1.17.2\\Cemu.exe\" -g \"%ROM_RAW%\" -f",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\wiiu./**/\\code\\","F:\\Software\\games\\roms\\wii[ ]u\\converted./**/\\code\\"],
-            "tags" : ["cemu"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\]code.*",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\wiiu./**/\\code\\",
+            	"F:\\Software\\games\\roms\\wii[ ]u\\converted./**/\\code\\",
+            	"Z:\\data\\Software\\games\\roms\\wii[ ]u\\converted./**/\\code\\"
+            ],
+            "tags" : [
+            	"cemu"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\]code.*$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]rpx"],
+            "filename_regex" : [
+            	"*[.]rpx"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
         {
             "name" : "arcade",
             "execution" : "\"%USERPROFILE%\\Downloads\\mame0220b_64bit\\mame64.exe\" %ROM_NAME% -rompath \"%ROM_DIR%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\arcade","F:\\Software\\games\\roms\\arcade"],
-            "tags" : ["mame"],
-            "game_name_regex" : ".*[\\\\]([^\\\\]+?)([ ]*[\\(\\[].*[\\)\\]])*([.]([^\\\\]+?))*[\\\\]([^\\\\]+?)[.]zip",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\arcade",
+            	"F:\\Software\\games\\roms\\arcade",
+            	"Z:\\data\\Software\\games\\roms\\arcade"
+            ],
+            "tags" : [
+            	"mame"
+            ],
+            "game_name_regex" : "^.*[\\\\]([^\\\\]+?)([ ]*[\\(\\[].*[\\)\\]])*([.]([^\\\\]+?))*[\\\\]([^\\\\]+?)[.]zip$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 5,
-            "filename_regex" : ["*[.]zip"],
+            "filename_regex" : [
+            	"*[.]zip"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : true
         },
 		{
             "name" : "amazon",
             "execution" : "\"%ROM_RAW%\"",
-            "path_regex" : ["C:\\Amazon[ ]Games\\Library","D:\\Amazon[ ]Games\\Library", "G:\\Amazon[ ]Games\\Library"],
-            "tags" : ["twitch", "windows"],
-            "game_name_regex" : ".*[:][\\\\]Amazon[ ]Games[\\\\]Library[\\\\](?!(_{2,2}))([^\\\\]+?)(?!(_{2,2}))[\\\\]((?!dxwebsetup)(?!vcredist2010_x64)(?!vcredist_x86)[^\\\\]+?)[.](exe)",
+            "path_regex" : [
+            	"C:\\Amazon[ ]Games\\Library",
+            	"D:\\Amazon[ ]Games\\Library",
+            	"G:\\Amazon[ ]Games\\Library"
+            ],
+            "tags" : [
+            	"twitch",
+            	"windows"
+            ],
+            "game_name_regex" : "^.*[:][\\\\]Amazon[ ]Games[\\\\]Library[\\\\](?!(_{2,2}))([^\\\\]+?)(?!(_{2,2}))[\\\\]((?!dxwebsetup)(?!vcredist2010_x64)(?!vcredist_x86)[^\\\\]+?)[.](exe)$",
             "game_name_regex_group" : 2,
             "system_rom_name_regex_group" : 2,
-            "filename_regex" : ["*[.]exe"],
+            "filename_regex" : [
+            	"*[.]exe"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
 		{
             "name" : "amazon",
             "execution" : "%windir%\\Sysnative\\cmd.exe /c \"%ROM_RAW%\"",
-            "path_regex" : ["%appdata%\\Microsoft\\Windows\\Start Menu\\Programs\\Amazon Games"],
-			"tags" : ["windows"],
-            "game_name_regex" : ".*[\\\\](.+)[.].*",
+            "path_regex" : [
+            	"%appdata%\\Microsoft\\Windows\\Start Menu\\Programs\\Amazon Games"
+            ],
+			"tags" : [
+				"windows"
+			],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.](url)$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]url"],
+            "filename_regex" : [
+            	"*[.]url"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
         {
             "name" : "dos",
             "execution" : "\"C:\\Program Files (x86)\\DOSBox-0.74-3\\DOSBox.exe\" \"%ROM_RAW%\" -exit -fullscreen",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\DOS","F:\\Software\\games\\roms\\dos"],
-            "tags" : ["dosbox"],
-            "game_name_regex" : ".*[\\\\](.+)[\\\\].*",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\DOS",
+            	"F:\\Software\\games\\roms\\dos",
+            	"Z:\\data\\Software\\games\\roms\\dos"
+            ],
+            "tags" : [
+            	"dosbox"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+)[\\\\].*$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]exe","*[.]bat"],
+            "filename_regex" : [
+            	"*[.]exe",
+            	"*[.]bat"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
         {
             "name" : "dos",
             "execution" : "\"C:\\Program Files (x86)\\DOSBox-0.74-3\\DOSBox.exe\" -conf \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\DOS\\configurations","F:\\Software\\games\\roms\\dos\\configurations"],
-            "tags" : ["dosbox"],
-            "game_name_regex" : ".*[\\\\](.+)[.]conf",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\DOS\\configurations",
+            	"F:\\Software\\games\\roms\\dos\\configurations",
+            	"Z:\\data\\Software\\games\\roms\\dos\\configurations"
+            ],
+            "tags" : [
+            	"dosbox"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+)[.]conf$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]conf"],
+            "filename_regex" : [
+            	"*[.]conf"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
         {
             "name" : "mods",
             "execution" : "%windir%\\Sysnative\\cmd.exe /c \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\mods"],
-            "tags" : ["windows"],
-            "game_name_regex" : ".*[\\\\](.+)[.].*",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\mods"
+            ],
+            "tags" : [
+            	"windows"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+)[.].*$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]lnk","*[.]bat"],
+            "filename_regex" : [
+            	"*[.]lnk",
+            	"*[.]bat"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
         {
             "name" : "xbox 360",
             "execution" : "\"%USERPROFILE%\\Downloads\\xenia_master\\xenia.exe\" --fullscreen \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\xbox[ ]360","F:\\Software\\games\\roms\\xbox[ ]360\\games"],
-            "tags" : ["xenia"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\]Content[\\\\]0000000000000000[\\\\]([^\\\\]+?)[\\\\]([^\\\\]+?)[\\\\](([^\\\\])(?!ContentCache[.]pkg|Data|[.]data|[.]log|ontentCache[.]pkg))+(?!(ContentCache[.]pkg|Data|[.]data|[.]log|ontentCache[.]pkg))$",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\xbox[ ]360",
+            	"F:\\Software\\games\\roms\\xbox[ ]360\\games",
+            	"Z:\\data\\Software\\games\\roms\\xbox[ ]360\\games"
+            ],
+            "tags" : [
+            	"xenia"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\]Content[\\\\]0000000000000000[\\\\]([^\\\\]+?)[\\\\]([^\\\\]+?)[\\\\](([^\\\\])(?!ContentCache[.]pkg|Data|[.]data|[.]log|ontentCache[.]pkg))+(?!(ContentCache[.]pkg|Data|[.]data|[.]log|ontentCache[.]pkg))$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*"],
+            "filename_regex" : [
+            	"*"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
         {
             "name" : "3ds",
             "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\citra_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\3ds","F:\\Software\\games\\roms\\3ds\\roms"],
-            "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]3ds",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\3ds",
+            	"F:\\Software\\games\\roms\\3ds\\roms",
+            	"Z:\\data\\Software\\games\\roms\\3ds\\roms"
+            ],
+            "tags" : [
+            	"retroarch"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]3ds$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]3ds"],
+            "filename_regex" : [
+            	"*[.]3ds"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
         {
             "name" : "psv",
             "execution" : "\"%USERPROFILE%\\Downloads\\Vita3K-master-v4761-2020-07-11-3b714115_win64\\Vita3K.exe\" \"%ROM_RAW%\" --fullscreen",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\vita","F:\\Software\\games\\roms\\vita\\roms"],
-            "tags" : ["Vita3K"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\]([^\\\\]+?)[.]zip",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\vita",
+            	"F:\\Software\\games\\roms\\vita\\roms",
+            	"Z:\\data\\Software\\games\\roms\\vita\\roms"
+            ],
+            "tags" : [
+            	"Vita3K"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[\\\\]([^\\\\]+?)[.]zip$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]zip"],
+            "filename_regex" : [
+            	"*[.]zip"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
         {
             "name" : "intellivision",
             "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\freeintv_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\intellivision","F:\\Software\\games\\roms\\Intellivision"],
-            "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]bin",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\intellivision",
+            	"F:\\Software\\games\\roms\\Intellivision",
+            	"Z:\\data\\Software\\games\\roms\\Intellivision"
+            ],
+            "tags" : [
+            	"retroarch"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]bin$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]bin"],
+            "filename_regex" : [
+            	"*[.]bin"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : true
         },
         {
             "name" : "neogeo",
             "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\mame_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\neogeo","Z:\\data\\Software\\games\\roms\\neogeo"],
-            "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\]([^\\\\]+?)([ ]*[\\(\\[].*[\\)\\]])*([.]([^\\\\]+?))*[\\\\](?!neogeo)([^\\\\]+?)[.]zip",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\neogeo",
+            	"Z:\\data\\Software\\games\\roms\\neogeo"
+            ],
+            "tags" : [
+            	"retroarch"
+            ],
+            "game_name_regex" : "^.*[\\\\]([^\\\\]+?)([ ]*[\\(\\[].*[\\)\\]])*([.]([^\\\\]+?))*[\\\\](?!neogeo)([^\\\\]+?)[.]zip$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 5,
-            "filename_regex" : ["*[.]zip"],
+            "filename_regex" : [
+            	"*[.]zip"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
 		{
             "name" : "amiga",
             "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\puae_libretro.dll\" \"%ROM_RAW%\"",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\Amiga","Z:\\data\\Software\\games\\roms\\Amiga"],
-            "tags" : ["retroarch"],
-            "game_name_regex" : ".*[\\\\]([^\\\\]+?)([ ]*[\\(\\[].*[\\)\\]])*([.]([^\\\\]+?))*[\\\\]([^\\\\]+?)[.]zip",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\Amiga",
+            	"Z:\\data\\Software\\games\\roms\\Amiga"
+            ],
+            "tags" : [
+            	"retroarch"
+            ],
+            "game_name_regex" : "^.*[\\\\]([^\\\\]+?)([ ]*[\\(\\[].*[\\)\\]])*([.]([^\\\\]+?))*[\\\\]([^\\\\]+?)[.]zip$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 5,
-            "filename_regex" : ["*[.]zip"],
+            "filename_regex" : [
+            	"*[.]zip"
+            ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false
         },
         {
         	"name" : "owned",
             "execution" : "",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\Owned"],
-            "tags" : ["owned"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]txt",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\Owned"
+            ],
+            "tags" : [
+            	"owned"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]txt$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]txt"],
+            "filename_regex" : [
+            	"*[.]txt"
+            ],
             "gameShouldBeInstalled" : false,
             "hashContent" : false
         },
         {
         	"name" : "ps4",
             "execution" : "",
-            "path_regex" : ["%USERPROFILE%\\Documents\\Games\\ps4","Z:\\data\\Software\\games\\roms\\ps4"],
-            "tags" : ["ps4"],
-            "game_name_regex" : ".*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]iso",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\ps4",
+            	"Z:\\data\\Software\\games\\roms\\ps4"
+            ],
+            "tags" : [
+            	"ps4"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]iso$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
-            "filename_regex" : ["*[.]iso"],
+            "filename_regex" : [
+            	"*[.]iso"
+            ],
             "gameShouldBeInstalled" : false,
             "hashContent" : false
         }
