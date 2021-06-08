@@ -450,6 +450,12 @@ class UnittestProject(aiounittest.AsyncTestCase):
     async def test_no_time_updates(self):
         await time_tracking(self,[])
     
+    async def test_normalizeName(self):
+        systems = ListGames()
+        unnormalized = "\"te(st)ing\\ string.zip"
+        normalized = await systems.normalizeGameNamesForGalaxy(unnormalized)
+        self.assertEquals("testing string.zip", normalized)
+    
     async def test_time_updates(self):
         self.my_game_lister = ListGames()
         self.my_game_lister.cache_filepath = self.my_game_lister.cache_filepath+"-test_time_updates"

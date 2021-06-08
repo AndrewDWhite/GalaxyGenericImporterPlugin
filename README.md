@@ -360,7 +360,7 @@ The regular expression to use to select valid files.
 #### tags
 Optional: Additional tags to add to files.
 #### game_name_regex
-The regular expression to use to select the name portion of the file. for example, `".*[\\\\](.+)[\\\\].*"` would use the last folder name as the game name.
+The regular expression to use to select the name portion of the file. for example, `".*[\\\\](.+)[\\\\].*"` would use the last folder name as the game name. This name is normalized to remove characters which are [known](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/issues/85) to cause issues in galaxy.
 #### game_name_regex_group
 The regular expression group to use from the game_name_regex match.
 #### gameShouldBeInstalled

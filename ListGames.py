@@ -147,7 +147,7 @@ class ListGames():
         regex_result = matcher.search(my_game)
         logging.info(regex_result)
         if None is not regex_result:
-            new_entry["game_name"] = regex_result.group(emulated_system["game_name_regex_group"])
+            new_entry["game_name"] = await self.normalizeGameNamesForGalaxy(regex_result.group(emulated_system["game_name_regex_group"]))
             new_entry["game_filename"] = regex_result.group(emulated_system["system_rom_name_regex_group"])
             logging.info(new_entry["game_name"])
         else:
@@ -159,6 +159,16 @@ class ListGames():
         new_entry["path"] = raw_path[0]
         new_entry["tags"] = tags
         return new_entry
+    
+    async def normalizeGameNamesForGalaxy(self, gameNameUnNormalized):
+        logging.debug("normalizing")
+        normalizedGameName = gameNameUnNormalized
+        normalizedGameName = normalizedGameName.replace("(", "")
+        normalizedGameName = normalizedGameName.replace(")", "")
+        normalizedGameName = normalizedGameName.replace("\\", "")
+        normalizedGameName = normalizedGameName.replace("\"", "")
+        logging.debug(normalizedGameName)
+        return normalizedGameName
     
     async def list_all_recursively(self, salt):
         logging.info("listing")
