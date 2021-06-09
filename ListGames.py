@@ -14,6 +14,7 @@ import pickle
 import threading
 import sys
 import asyncio
+from datetime import datetime
 
 from enum import EnumMeta
 
@@ -177,7 +178,15 @@ class ListGames():
                     logging.info(current_path)
                     my_path_expanded = os.path.expandvars(current_path)
                     my_path_joined = os.path.join(my_path_expanded, '**', extension)
+                    logging.debug(my_path_joined)
+                    begin_time = datetime.now()
+                    
                     found_games = glob.glob(my_path_joined, recursive=True)
+                    
+                    current_time = datetime.now()
+                    time_delta = (current_time - begin_time)
+                    time_delta_seconds = time_delta.total_seconds()
+                    logging.debug(time_delta_seconds)
                     
                     #Below here unique for each game
                     for my_game in found_games:
