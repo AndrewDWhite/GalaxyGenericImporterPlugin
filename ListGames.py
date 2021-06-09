@@ -55,15 +55,15 @@ class ListGames():
         '''
         Constructor
         '''        
-        logging.info("loading emulators configuration")
+        logging.debug("loading emulators configuration")
         emulator_config_path = os.path.abspath(os.path.join(os.path.abspath(__file__),'..','emulators.json'))
         self.cache_filepath = os.path.abspath(os.path.join(os.path.abspath(__file__),'..','game_cache'))
         with open(emulator_config_path, 'r') as config:
             parsed_json = json.load(config)
         config.close()
         self.loaded_systems_configuration=parsed_json["systems"]
-        logging.info("loading emulators configuration completed")
-        logging.info(len(self.loaded_systems_configuration))
+        logging.debug("loading emulators configuration completed")
+        logging.debug(len(self.loaded_systems_configuration))
         self.continue_monitoring = True
         self.my_folder_monitor_threads = []
     
@@ -71,7 +71,7 @@ class ListGames():
         self.write_to_cache_file(data, self.cache_filepath)
         
     def write_to_cache_file(self, data, cache_filepath):
-        logging.info(cache_filepath)
+        logging.debug(cache_filepath)
         with open(cache_filepath, 'wb') as my_file:
             pickle.dump(data, my_file)
         my_file.close()
@@ -113,7 +113,7 @@ class ListGames():
             return my_hashed_data
     
         def get_hash(self, file):
-            logging.info("hashing")
+            logging.debug("hashing")
             with open(file, 'rb') as data:
                 myhasher = hashlib.sha1()
                 read_data = data.read()
@@ -139,18 +139,18 @@ class ListGames():
     async def setup_entry(self, emulated_system, my_game, salt, matcher, tags, gameShouldBeInstalled, hashContent):
         new_entry = emulated_system.copy()
         new_entry["hash_digest"]=await self.hash_data(my_game,salt,hashContent)
-        logging.info(new_entry["hash_digest"])
+        logging.debug(new_entry["hash_digest"])
         new_entry["filename"]=my_game
         new_entry["filename_short"] = os.path.basename(my_game)
         new_entry["gameShouldBeInstalled"] = gameShouldBeInstalled
         #raw_entry = os.path.splitext(new_entry["filename_short"])
         #new_entry["game_filename"] = raw_entry[0]
         regex_result = matcher.search(my_game)
-        logging.info(regex_result)
+        logging.debug(regex_result)
         if None is not regex_result:
             new_entry["game_name"] = regex_result.group(emulated_system["game_name_regex_group"])
             new_entry["game_filename"] = regex_result.group(emulated_system["system_rom_name_regex_group"])
-            logging.info(new_entry["game_name"])
+            logging.debug(new_entry["game_name"])
         else:
             logging.info("Could not match")
             new_entry["game_name"] = my_game
@@ -162,7 +162,7 @@ class ListGames():
         return new_entry
     
     async def list_all_recursively(self, salt):
-        logging.info("listing")
+        logging.debug("listing")
         self.mylist=[]
         #Iterate through each system's configuration for where we should look for programs and add the metadata to results
         for emulated_system in self.loaded_systems_configuration:
@@ -175,7 +175,7 @@ class ListGames():
             for extension in emulated_system["filename_regex"]:
 
                 for current_path in emulated_system["path_regex"]:
-                    logging.info(current_path)
+                    logging.debug(current_path)
                     my_path_expanded = os.path.expandvars(current_path)
                     my_path_joined = os.path.join(my_path_expanded, '**', extension)
                     logging.debug(my_path_joined)
@@ -195,62 +195,62 @@ class ListGames():
                             new_entry = await self.setup_entry(emulated_system, my_game, salt, matcher, tags, gameShouldBeInstalled, hashContent)                        
                             self.mylist.append(new_entry)
                         except  UserWarning as my_user_warning:
-                            logging.info("skipping / dropping")
-                            logging.info(my_user_warning)
+                            logging.debug("skipping / dropping")
+                            logging.debug(my_user_warning)
         return self.mylist      
     
     def disable_monitoring(self):
-        logging.info("disabling monitoring")
+        logging.debug("disabling monitoring")
         self.continue_monitoring = False
     
     def watcher_update(self, path_to_watch, my_queue_folder_awaiting_scan):
-        logging.info("watcher update")
+        logging.debug("watcher update")
         
         #Monitor the directories if they exist TODO determine if we also want to monitor them if they don't
         if (os.path.exists(path_to_watch)) :
-            logging.info ("EXISTS")
+            logging.debug ("EXISTS")
             change_handle = win32file.FindFirstChangeNotification (
               path_to_watch,
               True, #watch tree
               win32con.FILE_NOTIFY_CHANGE_FILE_NAME | win32con.FILE_NOTIFY_CHANGE_LAST_WRITE | win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES | win32con.FILE_NOTIFY_CHANGE_DIR_NAME | win32con.FILE_NOTIFY_CHANGE_SIZE | win32con.FILE_NOTIFY_CHANGE_SECURITY 
             )
             
-            logging.info("starting to monitor")
-            logging.info(path_to_watch)
+            logging.debug("starting to monitor")
+            logging.debug(path_to_watch)
             try:
                 while self.continue_monitoring:
-                    logging.info("still monitoring")
-                    logging.info(path_to_watch)
+                    logging.debug("still monitoring")
+                    logging.debug(path_to_watch)
                     result =  win32event.WaitForSingleObject (change_handle, 500)
             
                     if result == win32con.WAIT_OBJECT_0:
                         #something was updated
-                        logging.info("Update in folder")
-                        logging.info(path_to_watch)
+                        logging.debug("Update in folder")
+                        logging.debug(path_to_watch)
                         my_queue_folder_awaiting_scan.put(path_to_watch)
                         win32file.FindNextChangeNotification (change_handle)
     
             finally:
                 win32file.FindCloseChangeNotification (change_handle)
-        logging.info("done this")
+        logging.debug("done this")
 
     async def shutdown_folder_listeners(self):
-        logging.info("shutdown folder listeners")
+        logging.debug("shutdown folder listeners")
         self.disable_monitoring()
         for my_thread in self.my_folder_monitor_threads:
-            logging.info("shutting down thread")
-            logging.info(my_thread)
+            logging.debug("shutting down thread")
+            logging.debug(my_thread)
             while (my_thread.is_alive()):
                 await asyncio.sleep(1)
             #TODO cleanup nicer
             #my_thread.join()
     
     async def setup_folder_listeners(self, my_queue_folder_awaiting_scan):
-        logging.info("startup folder listeners")
+        logging.debug("startup folder listeners")
         for emulated_system in self.loaded_systems_configuration:
             for current_path in emulated_system["path_regex"]:
-                logging.info("listening to")
-                logging.info(current_path)
+                logging.debug("listening to")
+                logging.debug(current_path)
                 my_thread = threading.Thread(target=self.watcher_update, args=( os.path.expandvars(current_path), my_queue_folder_awaiting_scan, ))
                 self.my_folder_monitor_threads.append(my_thread)
                 my_thread.daemon = True
