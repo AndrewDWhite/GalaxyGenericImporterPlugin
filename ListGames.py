@@ -181,7 +181,7 @@ class ListGames():
                     logging.debug(my_path_joined)
                     begin_time = datetime.now()
                     
-                    found_games = glob.glob(my_path_joined, recursive=True)
+                    found_games = glob.iglob(my_path_joined, recursive=True)
                     
                     current_time = datetime.now()
                     time_delta = (current_time - begin_time)
