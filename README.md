@@ -41,6 +41,7 @@ If the configuration is not changed to reflect your system, then the following i
 | Sega Genesis | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\Genesis |
 | | | %USERPROFILE%\Documents\Games\Genesis |
 | | | Z:\data\Software\games\roms\Genesis |
+| Sega Master System | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\Master System |
 | Nintendo 64 | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\N64 |
 | | | %USERPROFILE%\Documents\Games\N64 |
 | | | Z:\data\Software\games\roms\N64 |
@@ -150,6 +151,12 @@ This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\
     F:\Software\games\roms\Genesis
     %USERPROFILE%\Documents\Games\Genesis
     Z:\data\Software\games\roms\Genesis
+### Sega Master System
+#### emulator
+    %APPDATA%\RetroArch\retroarch.exe
+This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `blastem_libretro.dll` core.
+#### roms
+    Z:\data\Software\games\roms\Master System
 ### Nintendo 64
 #### emulator
     %APPDATA%\RetroArch\retroarch.exe

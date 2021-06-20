@@ -105,6 +105,24 @@
             "hashContent" : true
         },
         {
+            "name" : "master system",
+            "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\blastem_libretro.dll\" \"%ROM_RAW%\"",
+            "path_regex" : [
+            	"Z:\\data\\Software\\games\\roms\\Master System"
+            ],
+            "tags" : [
+            	"retroarch"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]bin$",
+            "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
+            "filename_regex" : [
+            	"*[.]bin"
+            ],
+            "gameShouldBeInstalled" : true,
+            "hashContent" : true
+        },
+        {
             "name" : "n64",
             "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\mupen64plus_next_libretro.dll\" \"%ROM_RAW%\"",
             "path_regex" : [
