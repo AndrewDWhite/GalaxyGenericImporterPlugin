@@ -53,10 +53,10 @@ If the configuration is not changed to reflect your system, then the following i
 | Playstation 2 | C:\Program Files (x86)\PCSX2\pcsx2.exe | F:\Software\games\roms\PS2 |
 | | | %USERPROFILE%\Documents\Games\PS2 |
 | | | Z:\data\Software\games\roms\PS2 |
-| Playstation 3 | %USERPROFILE%\Downloads\rpcs3-v0.0.7-9236-db4041e0_win64\rpcs3.exe | F:\Software\games\roms\PS3\out |
+| Playstation 3 | %USERPROFILE%\rpcs3-v0.0.13-11287-cab4c78b_win64\rpcs3.exe | F:\Software\games\roms\PS3\out |
 | | | %USERPROFILE%\Documents\Games\PS3 |
 | | | Z:\data\Software\games\roms\PS3\out |
-| Playstation Portable | %USERPROFILE%\Downloads\ppsspp_win\PPSSPPWindows64.exe | F:\Software\games\roms\psp |
+| Playstation Portable | C:\Program Files\PPSSPP\PPSSPPWindows64.exe | F:\Software\games\roms\psp |
 | | | %USERPROFILE%\Documents\Games\psp |
 | | | Z:\data\Software\games\roms\psp |
 | | C:\Program Files\PPSSPP\ppsspp_win\PPSSPPWindows64.exe | E:\roms\psp\Digital Downloads |
@@ -182,8 +182,8 @@ This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\
     Z:\data\Software\games\roms\PS2
 ### Playstation 3
 #### emulator
-    %USERPROFILE%\Downloads\rpcs3-v0.0.7-9236-db4041e0_win64\rpcs3.exe
-This will end up being something like `C:\Users\andyn\Downloads\rpcs3-v0.0.7-9236-db4041e0_win64\rpcs3.exe`.
+    %USERPROFILE%\rpcs3-v0.0.7-9236-db4041e0_win64\rpcs3.exe
+This will end up being something like `C:\Users\andyn\rpcs3-v0.0.13-11287-cab4c78b_win64\rpcs3.exe`.
 #### roms
     F:\Software\games\roms\PS3\out
     %USERPROFILE%\Documents\Games\PS3
@@ -192,11 +192,8 @@ By default the folders in `F:\Software\games\roms\PS3\out` will be populated as 
 ### Playstation Portable
 This system is setup by default as an example of having two different emulators or versions of one to launch different programs in separate folders.
 #### emulator
-    %USERPROFILE%\Downloads\ppsspp_win\PPSSPPWindows64.exe
-This will end up being something like `C:\Users\andyn\Downloads\ppsspp_win\PPSSPPWindows64.exe`. This instance is setup to load isos of disks.
-
     C:\Program Files\PPSSPP\ppsspp_win\PPSSPPWindows64.exe
-This one is setup for running digital downloaded PBP from the Playstation store.
+This first instance is setup to load isos of disks. This one is setup for running digital downloaded PBP from the Playstation store.
 #### roms
     F:\Software\games\roms\psp
     %USERPROFILE%\Documents\Games\psp
