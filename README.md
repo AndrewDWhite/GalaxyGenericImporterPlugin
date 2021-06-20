@@ -207,7 +207,7 @@ The first three are setup for isos while the last two are for PBPs. By default t
 ### Playstation 1
 #### emulator
     %APPDATA%\RetroArch\retroarch.exe
-This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `pcsx_rearmed_libretro.dll` core. Note the two examples for cue and toc/iso, They can be combined.
+This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `pcsx_rearmed_libretro.dll` core. Note the two examples for cue and toc/iso, They can all be combined.
 #### roms
     F:\Software\games\roms\PS1
     %USERPROFILE%\Documents\Games\PS1
