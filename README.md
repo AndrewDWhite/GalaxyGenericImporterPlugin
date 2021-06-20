@@ -35,7 +35,7 @@ If the configuration is not changed to reflect your system, then the following i
 | | | F:\Software\games\roms\GB |
 | | | %USERPROFILE%\Documents\Games\GBC |
 | | | %USERPROFILE%\Documents\Games\GB |
-| Gamecube | %USERPROFILE%\Downloads\dolphin-master-5.0-11701-x64\Dolphin-x64\Dolphin.exe | F:\Software\games\roms\GameCube |
+| Gamecube | %USERPROFILE%\Dolphin-x64\Dolphin.exe | F:\Software\games\roms\GameCube |
 | | | %USERPROFILE%\Documents\Games\GameCube |
 | | | Z:\data\Software\games\roms\GameCube |
 | Sega Genesis | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\Genesis |
@@ -68,16 +68,16 @@ If the configuration is not changed to reflect your system, then the following i
 | Super Nintendo Entertainment System | %APPDATA%\RetroArch\retroarch.exe  | F:\Software\games\roms\SNES |
 | | | %USERPROFILE%\Documents\Games\SNES |
 | | | Z:\data\Software\games\roms\SNES |
-| Wii | %USERPROFILE%\Downloads\dolphin-master-5.0-11701-x64\Dolphin-x64\Dolphin.exe | F:\Software\games\roms\Wii |
+| Wii | %USERPROFILE%\Dolphin-x64\Dolphin.exe | F:\Software\games\roms\Wii |
 | | | %USERPROFILE%\Documents\Games\Wii |
 | | | Z:\data\Software\games\roms\Wii |
-| XBOX | %USERPROFILE%\Downloads\CxbxReloaded-Release-VS2017\cxbx.exe | F:\Software\games\roms\xbox\games |
+| XBOX | %USERPROFILE%\CxbxReloaded-Release-VS2019\cxbx.exe | F:\Software\games\roms\xbox\games |
 | | | %USERPROFILE%\Documents\Games\xbox |
 | | | Z:\data\Software\games\roms\xbox\games |
-| Wii U | %USERPROFILE%\Downloads\cemu_1.17.2\Cemu.exe | F:\Software\games\roms\wii u\converted |
+| Wii U | %USERPROFILE%\cemu_1.22.0\Cemu.exe | F:\Software\games\roms\wii u\converted |
 | | | %USERPROFILE%\Documents\Games\wiiu |
 | | | Z:\data\Software\games\roms\wii u\converted |
-| Arcade | %USERPROFILE%\Downloads\mame0220b_64bit\mame64.exe | F:\Software\games\roms\arcade |
+| Arcade | %USERPROFILE%\mame0226b_64bit\mame64.exe | F:\Software\games\roms\arcade |
 | | | %USERPROFILE%\Documents\Games\arcade |
 | | | Z:\data\Software\games\roms\arcade |
 | Amazon | | D:\Amazon Games\Library |
@@ -88,7 +88,7 @@ If the configuration is not changed to reflect your system, then the following i
 | | | F:\Software\games\roms\dos |
 | | | Z:\data\Software\games\roms\dos |
 | mods | | %USERPROFILE%\Documents\Games\mods |
-| Xbox 360 | %USERPROFILE%\Downloads\xenia_master\xenia.exe | %USERPROFILE%\Documents\Games\xbox 360 |
+| Xbox 360 | %USERPROFILE%\xenia_master\xenia.exe | %USERPROFILE%\Documents\Games\xbox 360 |
 | | | F:\Software\games\roms\xbox 360\games |
 | | | Z:\data\Software\games\roms\xbox 360\games  |
 | Nintendo 3DS | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\3ds\roms |
@@ -136,8 +136,8 @@ This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\
     Z:\data\Software\games\roms\GB
 ### Gamecube
 #### emulator
-    %USERPROFILE%\Downloads\dolphin-master-5.0-11701-x64\Dolphin-x64\Dolphin.exe
-This will end up being something like `C:\Users\andyn\AppData\Downloads\dolphin-master-5.0-11701-x64\Dolphin-x64\Dolphin.exe`.
+    %USERPROFILE%\Dolphin-x64\Dolphin.exe
+This will end up being something like `C:\Users\andyn\Dolphin-x64\Dolphin.exe`.
 #### roms
     F:\Software\games\roms\GameCube
     %USERPROFILE%\Documents\Games\GameCube
@@ -223,16 +223,16 @@ This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\
     Z:\data\Software\games\roms\SNES
 ### Wii
 #### emulator
-    %USERPROFILE%\Downloads\dolphin-master-5.0-11701-x64\Dolphin-x64\Dolphin.exe
-This will end up being something like `C:\Users\andyn\AppData\Downloads\dolphin-master-5.0-11701-x64\Dolphin-x64\Dolphin.exe`.
+    %USERPROFILE%\Dolphin-x64\Dolphin.exe
+This will end up being something like `C:\Users\andyn\Dolphin-x64\Dolphin.exe`.
 #### roms
     F:\Software\games\roms\Wii
     %USERPROFILE%\Documents\Games\Wii
     Z:\data\Software\games\roms\Wii
 ### XBOX
 #### emulator
-    %USERPROFILE%\Downloads\CxbxReloaded-Release-VS2017\cxbx.exe
-This will end up being something like `C:\Users\andyn\AppData\Downloads\CxbxReloaded-Release-VS2017\cxbx.exe`.
+    %USERPROFILE%\CxbxReloaded-Release-VS2019\cxbx.exe
+This will end up being something like `C:\Users\andyn\CxbxReloaded-Release-VS2019\cxbx.exe`.
 #### roms
     F:\Software\games\roms\xbox\games
     %USERPROFILE%\Documents\Games\xbox
@@ -240,8 +240,8 @@ This will end up being something like `C:\Users\andyn\AppData\Downloads\CxbxRelo
 By default the folders in `F:\Software\games\roms\xbox\games` will be populated as your game names.    
 ### Wii U
 #### emulator
-    %USERPROFILE%\Downloads\cemu_1.17.2\Cemu.exe
-This will end up being something like `C:\Users\andyn\AppData\Downloads\cemu_1.17.2\Cemu.exe`.
+    %USERPROFILE%\cemu_1.22.0\Cemu.exe
+This will end up being something like `C:\Users\andyn\cemu_1.22.0\Cemu.exe`.
 #### roms
     F:\Software\games\roms\wii u\converted
     %USERPROFILE%\Documents\Games\wiiu
@@ -249,8 +249,8 @@ This will end up being something like `C:\Users\andyn\AppData\Downloads\cemu_1.1
 By default the folders in `F:\Software\games\roms\wii u\converted` will be populated as your game names.  
 ### Arcade
 #### emulator
-    %USERPROFILE%\Downloads\mame0220b_64bit\mame64.exe
-This will end up being something like `C:\Users\andyn\AppData\Downloads\mame0220b_64bit\mame64.exe`.
+    %USERPROFILE%\mame0226b_64bit\mame64.exe
+This will end up being something like `C:\Users\andyn\mame0226b_64bit\mame64.exe`.
 #### roms
     F:\Software\games\roms\arcade
     %USERPROFILE%\Documents\Games\arcade
@@ -287,7 +287,7 @@ This will by default populate batch and link files into galaxy for directly laun
 
 ### Xbox 360
 #### emulator
-    %USERPROFILE%\Downloads\xenia_master\xenia.exe
+    %USERPROFILE%\xenia_master\xenia.exe
 #### roms
     %USERPROFILE%\Documents\Games\xbox 360
     F:\Software\games\roms\xbox 360\games
@@ -302,7 +302,7 @@ This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\
     Z:\data\Software\games\roms\3ds\roms
 ### Vita
 #### emulator
-    %USERPROFILE%\Downloads\Vita3K-master-v4761-2020-07-11-3b714115_win64\Vita3K.exe
+    %USERPROFILE%\vita3k-windows-latest\Release\Vita3K.exe
 #### roms
     %USERPROFILE%\Documents\Games\vita
     F:\Software\games\roms\vita\roms

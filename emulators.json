@@ -66,7 +66,7 @@
         },
         {
             "name" : "gcn",
-            "execution" : "\"%USERPROFILE%\\Downloads\\dolphin-master-5.0-11701-x64\\Dolphin-x64\\Dolphin.exe\" --config \"Dolphin.Display.Fullscreen=True\" -e \"%ROM_RAW%\"",
+            "execution" : "\"%USERPROFILE%\\Dolphin-x64\\Dolphin.exe\" --config \"Dolphin.Display.Fullscreen=True\" -e \"%ROM_RAW%\"",
             "path_regex" : [
             	"%USERPROFILE%\\Documents\\Games\\GameCube",
             	"F:\\Software\\games\\roms\\GameCube",
@@ -305,7 +305,7 @@
         },
         {
             "name" : "wii",
-            "execution" : "\"%USERPROFILE%\\Downloads\\dolphin-master-5.0-11701-x64\\Dolphin-x64\\Dolphin.exe\" --config \"Dolphin.Display.Fullscreen=True\" -e \"%ROM_RAW%\"",
+            "execution" : "\"%USERPROFILE%\\Dolphin-x64\\Dolphin.exe\" --config \"Dolphin.Display.Fullscreen=True\" -e \"%ROM_RAW%\"",
             "path_regex" : [
             	"%USERPROFILE%\\Documents\\Games\\Wii",
             	"F:\\Software\\games\\roms\\Wii",
@@ -325,7 +325,7 @@
         },
         {
             "name" : "xbox",
-            "execution" : "\"%USERPROFILE%\\Downloads\\CxbxReloaded-Release-VS2017\\cxbx.exe\" \"%ROM_RAW%\"",
+            "execution" : "\"%USERPROFILE%\\CxbxReloaded-Release-VS2019\\cxbx.exe\" \"%ROM_RAW%\"",
             "path_regex" : [
             	"%USERPROFILE%\\Documents\\Games\\xbox",
             	"F:\\Software\\games\\roms\\xbox\\games",
@@ -345,7 +345,7 @@
         },
         {
             "name" : "wiiu",
-            "execution" : "\"%USERPROFILE%\\Downloads\\cemu_1.17.2\\Cemu.exe\" -g \"%ROM_RAW%\" -f",
+            "execution" : "\"%USERPROFILE%\\cemu_1.22.0\\Cemu.exe\" -g \"%ROM_RAW%\" -f",
             "path_regex" : [
             	"%USERPROFILE%\\Documents\\Games\\wiiu./**/\\code\\",
             	"F:\\Software\\games\\roms\\wii[ ]u\\converted./**/\\code\\",
@@ -365,7 +365,7 @@
         },
         {
             "name" : "arcade",
-            "execution" : "\"%USERPROFILE%\\Downloads\\mame0220b_64bit\\mame64.exe\" %ROM_NAME% -rompath \"%ROM_DIR%\"",
+            "execution" : "\"%USERPROFILE%\\mame0226b_64bit\\mame64.exe\" %ROM_NAME% -rompath \"%ROM_DIR%\"",
             "path_regex" : [
             	"%USERPROFILE%\\Documents\\Games\\arcade",
             	"F:\\Software\\games\\roms\\arcade",
@@ -484,7 +484,7 @@
         },
         {
             "name" : "xbox 360",
-            "execution" : "\"%USERPROFILE%\\Downloads\\xenia_master\\xenia.exe\" --fullscreen \"%ROM_RAW%\"",
+            "execution" : "\"%USERPROFILE%\\xenia_master\\xenia.exe\" --fullscreen \"%ROM_RAW%\"",
             "path_regex" : [
             	"%USERPROFILE%\\Documents\\Games\\xbox[ ]360",
             	"F:\\Software\\games\\roms\\xbox[ ]360\\games",
@@ -524,7 +524,7 @@
         },
         {
             "name" : "psv",
-            "execution" : "\"%USERPROFILE%\\Downloads\\Vita3K-master-v4761-2020-07-11-3b714115_win64\\Vita3K.exe\" \"%ROM_RAW%\" --fullscreen",
+            "execution" : "\"%USERPROFILE%\\vita3k-windows-latest\\Release\\Vita3K.exe\" \"%ROM_RAW%\" --fullscreen",
             "path_regex" : [
             	"%USERPROFILE%\\Documents\\Games\\vita",
             	"F:\\Software\\games\\roms\\vita\\roms",
