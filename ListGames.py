@@ -161,9 +161,21 @@ class ListGames():
         new_entry["tags"] = tags
         return new_entry
     
-    async def list_all_recursively(self, salt):
+    async def list_all_recursively (self, salt):
+        myList = []
+        myIterator = self.list_iterative_recursively(salt)
+        while (True):
+            try:
+            
+                myEntry = await myIterator.__anext__()
+                myList.append(myEntry)
+            except StopAsyncIteration:
+                break
+        
+        return myList
+    
+    async def list_iterative_recursively(self, salt):
         logging.debug("listing")
-        self.mylist=[]
         #Iterate through each system's configuration for where we should look for programs and add the metadata to results
         for emulated_system in self.loaded_systems_configuration:
             gameShouldBeInstalled = emulated_system["gameShouldBeInstalled"]
@@ -193,11 +205,10 @@ class ListGames():
                         logging.debug(my_game)
                         try:
                             new_entry = await self.setup_entry(emulated_system, my_game, salt, matcher, tags, gameShouldBeInstalled, hashContent)                        
-                            self.mylist.append(new_entry)
+                            yield new_entry
                         except  UserWarning as my_user_warning:
                             logging.debug("skipping / dropping")
                             logging.debug(my_user_warning)
-        return self.mylist      
     
     def disable_monitoring(self):
         logging.debug("disabling monitoring")
