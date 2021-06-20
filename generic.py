@@ -1,6 +1,6 @@
 import sys
 
-from galaxy.api.consts import Platform, LocalGameState
+from galaxy.api.consts import Platform
 from galaxy.api.plugin import Plugin, create_and_run_plugin
 from galaxy.api.types import LocalGame, GameLibrarySettings, GameTime
 from typing import Any
@@ -14,7 +14,11 @@ import asyncio
 
 #local
 from configuration import DefaultConfig
-from Backend import Backend, create_game, run_my_selected_game_here, get_exe_command, do_auth, shutdown_library, shutdown_tasks, tick_async, library_thread
+from Backend import Backend, do_auth, shutdown_library, tick_async, library_thread
+from GalaxyPluginUtils import create_game
+from TaskManagementUtil import shutdown_tasks
+from ExecutionUtil import run_my_selected_game_here
+from CacheDataManipulation import  get_exe_command
 
 class GenericEmulatorPlugin(Plugin):
     def __init__(self, reader, writer, token):
