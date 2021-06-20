@@ -17,8 +17,12 @@ import math
 #local
 from configuration import DefaultConfig
 from ListGames import ListGames
-from generic import GenericEmulatorPlugin, get_exe_command, run_my_selected_game_here
-from Backend import Backend, get_state_changes, time_delta_calc_minutes, update_local_games, create_game, shutdown_library, do_auth, removed_games, added_games, state_changed, setup_queue_to_send_those_changes, send_events, created_update, time_tracking, prepare_to_send_my_updates, shutdown_tasks, tick_async, library_thread
+from generic import get_exe_command
+from Backend import Backend, time_delta_calc_minutes, update_local_games, shutdown_library, do_auth, send_events, time_tracking, prepare_to_send_my_updates, tick_async, library_thread
+from UpdatesQueueUtil import get_state_changes, removed_games, added_games, state_changed, setup_queue_to_send_those_changes
+from TimeCache import created_update
+from TaskManagementUtil import shutdown_tasks
+from GalaxyPluginUtils import create_game
 
 from datetime import datetime, timedelta
 import aiounittest
@@ -44,7 +48,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
     async def  test_emulators(self):
         systems = ListGames()
         #tests if it loaded the default number of emulators
-        self.assertEqual(len(systems.loaded_systems_configuration),31)
+        self.assertEqual(len(systems.loaded_systems_configuration),32)
     
     async def test_speed(self):
         systems = ListGames()
@@ -220,7 +224,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
         insert_file_into_folder (self, systems, "dos0", "mygame.exe","mygame")
         #Number of folders created by setup + 2 for subfolders
-        self.assertEqual(86, len(systems.my_folder_monitor_threads) )
+        self.assertEqual(87, len(systems.my_folder_monitor_threads) )
         await systems.shutdown_folder_listeners()
         self.assertEqual(False, my_queue_folder_awaiting_scan.empty())
         self.assertEqual(os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory9\\gbc0")),my_queue_folder_awaiting_scan.get())
