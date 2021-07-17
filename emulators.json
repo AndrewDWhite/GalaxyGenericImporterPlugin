@@ -66,7 +66,7 @@
         },
         {
             "name" : "gcn",
-            "execution" : "\"%USERPROFILE%\\Downloads\\dolphin-master-5.0-11701-x64\\Dolphin-x64\\Dolphin.exe\" --config \"Dolphin.Display.Fullscreen=True\" -e \"%ROM_RAW%\"",
+            "execution" : "\"%USERPROFILE%\\Dolphin-x64\\Dolphin.exe\" --config \"Dolphin.Display.Fullscreen=True\" -e \"%ROM_RAW%\"",
             "path_regex" : [
             	"%USERPROFILE%\\Documents\\Games\\GameCube",
             	"F:\\Software\\games\\roms\\GameCube",
@@ -91,6 +91,24 @@
             	"%USERPROFILE%\\Documents\\Games\\Genesis",
             	"F:\\Software\\games\\roms\\Genesis",
             	"Z:\\data\\Software\\games\\roms\\Genesis"
+            ],
+            "tags" : [
+            	"retroarch"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]bin$",
+            "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
+            "filename_regex" : [
+            	"*[.]bin"
+            ],
+            "gameShouldBeInstalled" : true,
+            "hashContent" : true
+        },
+        {
+            "name" : "master system",
+            "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\blastem_libretro.dll\" \"%ROM_RAW%\"",
+            "path_regex" : [
+            	"Z:\\data\\Software\\games\\roms\\Master System"
             ],
             "tags" : [
             	"retroarch"
@@ -187,7 +205,7 @@
         },
         {
             "name" : "ps3",
-            "execution" : "\"%USERPROFILE%\\Downloads\\rpcs3-v0.0.7-9236-db4041e0_win64\\rpcs3.exe\" --no-gui \"%ROM_RAW%\"",
+            "execution" : "\"%USERPROFILE%\\rpcs3-v0.0.13-11287-cab4c78b_win64\\rpcs3.exe\" --no-gui \"%ROM_RAW%\"",
             "path_regex" : [
             	"%USERPROFILE%\\Documents\\Games\\PS3",
             	"F:\\Software\\games\\roms\\PS3\\\\out",
@@ -207,7 +225,7 @@
         },
         {
             "name" : "psp",
-            "execution" : "\"%USERPROFILE%\\Downloads\\ppsspp_win\\PPSSPPWindows64.exe\" --fullscreen \"%ROM_RAW%\"",
+            "execution" : "\"C:\\Program Files\\PPSSPP\\PPSSPPWindows64.exe\" --fullscreen \"%ROM_RAW%\"",
             "path_regex" : [
             	"%USERPROFILE%\\Documents\\Games\\psp",
             	"F:\\Software\\games\\roms\\psp",
@@ -266,6 +284,24 @@
             "hashContent" : false
         },
         {
+            "name" : "ps1",
+            "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\pcsx_rearmed_libretro.dll\" \"%ROM_RAW%\"",
+            "path_regex" : [
+            	"Z:\\data\\Software\\games\\roms\\PS1\\PSX Digital"
+            ],
+            "tags" : [
+            	"retroarch"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.](cue)$",
+            "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
+            "filename_regex" :  [
+            	"*[.]cue"
+            ],
+            "gameShouldBeInstalled" : true,
+            "hashContent" : false
+        },
+        {
             "name" : "snes",
             "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\snes9x_libretro.dll\" \"%ROM_RAW%\"",
             "path_regex" : [
@@ -287,7 +323,7 @@
         },
         {
             "name" : "wii",
-            "execution" : "\"%USERPROFILE%\\Downloads\\dolphin-master-5.0-11701-x64\\Dolphin-x64\\Dolphin.exe\" --config \"Dolphin.Display.Fullscreen=True\" -e \"%ROM_RAW%\"",
+            "execution" : "\"%USERPROFILE%\\Dolphin-x64\\Dolphin.exe\" --config \"Dolphin.Display.Fullscreen=True\" -e \"%ROM_RAW%\"",
             "path_regex" : [
             	"%USERPROFILE%\\Documents\\Games\\Wii",
             	"F:\\Software\\games\\roms\\Wii",
@@ -307,7 +343,7 @@
         },
         {
             "name" : "xbox",
-            "execution" : "\"%USERPROFILE%\\Downloads\\CxbxReloaded-Release-VS2017\\cxbx.exe\" \"%ROM_RAW%\"",
+            "execution" : "\"%USERPROFILE%\\CxbxReloaded-Release-VS2019\\cxbx.exe\" \"%ROM_RAW%\"",
             "path_regex" : [
             	"%USERPROFILE%\\Documents\\Games\\xbox",
             	"F:\\Software\\games\\roms\\xbox\\games",
@@ -327,7 +363,7 @@
         },
         {
             "name" : "wiiu",
-            "execution" : "\"%USERPROFILE%\\Downloads\\cemu_1.17.2\\Cemu.exe\" -g \"%ROM_RAW%\" -f",
+            "execution" : "\"%USERPROFILE%\\cemu_1.22.0\\Cemu.exe\" -g \"%ROM_RAW%\" -f",
             "path_regex" : [
             	"%USERPROFILE%\\Documents\\Games\\wiiu./**/\\code\\",
             	"F:\\Software\\games\\roms\\wii[ ]u\\converted./**/\\code\\",
@@ -347,7 +383,7 @@
         },
         {
             "name" : "arcade",
-            "execution" : "\"%USERPROFILE%\\Downloads\\mame0220b_64bit\\mame64.exe\" %ROM_NAME% -rompath \"%ROM_DIR%\"",
+            "execution" : "\"%USERPROFILE%\\mame0226b_64bit\\mame64.exe\" %ROM_NAME% -rompath \"%ROM_DIR%\"",
             "path_regex" : [
             	"%USERPROFILE%\\Documents\\Games\\arcade",
             	"F:\\Software\\games\\roms\\arcade",
@@ -466,7 +502,7 @@
         },
         {
             "name" : "xbox 360",
-            "execution" : "\"%USERPROFILE%\\Downloads\\xenia_master\\xenia.exe\" --fullscreen \"%ROM_RAW%\"",
+            "execution" : "\"%USERPROFILE%\\xenia_master\\xenia.exe\" --fullscreen \"%ROM_RAW%\"",
             "path_regex" : [
             	"%USERPROFILE%\\Documents\\Games\\xbox[ ]360",
             	"F:\\Software\\games\\roms\\xbox[ ]360\\games",
@@ -506,7 +542,7 @@
         },
         {
             "name" : "psv",
-            "execution" : "\"%USERPROFILE%\\Downloads\\Vita3K-master-v4761-2020-07-11-3b714115_win64\\Vita3K.exe\" \"%ROM_RAW%\" --fullscreen",
+            "execution" : "\"%USERPROFILE%\\vita3k-windows-latest\\Release\\Vita3K.exe\" \"%ROM_RAW%\" --fullscreen",
             "path_regex" : [
             	"%USERPROFILE%\\Documents\\Games\\vita",
             	"F:\\Software\\games\\roms\\vita\\roms",
