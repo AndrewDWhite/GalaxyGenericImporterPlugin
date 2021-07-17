@@ -11,7 +11,7 @@ Plug-in for GOG Galaxy supporting programmatic importation of multiple platform 
 - Unknown game issues where galaxy refuses a name you provided to it or refuses to update, can sometimes be fixed by changing the username in config.cfg .
 - Galaxy will place all programs under the same platform. Grouping by tags is a decent substitute so ensure to use useful ones. If you only intend to use one platform, you can also update the config.cfg file for that platform.
 - To force the plug-in to re-send every program to galaxy again, useful after updating the configuration manually, remove the caches, game_cache and game_cache-times , and either completely exit and restart galaxy or disable and then re-enable the plug-in.
-- If you own a lot of games, Galaxy may incorrectly report that the plug-in has crashed and force kill it for processing too long. You can try to optimize your regular expressions to allow it to execute quickly enough for it to not hit the maximum processing time.
+- If you own a lot of games, Galaxy may incorrectly report that the plug-in has crashed and force kill it for processing too long. You can try to optimize your regular expressions to allow it to execute quickly enough for it to not hit the maximum processing time. You can also try setting the logging level to info.
 
 ## Installation
 The plug-in will need to be placed in `%localappdata%\GOG.com\Galaxy\plugins\installed\` as `importer_97543122-7785-4444-2254-711233556699` . The easiest version to install is the [latest version](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/releases/latest) under releases with all of the libraries pre installed and can be unzipped into the installation directory. The a [Youtube video]( https://www.youtube.com/watch?v=FCrHWRy0fOs) showing installation using default directories for software.
@@ -35,12 +35,13 @@ If the configuration is not changed to reflect your system, then the following i
 | | | F:\Software\games\roms\GB |
 | | | %USERPROFILE%\Documents\Games\GBC |
 | | | %USERPROFILE%\Documents\Games\GB |
-| Gamecube | %USERPROFILE%\Downloads\dolphin-master-5.0-11701-x64\Dolphin-x64\Dolphin.exe | F:\Software\games\roms\GameCube |
+| Gamecube | %USERPROFILE%\Dolphin-x64\Dolphin.exe | F:\Software\games\roms\GameCube |
 | | | %USERPROFILE%\Documents\Games\GameCube |
 | | | Z:\data\Software\games\roms\GameCube |
 | Sega Genesis | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\Genesis |
 | | | %USERPROFILE%\Documents\Games\Genesis |
 | | | Z:\data\Software\games\roms\Genesis |
+| Sega Master System | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\Master System |
 | Nintendo 64 | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\N64 |
 | | | %USERPROFILE%\Documents\Games\N64 |
 | | | Z:\data\Software\games\roms\N64 |
@@ -53,10 +54,10 @@ If the configuration is not changed to reflect your system, then the following i
 | Playstation 2 | C:\Program Files (x86)\PCSX2\pcsx2.exe | F:\Software\games\roms\PS2 |
 | | | %USERPROFILE%\Documents\Games\PS2 |
 | | | Z:\data\Software\games\roms\PS2 |
-| Playstation 3 | %USERPROFILE%\Downloads\rpcs3-v0.0.7-9236-db4041e0_win64\rpcs3.exe | F:\Software\games\roms\PS3\out |
+| Playstation 3 | %USERPROFILE%\rpcs3-v0.0.13-11287-cab4c78b_win64\rpcs3.exe | F:\Software\games\roms\PS3\out |
 | | | %USERPROFILE%\Documents\Games\PS3 |
 | | | Z:\data\Software\games\roms\PS3\out |
-| Playstation Portable | %USERPROFILE%\Downloads\ppsspp_win\PPSSPPWindows64.exe | F:\Software\games\roms\psp |
+| Playstation Portable | C:\Program Files\PPSSPP\PPSSPPWindows64.exe | F:\Software\games\roms\psp |
 | | | %USERPROFILE%\Documents\Games\psp |
 | | | Z:\data\Software\games\roms\psp |
 | | C:\Program Files\PPSSPP\ppsspp_win\PPSSPPWindows64.exe | E:\roms\psp\Digital Downloads |
@@ -64,19 +65,20 @@ If the configuration is not changed to reflect your system, then the following i
 | Playstation 1 | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\PS1 |
 | | | %USERPROFILE%\Documents\Games\PS1 |
 | | | Z:\data\Software\games\roms\PS1 |
+| | | Z:\data\Software\games\roms\PS1\PSX Digital |
 | Super Nintendo Entertainment System | %APPDATA%\RetroArch\retroarch.exe  | F:\Software\games\roms\SNES |
 | | | %USERPROFILE%\Documents\Games\SNES |
 | | | Z:\data\Software\games\roms\SNES |
-| Wii | %USERPROFILE%\Downloads\dolphin-master-5.0-11701-x64\Dolphin-x64\Dolphin.exe | F:\Software\games\roms\Wii |
+| Wii | %USERPROFILE%\Dolphin-x64\Dolphin.exe | F:\Software\games\roms\Wii |
 | | | %USERPROFILE%\Documents\Games\Wii |
 | | | Z:\data\Software\games\roms\Wii |
-| XBOX | %USERPROFILE%\Downloads\CxbxReloaded-Release-VS2017\cxbx.exe | F:\Software\games\roms\xbox\games |
+| XBOX | %USERPROFILE%\CxbxReloaded-Release-VS2019\cxbx.exe | F:\Software\games\roms\xbox\games |
 | | | %USERPROFILE%\Documents\Games\xbox |
 | | | Z:\data\Software\games\roms\xbox\games |
-| Wii U | %USERPROFILE%\Downloads\cemu_1.17.2\Cemu.exe | F:\Software\games\roms\wii u\converted |
+| Wii U | %USERPROFILE%\cemu_1.22.0\Cemu.exe | F:\Software\games\roms\wii u\converted |
 | | | %USERPROFILE%\Documents\Games\wiiu |
 | | | Z:\data\Software\games\roms\wii u\converted |
-| Arcade | %USERPROFILE%\Downloads\mame0220b_64bit\mame64.exe | F:\Software\games\roms\arcade |
+| Arcade | %USERPROFILE%\mame0226b_64bit\mame64.exe | F:\Software\games\roms\arcade |
 | | | %USERPROFILE%\Documents\Games\arcade |
 | | | Z:\data\Software\games\roms\arcade |
 | Amazon | | D:\Amazon Games\Library |
@@ -87,7 +89,7 @@ If the configuration is not changed to reflect your system, then the following i
 | | | F:\Software\games\roms\dos |
 | | | Z:\data\Software\games\roms\dos |
 | mods | | %USERPROFILE%\Documents\Games\mods |
-| Xbox 360 | %USERPROFILE%\Downloads\xenia_master\xenia.exe | %USERPROFILE%\Documents\Games\xbox 360 |
+| Xbox 360 | %USERPROFILE%\xenia_master\xenia.exe | %USERPROFILE%\Documents\Games\xbox 360 |
 | | | F:\Software\games\roms\xbox 360\games |
 | | | Z:\data\Software\games\roms\xbox 360\games  |
 | Nintendo 3DS | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\3ds\roms |
@@ -135,8 +137,8 @@ This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\
     Z:\data\Software\games\roms\GB
 ### Gamecube
 #### emulator
-    %USERPROFILE%\Downloads\dolphin-master-5.0-11701-x64\Dolphin-x64\Dolphin.exe
-This will end up being something like `C:\Users\andyn\AppData\Downloads\dolphin-master-5.0-11701-x64\Dolphin-x64\Dolphin.exe`.
+    %USERPROFILE%\Dolphin-x64\Dolphin.exe
+This will end up being something like `C:\Users\andyn\Dolphin-x64\Dolphin.exe`.
 #### roms
     F:\Software\games\roms\GameCube
     %USERPROFILE%\Documents\Games\GameCube
@@ -149,6 +151,12 @@ This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\
     F:\Software\games\roms\Genesis
     %USERPROFILE%\Documents\Games\Genesis
     Z:\data\Software\games\roms\Genesis
+### Sega Master System
+#### emulator
+    %APPDATA%\RetroArch\retroarch.exe
+This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `blastem_libretro.dll` core.
+#### roms
+    Z:\data\Software\games\roms\Master System
 ### Nintendo 64
 #### emulator
     %APPDATA%\RetroArch\retroarch.exe
@@ -181,8 +189,8 @@ This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\
     Z:\data\Software\games\roms\PS2
 ### Playstation 3
 #### emulator
-    %USERPROFILE%\Downloads\rpcs3-v0.0.7-9236-db4041e0_win64\rpcs3.exe
-This will end up being something like `C:\Users\andyn\Downloads\rpcs3-v0.0.7-9236-db4041e0_win64\rpcs3.exe`.
+    %USERPROFILE%\rpcs3-v0.0.7-9236-db4041e0_win64\rpcs3.exe
+This will end up being something like `C:\Users\andyn\rpcs3-v0.0.13-11287-cab4c78b_win64\rpcs3.exe`.
 #### roms
     F:\Software\games\roms\PS3\out
     %USERPROFILE%\Documents\Games\PS3
@@ -191,11 +199,8 @@ By default the folders in `F:\Software\games\roms\PS3\out` will be populated as 
 ### Playstation Portable
 This system is setup by default as an example of having two different emulators or versions of one to launch different programs in separate folders.
 #### emulator
-    %USERPROFILE%\Downloads\ppsspp_win\PPSSPPWindows64.exe
-This will end up being something like `C:\Users\andyn\Downloads\ppsspp_win\PPSSPPWindows64.exe`. This instance is setup to load isos of disks.
-
     C:\Program Files\PPSSPP\ppsspp_win\PPSSPPWindows64.exe
-This one is setup for running digital downloaded PBP from the Playstation store.
+This first instance is setup to load isos of disks. This one is setup for running digital downloaded PBP from the Playstation store.
 #### roms
     F:\Software\games\roms\psp
     %USERPROFILE%\Documents\Games\psp
@@ -206,11 +211,12 @@ The first three are setup for isos while the last two are for PBPs. By default t
 ### Playstation 1
 #### emulator
     %APPDATA%\RetroArch\retroarch.exe
-This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `pcsx_rearmed_libretro.dll` core.
+This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `pcsx_rearmed_libretro.dll` core. Note the two examples for cue and toc/iso, They can all be combined.
 #### roms
     F:\Software\games\roms\PS1
     %USERPROFILE%\Documents\Games\PS1
     Z:\data\Software\games\roms\PS1
+    Z:\data\Software\games\roms\PS1\PSX Digital
 ### Super Nintendo Entertainment System
 #### emulator
     %APPDATA%\RetroArch
@@ -221,16 +227,16 @@ This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\
     Z:\data\Software\games\roms\SNES
 ### Wii
 #### emulator
-    %USERPROFILE%\Downloads\dolphin-master-5.0-11701-x64\Dolphin-x64\Dolphin.exe
-This will end up being something like `C:\Users\andyn\AppData\Downloads\dolphin-master-5.0-11701-x64\Dolphin-x64\Dolphin.exe`.
+    %USERPROFILE%\Dolphin-x64\Dolphin.exe
+This will end up being something like `C:\Users\andyn\Dolphin-x64\Dolphin.exe`.
 #### roms
     F:\Software\games\roms\Wii
     %USERPROFILE%\Documents\Games\Wii
     Z:\data\Software\games\roms\Wii
 ### XBOX
 #### emulator
-    %USERPROFILE%\Downloads\CxbxReloaded-Release-VS2017\cxbx.exe
-This will end up being something like `C:\Users\andyn\AppData\Downloads\CxbxReloaded-Release-VS2017\cxbx.exe`.
+    %USERPROFILE%\CxbxReloaded-Release-VS2019\cxbx.exe
+This will end up being something like `C:\Users\andyn\CxbxReloaded-Release-VS2019\cxbx.exe`.
 #### roms
     F:\Software\games\roms\xbox\games
     %USERPROFILE%\Documents\Games\xbox
@@ -238,8 +244,8 @@ This will end up being something like `C:\Users\andyn\AppData\Downloads\CxbxRelo
 By default the folders in `F:\Software\games\roms\xbox\games` will be populated as your game names.    
 ### Wii U
 #### emulator
-    %USERPROFILE%\Downloads\cemu_1.17.2\Cemu.exe
-This will end up being something like `C:\Users\andyn\AppData\Downloads\cemu_1.17.2\Cemu.exe`.
+    %USERPROFILE%\cemu_1.22.0\Cemu.exe
+This will end up being something like `C:\Users\andyn\cemu_1.22.0\Cemu.exe`.
 #### roms
     F:\Software\games\roms\wii u\converted
     %USERPROFILE%\Documents\Games\wiiu
@@ -247,8 +253,8 @@ This will end up being something like `C:\Users\andyn\AppData\Downloads\cemu_1.1
 By default the folders in `F:\Software\games\roms\wii u\converted` will be populated as your game names.  
 ### Arcade
 #### emulator
-    %USERPROFILE%\Downloads\mame0220b_64bit\mame64.exe
-This will end up being something like `C:\Users\andyn\AppData\Downloads\mame0220b_64bit\mame64.exe`.
+    %USERPROFILE%\mame0226b_64bit\mame64.exe
+This will end up being something like `C:\Users\andyn\mame0226b_64bit\mame64.exe`.
 #### roms
     F:\Software\games\roms\arcade
     %USERPROFILE%\Documents\Games\arcade
@@ -285,7 +291,7 @@ This will by default populate batch and link files into galaxy for directly laun
 
 ### Xbox 360
 #### emulator
-    %USERPROFILE%\Downloads\xenia_master\xenia.exe
+    %USERPROFILE%\xenia_master\xenia.exe
 #### roms
     %USERPROFILE%\Documents\Games\xbox 360
     F:\Software\games\roms\xbox 360\games
@@ -300,7 +306,7 @@ This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\
     Z:\data\Software\games\roms\3ds\roms
 ### Vita
 #### emulator
-    %USERPROFILE%\Downloads\Vita3K-master-v4761-2020-07-11-3b714115_win64\Vita3K.exe
+    %USERPROFILE%\vita3k-windows-latest\Release\Vita3K.exe
 #### roms
     %USERPROFILE%\Documents\Games\vita
     F:\Software\games\roms\vita\roms
