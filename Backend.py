@@ -78,26 +78,32 @@ async def send_events(self):
     logging.debug("my_queue_add_game length")
     logging.debug(self.backend.my_queue_add_game.empty())
     logging.debug(self.backend.my_queue_add_game.qsize())
-    while not self.backend.my_queue_add_game.empty():
+    countDelivered = 0
+    while not self.backend.my_queue_add_game.empty() and countDelivered < 101:
         my_game_sending = self.backend.my_queue_add_game.get()
         logging.debug(my_game_sending)
         self.add_game(my_game_sending)
+        countDelivered = countDelivered + 1
     
     logging.debug("my_queue_update_local_game_status update length")
     logging.debug(self.backend.my_queue_update_local_game_status.empty())
-    logging.debug(self.backend.my_queue_update_local_game_status.qsize())    
-    while not self.backend.my_queue_update_local_game_status.empty():
+    logging.debug(self.backend.my_queue_update_local_game_status.qsize()) 
+    countDelivered = 0   
+    while not self.backend.my_queue_update_local_game_status.empty() and countDelivered < 101:
         my_game_sending = self.backend.my_queue_update_local_game_status.get()
         logging.debug(my_game_sending)
         self.update_local_game_status(my_game_sending)
+        countDelivered = countDelivered + 1
   
     logging.debug("my_queue_update_game_time update length")
     logging.debug(self.backend.my_queue_update_game_time.empty())
-    logging.debug(self.backend.my_queue_update_game_time.qsize())      
-    while not self.backend.my_queue_update_game_time.empty():    
+    logging.debug(self.backend.my_queue_update_game_time.qsize()) 
+    countDelivered = 0        
+    while not self.backend.my_queue_update_game_time.empty() and countDelivered < 101:    
         my_game_sending = self.backend.my_queue_update_game_time.get()
         logging.debug(my_game_sending)
         self.update_game_time(my_game_sending)
+        countDelivered = countDelivered + 1
 
 
 def library_thread(self):
