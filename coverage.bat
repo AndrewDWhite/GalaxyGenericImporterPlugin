@@ -1,8 +1,8 @@
 set my_error=0
 
-py  -3.7-32 -m pip install coverage pytest pytest-cov
+py  -3.7-32 -m pip install -r ./requirements_dev.txt --target ./src/
 :: py  -3.7-32 -m coverage run UnittestProject.py
-py  -3.7-32 -m cProfile -s cumulative -m pytest UnittestProject.py --cov --junit-xml pytest.xml
+py  -3.7-32 -m cProfile -s cumulative -m pytest src/UnittestProject.py --cov --junit-xml pytest.xml
 IF %ERRORLEVEL% NEQ 0 ( 
    set my_error=%ERRORLEVEL%
 )
