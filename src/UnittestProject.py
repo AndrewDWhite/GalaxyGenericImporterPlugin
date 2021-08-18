@@ -215,7 +215,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         logging.debug(execution_command)
         #run_my_selected_game_here(execution_command)
         #TODO implement tests
-        self.assertEqual(execution_command,"\"\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\flycast_libretro.dll\" \"" + os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory4\\dreamcast0\\mygame\\disc.gdi")) + "\"\"")
+        self.assertEqual(execution_command,"\"\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\flycast_libretro.dll\" \"" + os.path.abspath(os.path.join(os.getcwd(),"TestDirectory4\\dreamcast0\\mygame\\disc.gdi")) + "\"\"")
     
     async def test_setup_and_shutdown_folder_listeners(self):
         systems=await setup_folders_for_testing(self, "TestDirectory9")
@@ -227,8 +227,8 @@ class UnittestProject(aiounittest.AsyncTestCase):
         self.assertEqual(88, len(systems.my_folder_monitor_threads) )
         await systems.shutdown_folder_listeners()
         self.assertEqual(False, my_queue_folder_awaiting_scan.empty())
-        self.assertEqual(os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory9\\gbc0")),my_queue_folder_awaiting_scan.get())
-        self.assertEqual(os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory9\\dos0")),my_queue_folder_awaiting_scan.get())
+        self.assertEqual(os.path.abspath(os.path.join(os.getcwd(),"TestDirectory9\\gbc0")),my_queue_folder_awaiting_scan.get())
+        self.assertEqual(os.path.abspath(os.path.join(os.getcwd(),"TestDirectory9\\dos0")),my_queue_folder_awaiting_scan.get())
 
     #def test_returned_real_dir_data(self):        
     #    systems = ListGames()
@@ -254,13 +254,13 @@ class UnittestProject(aiounittest.AsyncTestCase):
         self.assertEqual(len(myresult), len(expected_attributes))
         for attribute_expected in expected_attributes:
             self.assertTrue(attribute_expected in myresult)
-        self.assertEqual(myresult["filename"],os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory6\\dreamcast0\\mygame\\disc.gdi")))
+        self.assertEqual(myresult["filename"],os.path.abspath(os.path.join(os.getcwd(),"TestDirectory6\\dreamcast0\\mygame\\disc.gdi")))
         self.assertEqual(myresult["filename_short"],"disc.gdi")
         self.assertEqual(myresult["game_filename"],"disc")
         self.assertEqual(myresult["game_name"],"mygame")
         self.assertEqual(myresult["name"],"dreamcast")
         self.assertEqual(myresult["tags"],["retroarch","dreamcast"])
-        self.assertEqual(myresult["path"],os.path.abspath(os.path.join(os.path.abspath(__file__),'..',"TestDirectory6\\dreamcast0\\mygame")))
+        self.assertEqual(myresult["path"],os.path.abspath(os.path.join(os.getcwd(),"TestDirectory6\\dreamcast0\\mygame")))
         myhasher = hashlib.sha1()
         myhasher.update((myresult["filename"]+"test_user").encode('utf-8'))
         expected_hash= myhasher.hexdigest()
