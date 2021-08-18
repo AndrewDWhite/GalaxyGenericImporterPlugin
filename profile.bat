@@ -1,4 +1,4 @@
-py  -3.7-32 -m pip install -r ./requirements_dev.txt --target ./src/
+py  -3.7-32 -m pip install -r ./requirements/requirements_dev.txt --target ./src/
 py  -3.7-32 -m cProfile -s cumulative -m pytest src/UnittestProject.py --cov --junit-xml pytest.xml
 py  -3.7-32 -m coverage html --omit=escapejson/*,galaxy/*,galaxyutils/*,parameterized/*,win32/*,wrapt/*,aiounittest/*,syncasync.py
 
