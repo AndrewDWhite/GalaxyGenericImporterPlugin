@@ -32,10 +32,9 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest
-        #if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        py  -3.7-32 -m pip install  -r requirements.txt --target .
+        py  -3.7-32 -m pip install --upgrade pip
+        py  -3.7-32 -m pip install -r requirements/requirements_dev.txt
+        py  -3.7-32 -m pip install -r requirements/requirements_dev.txt --target ./src/
     #- name: Lint with flake8
     #  run: |
     #    # stop the build if there are Python syntax errors or undefined names
@@ -59,7 +58,7 @@ jobs:
       env:
         ZIP_NAME: importer_97543122-7785-4444-2254-711233556699
       run: |
-        7z a ${ZIP_NAME}.zip * -r
+        7z a ${ZIP_NAME}.zip src/* -r
     - name: Upload result
       uses: actions/upload-artifact@v1
       with:
