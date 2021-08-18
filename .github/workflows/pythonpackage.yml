@@ -58,7 +58,7 @@ jobs:
       env:
         ZIP_NAME: importer_97543122-7785-4444-2254-711233556699
       run: |
-        7z a ${ZIP_NAME}.zip src/* -r
+        7z a ${ZIP_NAME}.zip ./src/*
     - name: Upload result
       uses: actions/upload-artifact@v1
       with:
