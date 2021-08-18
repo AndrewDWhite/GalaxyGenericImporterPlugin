@@ -33,7 +33,8 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        if [ -f requirements/requirements_dev.txt ]; then pip install -r requirements/requirements_dev.txt; fi
+        #if [ -f requirements/requirements_dev.txt ]; then pip install -r requirements/requirements_dev.txt; fi
+        pip install -r requirements/requirements_dev.txt
         py  -3.7-32 -m pip install  -r requirements/requirements_dev.txt --target ./src/
     #- name: Lint with flake8
     #  run: |
