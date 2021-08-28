@@ -18,9 +18,13 @@ class BackendInfoPage():
         data_read = await systems.read_from_cache()
         if (len(data_read)>0):
             outputFile = open("cache.html", "w")
-            outputFile.write(str("<html><head><title>Cache</title></head><body><table>"))
+            outputFile.write(str(
+                "<html><head><title>Cache</title></head><body><script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script><link rel='stylesheet' type='text/css' href='https://cdn.datatables.net/1.11.0/css/jquery.dataTables.css'><script type='text/javascript' charset='utf8' src='https://cdn.datatables.net/1.11.0/js/jquery.dataTables.js'></script><table id='mytable' class='display'>"
+                ))
+            outputFile.write(str("<thead><tr>"))
             for headerKey in data_read[0]:
                 outputFile.write(str("<th>"+str(headerKey)+"</th>"))
+            outputFile.write(str("</tr></thead><tbody>"))
             for entry in data_read:
                 logger.info(entry)
                 outputFile.write(str("<tr>"))
@@ -30,7 +34,7 @@ class BackendInfoPage():
                     else:
                         outputFile.write(str("<td>"+str(entry[key])+"</td>"))
                 outputFile.write(str("</tr>"))
-            outputFile.write(str("</body></html>"))
+            outputFile.write(str("</tbody></table><script type='text/javascript'>$(document).ready( function () {    $('#mytable').DataTable();} );</script></body></html>"))
     
     def main(self):
         asyncio.run(BackendInfoPage.generatePage(self))
