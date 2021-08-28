@@ -340,7 +340,7 @@ By default this will populate games as ones that you own but cannot run on this 
 ### PS4
     %USERPROFILE%\Documents\Games\ps4
     Z:\data\Software\games\roms\ps4
-By default this will populate games as ones that you own but cannot run on this device or wish to have marked as installed.
+By default this will populate games as ones that you own, using the folder names, but cannot run on this device or wish to have marked as installed.
 
 
 ## Configuration

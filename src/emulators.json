@@ -646,7 +646,7 @@
             "tags" : [
             	"ps4"
             ],
-            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]iso$",
+            "game_name_regex" : "^.*[\\\\](.+?)[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]iso$",
             "game_name_regex_group" : 1,
             "system_rom_name_regex_group" : 1,
             "filename_regex" : [
