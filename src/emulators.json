@@ -342,6 +342,25 @@
             "hashContent" : false
         },
         {
+            "name" : "wii",
+            "execution" : "\"%USERPROFILE%\\Dolphin-x64\\Dolphin.exe\" --config \"Dolphin.Display.Fullscreen=True\" -e \"%ROM_RAW%\"",
+            "path_regex" : [
+            	"%USERPROFILE%\\Documents\\Games\\Wii\\Digital",
+            	"Z:\\data\\Software\\games\\roms\\Wii\\Digital"
+            ],
+            "tags" : [
+            	"dolphin"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.]wad$",
+            "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
+            "filename_regex" : [
+            	"*[.]wad"
+            ],
+            "gameShouldBeInstalled" : true,
+            "hashContent" : false
+        },
+        {
             "name" : "xbox",
             "execution" : "\"%USERPROFILE%\\CxbxReloaded-Release-VS2019\\cxbx.exe\" \"%ROM_RAW%\"",
             "path_regex" : [
