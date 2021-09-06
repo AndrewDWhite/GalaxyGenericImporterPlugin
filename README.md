@@ -72,6 +72,8 @@ If the configuration is not changed to reflect your system, then the following i
 | Wii | %USERPROFILE%\Dolphin-x64\Dolphin.exe | F:\Software\games\roms\Wii |
 | | | %USERPROFILE%\Documents\Games\Wii |
 | | | Z:\data\Software\games\roms\Wii |
+| | | %USERPROFILE%\Documents\Games\Wii\\Digital |
+| | | Z:\data\Software\games\roms\Wii\\Digital |
 | XBOX | %USERPROFILE%\CxbxReloaded-Release-VS2019\cxbx.exe | F:\Software\games\roms\xbox\games |
 | | | %USERPROFILE%\Documents\Games\xbox |
 | | | Z:\data\Software\games\roms\xbox\games |
@@ -233,6 +235,9 @@ This will end up being something like `C:\Users\andyn\Dolphin-x64\Dolphin.exe`.
     F:\Software\games\roms\Wii
     %USERPROFILE%\Documents\Games\Wii
     Z:\data\Software\games\roms\Wii
+    %USERPROFILE%\Documents\Games\Wii\\Digital
+    Z:\data\Software\games\roms\Wii\\Digital
+Also Note that the digital folders will look for wad files by default.
 ### XBOX
 #### emulator
     %USERPROFILE%\CxbxReloaded-Release-VS2019\cxbx.exe
@@ -340,7 +345,7 @@ By default this will populate games as ones that you own but cannot run on this 
 ### PS4
     %USERPROFILE%\Documents\Games\ps4
     Z:\data\Software\games\roms\ps4
-By default this will populate games as ones that you own but cannot run on this device or wish to have marked as installed.
+By default this will populate games as ones that you own, using the folder names, but cannot run on this device or wish to have marked as installed.
 
 
 ## Configuration
