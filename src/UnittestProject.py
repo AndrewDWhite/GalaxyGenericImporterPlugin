@@ -44,6 +44,8 @@ class UnittestProject(aiounittest.AsyncTestCase):
         logging.debug(config)
         self.assertEqual(config.my_user_to_gog, "username01")
         self.assertEqual(config.my_platform_to_gog, "test")
+        self.assertEqual(config.minimum_seconds_between_notification_updates, 7)
+        self.assertEqual(config.minimize_logging, bool("false"))
         
     async def  test_emulators(self):
         systems = ListGames()
@@ -479,7 +481,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         self.assertEqual(1,len(self.backend.local_time_cache))
         my_timed_entry = self.backend.local_time_cache[0]
         
-        self.assertEqual(my_timed_entry["run_time_total"], 1)
+        self.assertGreaterEqual(my_timed_entry["run_time_total"], 1)
         self.assertEqual(my_timed_entry["last_time_played"], math.floor(my_current_time.timestamp() ))
         self.assertEqual(my_timed_entry["hash_digest"], "12345A")
         
