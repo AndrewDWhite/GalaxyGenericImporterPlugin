@@ -149,7 +149,7 @@ async def tick_async(self):
             #try:
             await time_tracking(self, self.my_threads)            #finally:
             #    my_loop.close()   
-        await asyncio.sleep(1) 
+        await asyncio.sleep(self.configuration.minimum_seconds_between_notification_updates) 
 
 async def update_local_games(self, username, my_game_lister):
     not_run = True

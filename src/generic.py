@@ -38,7 +38,10 @@ class GenericEmulatorPlugin(Plugin):
         self.my_tasks = []
         self.started_async_tick = False
         self.keep_ticking = True 
-        logging.getLogger().setLevel(logging.DEBUG)
+        if (self.configuration.minimize_logging):
+            logging.getLogger().setLevel(logging.WARNING)
+        else:
+            logging.getLogger().setLevel(logging.DEBUG)
 
     # required api interface to authenticate the user with the platform
     async def authenticate(self, stored_credentials=None):

@@ -44,6 +44,8 @@ class UnittestProject(aiounittest.AsyncTestCase):
         logging.debug(config)
         self.assertEqual(config.my_user_to_gog, "username01")
         self.assertEqual(config.my_platform_to_gog, "test")
+        self.assertEqual(config.minimum_seconds_between_notification_updates, "15")
+        self.assertEqual(config.minimize_logging, bool("false"))
         
     async def  test_emulators(self):
         systems = ListGames()
