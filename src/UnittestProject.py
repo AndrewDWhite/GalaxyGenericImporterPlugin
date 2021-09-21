@@ -481,7 +481,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         self.assertEqual(1,len(self.backend.local_time_cache))
         my_timed_entry = self.backend.local_time_cache[0]
         
-        self.assertEqual(my_timed_entry["run_time_total"], 1)
+        self.assertGreaterEqual(my_timed_entry["run_time_total"], 1)
         self.assertEqual(my_timed_entry["last_time_played"], math.floor(my_current_time.timestamp() ))
         self.assertEqual(my_timed_entry["hash_digest"], "12345A")
         
