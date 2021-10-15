@@ -4,6 +4,7 @@ import asyncio
 from configuration import DefaultConfig
 from Backend import Backend
 from ListGames import ListGames
+from CacheDataManipulation import get_exe_command
 from piptools.writer import OutputWriter
 
 class BackendInfoPage():
@@ -77,15 +78,25 @@ class BackendInfoPage():
             outputFile.write(str("<thead><tr>"))
             for headerKey in data_read[0]:
                 outputFile.write(str("<th>"+str(headerKey)+"</th>"))
+            outputFile.write(str("<th>derived execution</th>"))
             outputFile.write(str("</tr></thead><tbody>"))
             for entry in data_read:
                 logger.info(entry)
                 outputFile.write(str("<tr>"))
+                myHashId = "";
                 for key in entry:
                     if (key=="hash_digest"):
                         outputFile.write(str("<td><a href='https://gamesdb.gog.com/platforms/test/external_releases/"+str(entry[key])+"'>"+str(entry[key])+"</td>"))
+                        myHashId = entry[key]
                     else:
                         outputFile.write(str("<td>"+str(entry[key])+"</td>"))
+                outputFile.write(str("<td>"))
+                if (myHashId!=""):
+                    #logger.info(myHashId)
+                    myCommand = await get_exe_command(myHashId,data_read)
+                    #logger.info(myCommand)
+                    outputFile.write(str(myCommand)[1:-1])
+                outputFile.write(str("</td>"))
                 outputFile.write(str("</tr>"))
             outputFile.write(str("</tbody>\n\
             </table>\n\
@@ -246,6 +257,10 @@ class BackendInfoPage():
                             //$('#mytable').DataTable().page( 'previous' ).draw( 'page' );\n\
                             myStartTime = Date.now();\n\
                         }\n\
+                    }\n\
+                    if (controllers[0].buttons[0].touched)\n\
+                    {\n\
+                        navigator.clipboard.writeText($('#mytable').DataTable().row({ selected: true }).data()[17]);\n\
                     }\n\
                     \n\
                 }\n\
