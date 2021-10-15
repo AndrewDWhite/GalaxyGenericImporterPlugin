@@ -19,7 +19,18 @@ class BackendInfoPage():
         if (len(data_read)>0):
             outputFile = open("cache.html", "w")
             outputFile.write(str(
-                "<html><head><title>Cache</title></head><body><script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script><link rel='stylesheet' type='text/css' href='https://cdn.datatables.net/1.11.0/css/jquery.dataTables.css'><script type='text/javascript' charset='utf8' src='https://cdn.datatables.net/1.11.0/js/jquery.dataTables.js'></script><table id='mytable' class='display'>"
+                "<html>\
+                <head>\
+                <meta charset='UTF-8'>\
+                <title>Cache</title>\
+                </head>\
+                <body>\
+                <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>\
+                <link rel='stylesheet' type='text/css' href='https://cdn.datatables.net/1.11.0/css/jquery.dataTables.css'>\
+                <script type='text/javascript' charset='utf8' src='https://cdn.datatables.net/1.11.0/js/jquery.dataTables.js'></script>\
+                <script type='text/javascript' charset='utf8' src='https://cdn.datatables.net/select/1.3.3/js/dataTables.select.js'></script>\
+                <link rel='stylesheet' type='text/css' href='https://cdn.datatables.net/select/1.3.3/css/select.dataTables.css'>\
+                <table id='mytable' class='display'>"
                 ))
             outputFile.write(str("<thead><tr>"))
             for headerKey in data_read[0]:
@@ -34,7 +45,7 @@ class BackendInfoPage():
                     else:
                         outputFile.write(str("<td>"+str(entry[key])+"</td>"))
                 outputFile.write(str("</tr>"))
-            outputFile.write(str("</tbody></table><script type='text/javascript'>$(document).ready( function () {    $('#mytable').DataTable();} );</script></body></html>"))
+            outputFile.write(str("</tbody></table><script type='text/javascript'>$(document).ready( function () {    $('#mytable').DataTable({select: {style: 'single'}});} );</script></body></html>"))
     
     def main(self):
         asyncio.run(BackendInfoPage.generatePage(self))
