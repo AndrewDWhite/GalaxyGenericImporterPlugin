@@ -228,6 +228,10 @@ class BackendInfoPage():
                         var nextval = $('#mytable').DataTable().row({ selected: true }).next();\n\
                         if (null!= nextval){\n\
                             nextval.select()\n\
+                            var myNodeLocation = $('#mytable').DataTable().rows({order: 'current'}).nodes().indexOf($('#mytable').DataTable().row({ selected: true }).node());\n\
+                            var myPage = Math.floor(myNodeLocation/$('#mytable').DataTable().page.len());\n\
+                            $('#mytable').DataTable().page(myPage).draw(false);\n\
+                            //$('#mytable').DataTable().page( 'next' ).draw( 'page' );\n\
                             myStartTime = Date.now();\n\
                         }\n\
                     }\n\
@@ -236,6 +240,10 @@ class BackendInfoPage():
                         var prevval = $('#mytable').DataTable().row({ selected: true }).prev()\n\
                         if (null!= prevval){\n\
                             prevval.select()\n\
+                            var myNodeLocation = $('#mytable').DataTable().rows({order: 'current'}).nodes().indexOf($('#mytable').DataTable().row({ selected: true }).node());\n\
+                            var myPage = Math.floor(myNodeLocation/$('#mytable').DataTable().page.len());\n\
+                            $('#mytable').DataTable().page(myPage).draw(false);\n\
+                            //$('#mytable').DataTable().page( 'previous' ).draw( 'page' );\n\
                             myStartTime = Date.now();\n\
                         }\n\
                     }\n\
