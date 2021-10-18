@@ -78,6 +78,7 @@ class BackendInfoPage():
                     window.open('goggalaxy://openGameView/test_'+$('#mytable').DataTable().row({ selected: true }).data()[11],'_self');\n\
                   }\n\
                 </script>\n\
+                \n\
                 <script>\n\
                 function myTableUpdatesFunction(){\n\
                     //Update table changes of stuff\n\
@@ -117,6 +118,7 @@ class BackendInfoPage():
                         //Open in galaxy (a)\n\
                         if (controllers[0].buttons[0].touched)\n\
                         {\n\
+                            //If this doesn't provide the open dialogue you need to click on the page with the mouse again\n\
                             myOpenGalaxyFunction();\n\
                             myStartTime = Date.now();\n\
                         }\n\
@@ -130,7 +132,9 @@ class BackendInfoPage():
                     }\n\
                 }\n\
                 </script>\n\
+                \n\
                 <button onclick='myOpenGalaxyFunction()' id ='openGalaxyButton'>Open selected in galaxy</button>\n\
+                \n\
                 <table id='mytable' class='display'>\n"
                 ))
             outputFile.write(str("<thead>\n<tr>\n"))
@@ -160,7 +164,7 @@ class BackendInfoPage():
                 outputFile.write(str("</tr>"))
             outputFile.write(str("</tbody>\n\
             </table>\n\
-            <h2 id='start'>Press a button on your controller to start</h2>\n\
+            <h2 id='start'>Press a button on your controller to show</h2>\n\
             <script type='text/javascript'>\n\
               $(document).ready( \n\
                 function () {\n\
@@ -206,15 +210,17 @@ class BackendInfoPage():
                 var haveEvents = 'GamepadEvent' in window;\n\
                 var haveWebkitEvents = 'WebKitGamepadEvent' in window;\n\
                 var controllers = {};\n\
+                var prevTimestamps = [];\n\
                 var rAF = window.mozRequestAnimationFrame ||\n\
-                  //window.webkitRequestAnimationFrame ||\n\
+                  window.webkitRequestAnimationFrame ||\n\
                   window.requestAnimationFrame;\n\
                 \n\
                 function connecthandler(e) {\n\
                   addgamepad(e.gamepad);\n\
                 }\n\
                 function addgamepad(gamepad) {\n\
-                  controllers[gamepad.index] = gamepad; var d = document.createElement('div');\n\
+                  controllers[gamepad.index] = gamepad;\n\
+                  var d = document.createElement('div');\n\
                   d.setAttribute('id', 'controller' + gamepad.index);\n\
                   var t = document.createElement('h1');\n\
                   t.appendChild(document.createTextNode('gamepad: ' + gamepad.id));\n\
@@ -304,7 +310,13 @@ class BackendInfoPage():
                       controllers[gamepads[i].index] = gamepads[i];\n\
                     }\n\
                   }\n\
-                  myTableUpdatesFunction();\n\
+                  if (gamepads[0]){\n\
+                      if(!( gamepads[0].timestamp && \n\
+                          (gamepads[0].timestamp === prevTimestamps[i]))) {\n\
+                            prevTimestamps[0] = gamepads[0].timestamp;\n\
+                            myTableUpdatesFunction();\n\
+                      }\n\
+                  }\n\
                 }\n\
                 \n\
                 var myStartTime = Date.now();\n\
