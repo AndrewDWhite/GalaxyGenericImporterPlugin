@@ -78,6 +78,9 @@ class BackendInfoPage():
             outputFile.write(str("<thead><tr>"))
             for headerKey in data_read[0]:
                 outputFile.write(str("<th>"+str(headerKey)+"</th>"))
+                # Have it a second time for without the link
+                if (headerKey=="hash_digest"):
+                    outputFile.write(str("<th>"+str(headerKey)+"</th>"))
             outputFile.write(str("<th>derived execution</th>"))
             outputFile.write(str("</tr></thead><tbody>"))
             for entry in data_read:
@@ -88,8 +91,7 @@ class BackendInfoPage():
                     if (key=="hash_digest"):
                         outputFile.write(str("<td><a href='https://gamesdb.gog.com/platforms/test/external_releases/"+str(entry[key])+"'>"+str(entry[key])+"</td>"))
                         myHashId = entry[key]
-                    else:
-                        outputFile.write(str("<td>"+str(entry[key])+"</td>"))
+                    outputFile.write(str("<td>"+str(entry[key])+"</td>"))
                 outputFile.write(str("<td>"))
                 if (myHashId!=""):
                     #logger.info(myHashId)
@@ -101,7 +103,20 @@ class BackendInfoPage():
             outputFile.write(str("</tbody>\n\
             </table>\n\
             <h2 id='start'>Press a button on your controller to start</h2>\n\
-            <script type='text/javascript'>$(document).ready( function () {  var myDataTable =  $('#mytable').DataTable({select: {style: 'single'}});} );</script>\n\
+            <script type='text/javascript'>\n\
+              $(document).ready( \n\
+                function () {\n\
+                  var myDataTable =  $('#mytable').DataTable(\n\
+                    {\n\
+                      select: {style: 'single'},\n\
+                      columnDefs: [\n\
+                        {visible: false, targets: [11] }\n\
+                       ]\n\
+                    }\n\
+                  );\n\
+                }\n\
+              );\n\
+            </script>\n\
             <script type='text/javascript'>\n\
             $.fn.dataTable.Api.register('row().next()', function() {\n\
                 // Current row position\n\
@@ -258,9 +273,24 @@ class BackendInfoPage():
                             myStartTime = Date.now();\n\
                         }\n\
                     }\n\
-                    if (controllers[0].buttons[0].touched)\n\
+                    //Copy to clipboard (x)\n\
+                    if (controllers[0].buttons[2].touched)\n\
                     {\n\
                         navigator.clipboard.writeText($('#mytable').DataTable().row({ selected: true }).data()[17]);\n\
+                        myStartTime = Date.now();\n\
+                    }\n\
+                    \n\
+                    //Open in galaxy (a)\n\
+                    if (controllers[0].buttons[0].touched)\n\
+                    {\n\
+                        window.open('goggalaxy://openGameView/test_'+$('#mytable').DataTable().row({ selected: true }).data()[11],'_self');\n\
+                        myStartTime = Date.now();\n\
+                    }\n\
+                    //alert command to open galaxy page (y)\n\
+                    if (controllers[0].buttons[3].touched)\n\
+                    {\n\
+                        alert('goggalaxy://openGameView/test_'+$('#mytable').DataTable().row({ selected: true }).data()[11]);\n\
+                        myStartTime = Date.now();\n\
                     }\n\
                     \n\
                 }\n\
