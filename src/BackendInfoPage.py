@@ -74,11 +74,63 @@ class BackendInfoPage():
                 <script type='text/javascript' charset='utf8' src='https://cdn.datatables.net/select/1.3.3/js/dataTables.select.js'></script>\n\
                 <link rel='stylesheet' type='text/css' href='https://cdn.datatables.net/select/1.3.3/css/select.dataTables.css'>\n\
                 <script>\n\
-                  function myOpenFunction() {\n\
+                  function myOpenGalaxyFunction() {\n\
                     window.open('goggalaxy://openGameView/test_'+$('#mytable').DataTable().row({ selected: true }).data()[11],'_self');\n\
                   }\n\
                 </script>\n\
-                <button onclick='myOpenFunction()'>Open selected in galaxy</button>\n\
+                <script>\n\
+                function myTableUpdatesFunction(){\n\
+                    //Update table changes of stuff\n\
+                    //if (controllers[0].axes[0].toFixed(4)==1)//right\n\
+                    if (controllers!=null && controllers[0]!=undefined && myStartTime +175 < Date.now()) {\n\
+                        if (controllers[0].axes[1].toFixed(4)==1)//down\n\
+                        {\n\
+                            var nextval = $('#mytable').DataTable().row({ selected: true }).next();\n\
+                            if (null!= nextval){\n\
+                                nextval.select()\n\
+                                var myNodeLocation = $('#mytable').DataTable().rows({order: 'current'}).nodes().indexOf($('#mytable').DataTable().row({ selected: true }).node());\n\
+                                var myPage = Math.floor(myNodeLocation/$('#mytable').DataTable().page.len());\n\
+                                $('#mytable').DataTable().page(myPage).draw(false);\n\
+                                //$('#mytable').DataTable().page( 'next' ).draw( 'page' );\n\
+                                myStartTime = Date.now();\n\
+                            }\n\
+                        }\n\
+                        if (controllers[0].axes[1].toFixed(4)==-1)//up\n\
+                        {\n\
+                            var prevval = $('#mytable').DataTable().row({ selected: true }).prev()\n\
+                            if (null!= prevval){\n\
+                                prevval.select()\n\
+                                var myNodeLocation = $('#mytable').DataTable().rows({order: 'current'}).nodes().indexOf($('#mytable').DataTable().row({ selected: true }).node());\n\
+                                var myPage = Math.floor(myNodeLocation/$('#mytable').DataTable().page.len());\n\
+                                $('#mytable').DataTable().page(myPage).draw(false);\n\
+                                //$('#mytable').DataTable().page( 'previous' ).draw( 'page' );\n\
+                                myStartTime = Date.now();\n\
+                            }\n\
+                        }\n\
+                        //Copy to clipboard (x)\n\
+                        if (controllers[0].buttons[2].touched)\n\
+                        {\n\
+                            navigator.clipboard.writeText($('#mytable').DataTable().row({ selected: true }).data()[17]);\n\
+                            myStartTime = Date.now();\n\
+                        }\n\
+                        \n\
+                        //Open in galaxy (a)\n\
+                        if (controllers[0].buttons[0].touched)\n\
+                        {\n\
+                            myOpenGalaxyFunction();\n\
+                            myStartTime = Date.now();\n\
+                        }\n\
+                        //alert command to open galaxy page (y)\n\
+                        if (controllers[0].buttons[3].touched)\n\
+                        {\n\
+                            alert('goggalaxy://openGameView/test_'+$('#mytable').DataTable().row({ selected: true }).data()[11]);\n\
+                            myStartTime = Date.now();\n\
+                        }\n\
+                        \n\
+                    }\n\
+                }\n\
+                </script>\n\
+                <button onclick='myOpenGalaxyFunction()' id ='openGalaxyButton'>Open selected in galaxy</button>\n\
                 <table id='mytable' class='display'>\n"
                 ))
             outputFile.write(str("<thead>\n<tr>\n"))
@@ -155,7 +207,7 @@ class BackendInfoPage():
                 var haveWebkitEvents = 'WebKitGamepadEvent' in window;\n\
                 var controllers = {};\n\
                 var rAF = window.mozRequestAnimationFrame ||\n\
-                  window.webkitRequestAnimationFrame ||\n\
+                  //window.webkitRequestAnimationFrame ||\n\
                   window.requestAnimationFrame;\n\
                 \n\
                 function connecthandler(e) {\n\
@@ -252,54 +304,7 @@ class BackendInfoPage():
                       controllers[gamepads[i].index] = gamepads[i];\n\
                     }\n\
                   }\n\
-                  //Add on to change stuff\n\
-                //if (controllers[0].axes[0].toFixed(4)==1)//right\n\
-                if (controllers!=null && controllers[0]!=undefined && myStartTime +175 < Date.now()) {\n\
-                    if (controllers[0].axes[1].toFixed(4)==1)//down\n\
-                    {\n\
-                        var nextval = $('#mytable').DataTable().row({ selected: true }).next();\n\
-                        if (null!= nextval){\n\
-                            nextval.select()\n\
-                            var myNodeLocation = $('#mytable').DataTable().rows({order: 'current'}).nodes().indexOf($('#mytable').DataTable().row({ selected: true }).node());\n\
-                            var myPage = Math.floor(myNodeLocation/$('#mytable').DataTable().page.len());\n\
-                            $('#mytable').DataTable().page(myPage).draw(false);\n\
-                            //$('#mytable').DataTable().page( 'next' ).draw( 'page' );\n\
-                            myStartTime = Date.now();\n\
-                        }\n\
-                    }\n\
-                    if (controllers[0].axes[1].toFixed(4)==-1)//up\n\
-                    {\n\
-                        var prevval = $('#mytable').DataTable().row({ selected: true }).prev()\n\
-                        if (null!= prevval){\n\
-                            prevval.select()\n\
-                            var myNodeLocation = $('#mytable').DataTable().rows({order: 'current'}).nodes().indexOf($('#mytable').DataTable().row({ selected: true }).node());\n\
-                            var myPage = Math.floor(myNodeLocation/$('#mytable').DataTable().page.len());\n\
-                            $('#mytable').DataTable().page(myPage).draw(false);\n\
-                            //$('#mytable').DataTable().page( 'previous' ).draw( 'page' );\n\
-                            myStartTime = Date.now();\n\
-                        }\n\
-                    }\n\
-                    //Copy to clipboard (x)\n\
-                    if (controllers[0].buttons[2].touched)\n\
-                    {\n\
-                        navigator.clipboard.writeText($('#mytable').DataTable().row({ selected: true }).data()[17]);\n\
-                        myStartTime = Date.now();\n\
-                    }\n\
-                    \n\
-                    //Open in galaxy (a)\n\
-                    if (controllers[0].buttons[0].touched)\n\
-                    {\n\
-                        myOpenFunction();\n\
-                        myStartTime = Date.now();\n\
-                    }\n\
-                    //alert command to open galaxy page (y)\n\
-                    if (controllers[0].buttons[3].touched)\n\
-                    {\n\
-                        alert('goggalaxy://openGameView/test_'+$('#mytable').DataTable().row({ selected: true }).data()[11]);\n\
-                        myStartTime = Date.now();\n\
-                    }\n\
-                    \n\
-                }\n\
+                  myTableUpdatesFunction();\n\
                 }\n\
                 \n\
                 var myStartTime = Date.now();\n\
