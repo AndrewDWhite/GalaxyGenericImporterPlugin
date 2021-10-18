@@ -73,16 +73,22 @@ class BackendInfoPage():
                 <script type='text/javascript' charset='utf8' src='https://cdn.datatables.net/1.11.0/js/jquery.dataTables.js'></script>\n\
                 <script type='text/javascript' charset='utf8' src='https://cdn.datatables.net/select/1.3.3/js/dataTables.select.js'></script>\n\
                 <link rel='stylesheet' type='text/css' href='https://cdn.datatables.net/select/1.3.3/css/select.dataTables.css'>\n\
-                <table id='mytable' class='display'>"
+                <script>\n\
+                  function myOpenFunction() {\n\
+                    window.open('goggalaxy://openGameView/test_'+$('#mytable').DataTable().row({ selected: true }).data()[11],'_self');\n\
+                  }\n\
+                </script>\n\
+                <button onclick='myOpenFunction()'>Open selected in galaxy</button>\n\
+                <table id='mytable' class='display'>\n"
                 ))
-            outputFile.write(str("<thead><tr>"))
+            outputFile.write(str("<thead>\n<tr>\n"))
             for headerKey in data_read[0]:
-                outputFile.write(str("<th>"+str(headerKey)+"</th>"))
+                outputFile.write(str("<th>"+str(headerKey)+"</th>\n"))
                 # Have it a second time for without the link
                 if (headerKey=="hash_digest"):
-                    outputFile.write(str("<th>"+str(headerKey)+"</th>"))
-            outputFile.write(str("<th>derived execution</th>"))
-            outputFile.write(str("</tr></thead><tbody>"))
+                    outputFile.write(str("<th>"+str(headerKey)+"</th>\n"))
+            outputFile.write(str("<th>derived execution</th>\n"))
+            outputFile.write(str("</tr>\n</thead>\n<tbody>\n"))
             for entry in data_read:
                 logger.info(entry)
                 outputFile.write(str("<tr>"))
@@ -283,7 +289,7 @@ class BackendInfoPage():
                     //Open in galaxy (a)\n\
                     if (controllers[0].buttons[0].touched)\n\
                     {\n\
-                        window.open('goggalaxy://openGameView/test_'+$('#mytable').DataTable().row({ selected: true }).data()[11],'_self');\n\
+                        myOpenFunction();\n\
                         myStartTime = Date.now();\n\
                     }\n\
                     //alert command to open galaxy page (y)\n\
