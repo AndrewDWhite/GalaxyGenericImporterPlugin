@@ -226,7 +226,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
         insert_file_into_folder (self, systems, "dos0", "mygame.exe","mygame")
         #Number of folders created by setup + 2 for subfolders
-        self.assertEqual(90, len(systems.my_folder_monitor_threads) )
+        self.assertEqual(91, len(systems.my_folder_monitor_threads) )
         await systems.shutdown_folder_listeners()
         self.assertEqual(False, my_queue_folder_awaiting_scan.empty())
         self.assertEqual(os.path.abspath(os.path.join(os.getcwd(),"TestDirectory9\\gbc0")),my_queue_folder_awaiting_scan.get())

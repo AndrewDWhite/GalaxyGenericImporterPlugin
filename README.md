@@ -61,6 +61,7 @@ If the configuration is not changed to reflect your system, then the following i
 | | | %USERPROFILE%\Documents\Games\psp |
 | | | Z:\data\Software\games\roms\psp |
 | | C:\Program Files\PPSSPP\ppsspp_win\PPSSPPWindows64.exe | E:\roms\psp\Digital Downloads |
+| | | D:\roms\psp\Digital Downloads |
 | | | %USERPROFILE%\Documents\Games\psp\Digital Downloads |
 | Playstation 1 | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\PS1 |
 | | | %USERPROFILE%\Documents\Games\PS1 |

@@ -248,6 +248,7 @@
             "execution" : "\"C:\\Program Files\\PPSSPP\\PPSSPPWindows64.exe\" --fullscreen \"%ROM_RAW%\"",
             "path_regex" : [
             	"%USERPROFILE%\\Documents\\Games\\psp\\Digital Downloads",
+            	"D:\\roms\\psp\\Digital Downloads",
             	"E:\\roms\\psp\\Digital Downloads"
             ],
             "tags" : [
