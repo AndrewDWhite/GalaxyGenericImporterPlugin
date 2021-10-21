@@ -84,8 +84,7 @@ If the configuration is not changed to reflect your system, then the following i
 | Arcade | %USERPROFILE%\mame0226b_64bit\mame64.exe | F:\Software\games\roms\arcade |
 | | | %USERPROFILE%\Documents\Games\arcade |
 | | | Z:\data\Software\games\roms\arcade |
-| Amazon | | D:\Amazon Games\Library |
-| | | G:\Amazon Games\Library |
+| Amazon | | G:\Amazon Games\Library |
 | | | C:\Amazon Games\Library |
 | | | %appdata%\\Microsoft\\Windows\\Start Menu\\Programs\\Amazon Games |
 | DOS | C:\Program Files (x86)\DOSBox-0.74-3\DOSBox.exe | %USERPROFILE%\Documents\Games\DOS |
@@ -269,7 +268,6 @@ This will end up being something like `C:\Users\andyn\mame0226b_64bit\mame64.exe
 By default the folders in `F:\Software\games\roms\arcade` will be populated as your game names.  
 ### Amazon
 #### game library folders
-    D:\Amazon Games\Library
     G:\Amazon Games\Library
     C:\Amazon Games\Library
 This will by default populate any exe files found in the root folder of each game. See the second method for the ease of use solution.

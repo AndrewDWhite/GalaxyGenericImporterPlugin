@@ -426,7 +426,6 @@
             "execution" : "\"%ROM_RAW%\"",
             "path_regex" : [
             	"C:\\Amazon[ ]Games\\Library",
-            	"D:\\Amazon[ ]Games\\Library",
             	"G:\\Amazon[ ]Games\\Library"
             ],
             "tags" : [
