@@ -399,10 +399,11 @@ The following is an example of the configuration of a single entry for a system.
 Galaxy plug-in specific dependencies:
  - https://github.com/gogcom/galaxy-integrations-python-api 
  - https://github.com/tylerbrawl/Galaxy-Utils
+ - [Python 3.7-32](https://www.python.org/ftp/python/3.7.0/python-3.7.0.exe)
 
 Use pip to install the dependencies to your local development copy (windows example below)
 
-     py -3.7-32 -m pip install  -r requirements.txt --target .
+    py -3.7-32 -m pip install  -r requirements/requirements_dev.txt --target .
 
 Run coverage tests
 
