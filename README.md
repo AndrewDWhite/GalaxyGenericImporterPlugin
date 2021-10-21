@@ -211,7 +211,7 @@ This first instance is setup to load isos of disks. This one is setup for runnin
     E:\roms\psp\Digital Downloads
     D:\roms\psp\Digital Downloads
     %USERPROFILE%\Documents\Games\psp\Digital Downloads
-The first three are setup for isos while the last two are for PBPs. By default the folders in `%USERPROFILE%\Documents\Games\psp\Digital Downloads` will be populated as your game names.
+The first three are setup for isos while the last three are for PBPs. By default the folders in `%USERPROFILE%\Documents\Games\psp\Digital Downloads` will be populated as your game names.
 ### Playstation 1
 #### emulator
     %APPDATA%\RetroArch\retroarch.exe
