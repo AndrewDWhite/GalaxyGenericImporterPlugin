@@ -50,7 +50,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
     async def  test_emulators(self):
         systems = ListGames()
         #tests if it loaded the default number of emulators
-        self.assertEqual(len(systems.loaded_systems_configuration),34)
+        self.assertEqual(len(systems.loaded_systems_configuration),35)
     
     async def test_speed(self):
         systems = ListGames()

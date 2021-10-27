@@ -269,7 +269,7 @@
             "path_regex" : [
             	"%USERPROFILE%\\Documents\\Games\\PS1",
             	"F:\\Software\\games\\roms\\PS1",
-            	"Z:\\data\\Software\\games\\roms\\PS1"
+            	"Z:\\data\\Software\\games\\roms\\PS1\\isos"
             ],
             "tags" : [
             	"retroarch"
@@ -280,6 +280,24 @@
             "filename_regex" :  [
             	"*[.]iso",
             	"*[.]toc"
+            ],
+            "gameShouldBeInstalled" : true,
+            "hashContent" : false
+        },
+        {
+            "name" : "ps1",
+            "execution" : "\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\pcsx_rearmed_libretro.dll\" \"%ROM_RAW%\"",
+            "path_regex" : [
+            	"Z:\\data\\Software\\games\\roms\\PS1\\multi-disk"
+            ],
+            "tags" : [
+            	"retroarch"
+            ],
+            "game_name_regex" : "^.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*[.](m3u)$",
+            "game_name_regex_group" : 1,
+            "system_rom_name_regex_group" : 1,
+            "filename_regex" :  [
+            	"*[.]m3u"
             ],
             "gameShouldBeInstalled" : true,
             "hashContent" : false

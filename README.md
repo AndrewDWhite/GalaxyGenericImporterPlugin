@@ -65,8 +65,9 @@ If the configuration is not changed to reflect your system, then the following i
 | | | %USERPROFILE%\Documents\Games\psp\Digital Downloads |
 | Playstation 1 | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\PS1 |
 | | | %USERPROFILE%\Documents\Games\PS1 |
-| | | Z:\data\Software\games\roms\PS1 |
+| | | Z:\data\Software\games\roms\PS1\isos |
 | | | Z:\data\Software\games\roms\PS1\PSX Digital |
+| | | Z:\data\Software\games\roms\PS1\multi-disk |
 | Super Nintendo Entertainment System | %APPDATA%\RetroArch\retroarch.exe  | F:\Software\games\roms\SNES |
 | | | %USERPROFILE%\Documents\Games\SNES |
 | | | Z:\data\Software\games\roms\SNES |
@@ -214,11 +215,12 @@ The first three are setup for isos while the last three are for PBPs. By default
 ### Playstation 1
 #### emulator
     %APPDATA%\RetroArch\retroarch.exe
-This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `pcsx_rearmed_libretro.dll` core. Note the two examples for cue and toc/iso, They can all be combined.
+This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `pcsx_rearmed_libretro.dll` core. Note the two examples for cue and toc/iso and m3u (for multidisk programs), as they can all be combined if desired.
 #### roms
     F:\Software\games\roms\PS1
     %USERPROFILE%\Documents\Games\PS1
-    Z:\data\Software\games\roms\PS1
+    Z:\data\Software\games\roms\PS1\multi-disk
+    Z:\data\Software\games\roms\PS1\isos
     Z:\data\Software\games\roms\PS1\PSX Digital
 ### Super Nintendo Entertainment System
 #### emulator
