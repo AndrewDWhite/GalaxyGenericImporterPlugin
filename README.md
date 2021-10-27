@@ -61,11 +61,13 @@ If the configuration is not changed to reflect your system, then the following i
 | | | %USERPROFILE%\Documents\Games\psp |
 | | | Z:\data\Software\games\roms\psp |
 | | C:\Program Files\PPSSPP\ppsspp_win\PPSSPPWindows64.exe | E:\roms\psp\Digital Downloads |
+| | | D:\roms\psp\Digital Downloads |
 | | | %USERPROFILE%\Documents\Games\psp\Digital Downloads |
 | Playstation 1 | %APPDATA%\RetroArch\retroarch.exe | F:\Software\games\roms\PS1 |
 | | | %USERPROFILE%\Documents\Games\PS1 |
-| | | Z:\data\Software\games\roms\PS1 |
+| | | Z:\data\Software\games\roms\PS1\isos |
 | | | Z:\data\Software\games\roms\PS1\PSX Digital |
+| | | Z:\data\Software\games\roms\PS1\multi-disk |
 | Super Nintendo Entertainment System | %APPDATA%\RetroArch\retroarch.exe  | F:\Software\games\roms\SNES |
 | | | %USERPROFILE%\Documents\Games\SNES |
 | | | Z:\data\Software\games\roms\SNES |
@@ -83,8 +85,7 @@ If the configuration is not changed to reflect your system, then the following i
 | Arcade | %USERPROFILE%\mame0226b_64bit\mame64.exe | F:\Software\games\roms\arcade |
 | | | %USERPROFILE%\Documents\Games\arcade |
 | | | Z:\data\Software\games\roms\arcade |
-| Amazon | | D:\Amazon Games\Library |
-| | | G:\Amazon Games\Library |
+| Amazon | | G:\Amazon Games\Library |
 | | | C:\Amazon Games\Library |
 | | | %appdata%\\Microsoft\\Windows\\Start Menu\\Programs\\Amazon Games |
 | DOS | C:\Program Files (x86)\DOSBox-0.74-3\DOSBox.exe | %USERPROFILE%\Documents\Games\DOS |
@@ -208,16 +209,18 @@ This first instance is setup to load isos of disks. This one is setup for runnin
     %USERPROFILE%\Documents\Games\psp
     Z:\data\Software\games\roms\psp
     E:\roms\psp\Digital Downloads
+    D:\roms\psp\Digital Downloads
     %USERPROFILE%\Documents\Games\psp\Digital Downloads
-The first three are setup for isos while the last two are for PBPs. By default the folders in `%USERPROFILE%\Documents\Games\psp\Digital Downloads` will be populated as your game names.
+The first three are setup for isos while the last three are for PBPs. By default the folders in `%USERPROFILE%\Documents\Games\psp\Digital Downloads` will be populated as your game names.
 ### Playstation 1
 #### emulator
     %APPDATA%\RetroArch\retroarch.exe
-This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `pcsx_rearmed_libretro.dll` core. Note the two examples for cue and toc/iso, They can all be combined.
+This will end up being something like `C:\Users\andyn\AppData\Roaming\RetroArch\retroarch.exe`. And use the `pcsx_rearmed_libretro.dll` core. Note the two examples for cue and toc/iso and m3u (for multidisk programs), as they can all be combined if desired.
 #### roms
     F:\Software\games\roms\PS1
     %USERPROFILE%\Documents\Games\PS1
-    Z:\data\Software\games\roms\PS1
+    Z:\data\Software\games\roms\PS1\multi-disk
+    Z:\data\Software\games\roms\PS1\isos
     Z:\data\Software\games\roms\PS1\PSX Digital
 ### Super Nintendo Entertainment System
 #### emulator
@@ -267,7 +270,6 @@ This will end up being something like `C:\Users\andyn\mame0226b_64bit\mame64.exe
 By default the folders in `F:\Software\games\roms\arcade` will be populated as your game names.  
 ### Amazon
 #### game library folders
-    D:\Amazon Games\Library
     G:\Amazon Games\Library
     C:\Amazon Games\Library
 This will by default populate any exe files found in the root folder of each game. See the second method for the ease of use solution.
@@ -399,10 +401,11 @@ The following is an example of the configuration of a single entry for a system.
 Galaxy plug-in specific dependencies:
  - https://github.com/gogcom/galaxy-integrations-python-api 
  - https://github.com/tylerbrawl/Galaxy-Utils
+ - [Python 3.7-32](https://www.python.org/ftp/python/3.7.0/python-3.7.0.exe)
 
 Use pip to install the dependencies to your local development copy (windows example below)
 
-     py -3.7-32 -m pip install  -r requirements.txt --target .
+    py -3.7-32 -m pip install  -r requirements/requirements_dev.txt --target .
 
 Run coverage tests
 
