@@ -635,9 +635,15 @@ def insert_file_into_folder (self, systems, folder, file, subfolder):
             if (emulated_system["name"]+str(counter)) == folder:
                 logging.debug(subfolder)
                 if len(subfolder)>0:
-                    current_path=current_path+"\\"+subfolder
-                    if not os.path.exists(current_path):
-                        os.mkdir(current_path)
+                    #current_path=current_path+"\\"+subfolder
+                    my_subsubFolders = subfolder.split(os.sep)
+                    logging.debug(my_subsubFolders)
+                    my_current_sub_counter=0
+                    while my_current_sub_counter<len(my_subsubFolders):
+                        current_path=current_path+"\\"+my_subsubFolders[my_current_sub_counter]
+                        if not os.path.exists(current_path):
+                            os.mkdir(current_path)
+                        my_current_sub_counter=my_current_sub_counter+1
                 else:
                     logging.debug(current_path)
                 #logging.debug(current_path)
@@ -677,6 +683,9 @@ class TestParameterized(unittest.TestCase):
         ["ps2 valid entry", "ps20", "mygame.iso","",1,"mygame","mygame"],
         ["ps2 valid entry", "ps20", "mygame.bin","",1,"mygame","mygame"],
         #to do PS3 to be added ["ps3 valid entry", "ps30", "eboot.bin",1],
+        ["ps3 valid entry", "ps30", "eboot.bin","[id1234] game\\PS3_GAME\\USRDIR",1,"game","game"],
+        ["ps3 valid entry", "ps30", "eboot.bin","game [id12345]\\PS3_GAME\\USRDIR",1,"game","game"],
+        ["ps3 valid entry", "ps30", "eboot.bin","game\\PS3_GAME\\USRDIR",1,"game","game"],
         ["psp valid entry", "psp0", "mygame.iso","",1,"mygame","mygame"],
         ["ps1 valid entry", "ps10", "mygame.iso","",1,"mygame","mygame"],
         ["ps1 valid entry", "ps10", "mygame.toc","",1,"mygame","mygame"],
@@ -717,7 +726,7 @@ class TestParameterized(unittest.TestCase):
             self.assertTrue(loop_result)
             data_read = await systems.read_from_cache()
             await systems.delete_cache()
-            self.assertEqual(size, len(data_read ))
+            self.assertEqual(size, len(data_read ), "Right Number of results not read")
             self.assertEqual(data_read, data)
             if (size>0):
                 self.assertEqual(data[0]["game_name"], expected_name)
