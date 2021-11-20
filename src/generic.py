@@ -45,7 +45,8 @@ class GenericEmulatorPlugin(Plugin):
 
     #Wait for the backend to setup to help reduce the amount of issues with galaxy and race conditions
     def handshake_complete(self):
-        logging.error("Handshake complete")
+        logging.info("Handshake complete")
+        self.backend.my_handshook=True
         if not self.backend.backend_setup and self.configuration.force_batch_mode_initial_seed:
             self.backend.setup(self.configuration)
 

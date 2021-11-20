@@ -576,7 +576,8 @@ class UnittestProject(aiounittest.AsyncTestCase):
     async def test_no_updates_send(self):
         self.configuration = DefaultConfig()
         self.backend = Backend()
-        await self.backend.setup(self.configuration) 
+        await self.backend.setup(self.configuration)
+        self.backend.my_handshook=True 
         await send_events(self)
     
     async def test_do_auth(self):
