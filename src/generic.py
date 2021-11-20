@@ -43,6 +43,12 @@ class GenericEmulatorPlugin(Plugin):
         else:
             logging.getLogger().setLevel(logging.DEBUG)
 
+    #Wait for the backend to setup to help reduce the amount of issues with galaxy and race conditions
+    def handshake_complete(self):
+        logging.error("Handshake complete")
+        if not self.backend.backend_setup and self.configuration.force_batch_mode_initial_seed:
+            self.backend.setup(self.configuration)
+
     # required api interface to authenticate the user with the platform
     async def authenticate(self, stored_credentials=None):
         logging.debug("authenticate called")
@@ -160,7 +166,6 @@ class GenericEmulatorPlugin(Plugin):
             my_task_local = asyncio.create_task(self.get_local_games())
             self.my_tasks.append(my_task_local)
             logging.debug("end setup ticking")
-            
 
     # api interface shutdown nicely
     async def shutdown(self):
