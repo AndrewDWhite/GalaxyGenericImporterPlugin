@@ -214,7 +214,7 @@
             "tags" : [
             	"rpcs3"
             ],
-            "game_name_regex" : "^.*[\\\\]([\\[].*[\\]][ ]*)*(.+)[\\\\]PS3_GAME.*$",
+            "game_name_regex" : "^.*[\\\\]([\\[].*[\\]][ ]*)*(.+?)([ ]*[\\[].*[\\]])*[\\\\]PS3_GAME.*$",
             "game_name_regex_group" : 2,
             "system_rom_name_regex_group" : 2,
             "filename_regex" : [
