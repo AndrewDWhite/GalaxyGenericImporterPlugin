@@ -64,8 +64,8 @@ async def shutdown_library(self):
     #loop = asyncio.get_event_loop()
     #loop.close() 
     
-    while (self.my_library_thread.is_alive()):
-        await asyncio.sleep(1)
+    #while (self.my_library_thread.is_alive()):
+    #s    await asyncio.sleep(1)
     
     #self.my_library_thread.join()
     #for my_current_future in self.my_tasks:
