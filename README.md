@@ -353,7 +353,7 @@ By default this will populate games as ones that you own, using the folder names
 ## Configuration
 Configuration for execution, selection and location of files is located in the `systems.json` file. See the included for an example and for what is used by default if not changed. You will need to change this. Any platform(s) you do not need can be safely removed.
 
-<img alt="Main configuration file for program execution" src="https://user-images.githubusercontent.com/972757/119213854-46c05980-ba90-11eb-8322-19a442eae03f.png">
+<img alt="Main configuration file for program execution" src="https://user-images.githubusercontent.com/972757/147400204-ec083ae6-a2fe-4b67-ae5f-52d15cdbfb62.png">
 
 ### name
 The different platforms names are saved as tags, so you will want to manually import them to use these filters in GOG Galaxy.
