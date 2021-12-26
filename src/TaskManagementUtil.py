@@ -8,7 +8,11 @@ async def shutdown_tasks(self, tasks):
         for task in tasks:
             logging.debug("canceling")
             logging.debug(task)
-            task.cancel()
+            try:
+                task.cancel()
+                await task
+            except asyncio.CancelledError:
+                logging.info('cancel_me(): cancel')
         
         for task in tasks:
             while not task.done:
