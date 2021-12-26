@@ -6,7 +6,7 @@ Plug-in for GOG Galaxy supporting programmatic importation of multiple platform 
 ## Known issues
 - Upon galaxy update, the plugin's games may be determined to be unsupported. To resolve this for the current update as of 2020-06-15, disconnect the plugin and then reconnect it again. Contrary to galaxy's messages, your game data including play times will be retained upon reconnecting as they are also cached by the plugin.
 - To preserve game data between updates ensure to copy the game_cache and game_cache-times files to the updated installation.
-- To preserve configuration between versions ensure to copy the emulators.json file to the updated installation.
+- To preserve configuration between versions ensure to copy the systems.json file to the updated installation.
 - If you want to allow for metadata to be stripped away between dots, like previous versions, you would add `([.].*)*` before the extension; for example gba would look like `.*[\\\\](.+?)([ ]*[\\(\\[].*[\\)\\]])*([.].*)*[.]gba` for it's regex. This expression will break games with dots in their name. You can look at the history of the configuration for some [examples](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/blob/01ed3c6976e6cd17e805387fd0a60a5e48918973/emulators.json).
 - Unknown game issues where galaxy refuses a name you provided to it or refuses to update, can sometimes be fixed by changing the username in config.cfg .
 - Galaxy will place all programs under the same platform. Grouping by tags is a decent substitute so ensure to use useful ones. If you only intend to use one platform, you can also update the config.cfg file for that platform.
@@ -351,7 +351,7 @@ By default this will populate games as ones that you own, using the folder names
 
 
 ## Configuration
-Configuration for execution, selection and location of files is located in the `emulators.json` file. See the included for an example and for what is used by default if not changed. You will need to change this. Any platform(s) you do not need can be safely removed.
+Configuration for execution, selection and location of files is located in the `systems.json` file. See the included for an example and for what is used by default if not changed. You will need to change this. Any platform(s) you do not need can be safely removed.
 
 <img alt="Main configuration file for program execution" src="https://user-images.githubusercontent.com/972757/119213854-46c05980-ba90-11eb-8322-19a442eae03f.png">
 
@@ -361,7 +361,7 @@ The different platforms names are saved as tags, so you will want to manually im
 ### execution
 The escaped execution command to send to the operating system. Allows for expansion of the following variables.
 #### %ROM_RAW%
-The full filename of the software. Note that if this used without any leading executable, this can be used as the executable; see the mods section of the emulators.json file for an example.
+The full filename of the software. Note that if this used without any leading executable, this can be used as the executable; see the mods section of the systems.json file for an example.
 #### %ROM_NAME%
 The filename without the path and extension.
 #### %ROM_DIR%

@@ -56,7 +56,7 @@ class ListGames():
         Constructor
         '''        
         logging.debug("loading emulators configuration")
-        emulator_config_path = os.path.abspath(os.path.join(os.path.abspath(__file__),'..','emulators.json'))
+        emulator_config_path = os.path.abspath(os.path.join(os.path.abspath(__file__),'..','systems.json'))
         self.cache_filepath = os.path.abspath(os.path.join(os.path.abspath(__file__),'..','game_cache'))
         with open(emulator_config_path, 'r') as config:
             parsed_json = json.load(config)
