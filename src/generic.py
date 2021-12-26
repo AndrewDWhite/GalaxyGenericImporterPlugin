@@ -180,8 +180,8 @@ class GenericEmulatorPlugin(Plugin):
         tasks = [t for t in asyncio.all_tasks() if t is not
              asyncio.current_task()]
         for my_task in tasks:
-            print("still running")
-            print(my_task)
+            logging.info("still running")
+            logging.info(my_task)
         
         #loop = asyncio.get_event_loop()
         #loop.close()

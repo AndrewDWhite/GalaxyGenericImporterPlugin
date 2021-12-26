@@ -3,9 +3,9 @@
     "platform": "test",
     "guid": "97543122-7785-4444-2254-711233556699",
     "version": "0.1",
-    "description": "Generic Emulator Plugin",
+    "description": "Plugin for GOG Galaxy supporting programmatic importation of multiplatform game libraries. Allows for the generic definition of files to be added using user definable regular expressions.",
     "author": "Andrew David White",
-    "email": "none@localhost",
-    "url": "https://github.com/user/galaxy-plugin-example",
+    "email": "972757+AndrewDWhite@users.noreply.github.com",
+    "url": "https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin",
     "script": "generic.py"
 }

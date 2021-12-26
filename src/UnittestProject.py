@@ -375,6 +375,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
     async def test_start_and_stop_library(self):
         #loop = asyncio.new_event_loop()
         #self.my_library_started = False
+        self.keep_ticking = True 
         self.my_tasks = []
         self.my_library_started = False
         self.configuration = DefaultConfig()
