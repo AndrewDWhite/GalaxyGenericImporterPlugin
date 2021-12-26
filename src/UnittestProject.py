@@ -43,7 +43,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
         config = DefaultConfig()
         logging.debug(config)
         self.assertEqual(config.my_user_to_gog, "username01")
-        self.assertEqual(config.my_platform_to_gog, "test")
+        self.assertEqual(config.my_platform_to_gog, "generic")
         self.assertEqual(config.minimum_seconds_between_notification_updates, 7)
         self.assertEqual(config.minimize_logging, bool("false"))
         self.assertEqual(config.force_batch_mode_initial_seed, bool("false"))
