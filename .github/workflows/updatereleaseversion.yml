@@ -1,0 +1,34 @@
+name: Update release version
+on:
+  push:
+    branches: [ master,dev ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
+        ref: ${{ github.event.pull_request.head.ref }}
+      
+    - name: Update manifest.json version number
+      uses: jossef/action-set-json-field@v1
+      with:
+        file: src/manifest.json
+        field: version
+        value: "0.${{ github.run_number }}-${{ github.sha }}"
+    
+    - name: Commit files
+      uses: EndBug/add-and-commit@v9
+      with:
+        add: 'src/manifest.json'
+        message: "docs(): bumping release to 0.${{ github.run_number }}-${{ github.sha }}"
+        
+ 

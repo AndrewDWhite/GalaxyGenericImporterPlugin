@@ -1,20 +1,23 @@
 name: Python package
-
 on:
-  push:
-    branches: [ master,dev ]
-  pull_request:
-    branches: [ master ]
+  workflow_run:
+    workflows: ["Update release version"]
+    types:
+      - completed
 
 jobs:
   build:
-
     runs-on: windows-latest
     strategy:
       matrix:
         python-version: [3.7]
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
+      with:
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
+        ref: ${{ github.event.pull_request.head.ref }}
+
     - name: Set up Python 3.7
       uses: actions/setup-python@v2
       with:
@@ -23,13 +26,15 @@ jobs:
         # Optional - x64 or x86 architecture, defaults to x64
         architecture: 'x86' 
     # You can test your matrix by printing the current Python version
+    
     - name: Display Python version
       run: python -c "import sys; print(sys.version)"
-    - uses: actions/checkout@v2
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
+        
     - name: Install dependencies
       run: |
         py  -3.7-32 -m pip install --upgrade pip
@@ -41,6 +46,7 @@ jobs:
     #    flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
     #    # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
     #    flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    
     - name: Test and create code coverage
       shell: cmd
       run: coverage.bat
@@ -53,17 +59,20 @@ jobs:
     #    path: .
         # Working directory before zipping
     #    directory: .
+    
     - name: Create zip archive
       shell: bash
       env:
         ZIP_NAME: importer_97543122-7785-4444-2254-711233556699
       run: |
         7z a ${ZIP_NAME}.zip ./src/*
+        
     - name: Upload result
       uses: actions/upload-artifact@v1
       with:
-        name: importer_ ${{ github.sha }}
+        name: importer_ 0.${{ github.run_number }}-${{ github.sha }}
         path: importer_97543122-7785-4444-2254-711233556699.zip
+        
     - name: Automatic Releases
       uses: marvinpinto/action-automatic-releases@latest
       with:
@@ -74,6 +83,6 @@ jobs:
         # Should this release be marked as a pre-release?
         prerelease: True
         # Release title (for automatic releases)
-        title: Prototype_${{ github.sha }}
+        title: Prototype_0.${{ github.run_number }}-${{ github.sha }}
         # Assets to upload to the release
         files: importer_97543122-7785-4444-2254-711233556699.zip
