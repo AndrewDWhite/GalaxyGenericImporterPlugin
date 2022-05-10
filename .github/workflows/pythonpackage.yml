@@ -70,7 +70,7 @@ jobs:
     - name: Upload result
       uses: actions/upload-artifact@v1
       with:
-        name: importer_ ${{ github.sha }}
+        name: importer_ 0.${{ github.run_number }}-${{ github.sha }}
         path: importer_97543122-7785-4444-2254-711233556699.zip
         
     - name: Automatic Releases
@@ -83,6 +83,6 @@ jobs:
         # Should this release be marked as a pre-release?
         prerelease: True
         # Release title (for automatic releases)
-        title: Prototype_${{ github.sha }}
+        title: Prototype_0.${{ github.run_number }}-${{ github.sha }}
         # Assets to upload to the release
         files: importer_97543122-7785-4444-2254-711233556699.zip
