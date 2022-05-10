@@ -1,11 +1,9 @@
-name: "Update release version"
-
+name: Update release version
 on:
   push:
     branches: [ master,dev ]
   pull_request:
     branches: [ master ]
-
 
 env:
   GITHUB_TOKEN: ${{ github.token }}
