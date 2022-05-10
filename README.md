@@ -409,6 +409,6 @@ Use pip to install the dependencies to your local development copy (windows exam
 
 Run coverage tests
 
-    ./coverage.sh
+    ./coverage.bat
 
 ![Python package](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/workflows/Python%20package/badge.svg?branch=master)
