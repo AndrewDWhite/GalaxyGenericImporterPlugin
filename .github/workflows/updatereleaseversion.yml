@@ -1,8 +1,8 @@
-name: Update release version
+name: "Update release version"
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ master,dev ]
   pull_request:
     branches: [ master ]
 
@@ -14,7 +14,8 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
     - name: Update manifest.json version number
       uses: jossef/action-set-json-field@v1
       with:
@@ -27,10 +28,9 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add src/manifest.json
-        git commit -m "docs(): bumping release to ${{ github.run_number }}-${{ github.sha }}"
+        git commit -m "docs(): bumping release to 0.${{ github.run_number }}-${{ github.sha }}"
         
     - name: Push changes
       uses: ad-m/github-push-action@v0.6.0
       with:
         github_token: ${{ github.token }}
-        tags: true
