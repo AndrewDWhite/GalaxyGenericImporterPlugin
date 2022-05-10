@@ -1,0 +1,33 @@
+name: Update release version
+
+on:
+  push:
+    branches: [ dev ]
+  pull_request:
+    branches: [ master ]
+
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+
+jobs:
+
+    - name: Update manifest.json version number
+      uses: jossef/action-set-json-field@v1
+      with:
+        file: src/manifest.json
+        field: version
+        value: "0.${{ github.run_number }}-${{ github.sha }}"
+    
+    - name: Commit files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add src/manifest.json
+        git commit -m "docs(): bumping release to ${{ github.run_number }}-${{ github.sha }}"
+        
+    - name: Push changes
+      uses: ad-m/github-push-action@v0.6.0
+      with:
+        github_token: ${{ github.token }}
+        tags: true
