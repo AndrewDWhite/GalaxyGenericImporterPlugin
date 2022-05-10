@@ -15,7 +15,11 @@ jobs:
     runs-on: windows-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: "actions/checkout@v2"
+      with:
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
+        ref: ${{ github.event.pull_request.head.ref }}
+      
     - name: Update manifest.json version number
       uses: jossef/action-set-json-field@v1
       with:
@@ -24,13 +28,9 @@ jobs:
         value: "0.${{ github.run_number }}-${{ github.sha }}"
     
     - name: Commit files
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add src/manifest.json
-        git commit -m "docs(): bumping release to 0.${{ github.run_number }}-${{ github.sha }}"
-        
-    - name: Push changes
-      uses: ad-m/github-push-action@v0.6.0
+    - uses: EndBug/add-and-commit@v9
       with:
-        github_token: ${{ github.token }}
+        add: 'src/manifest.json'
+        message: "docs(): bumping release to 0.${{ github.run_number }}-${{ github.sha }}"
+        
+ 
