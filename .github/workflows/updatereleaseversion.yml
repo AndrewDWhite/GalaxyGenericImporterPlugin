@@ -11,7 +11,9 @@ env:
   GITHUB_TOKEN: ${{ github.token }}
 
 jobs:
-
+  build:
+    runs-on: windows-latest
+    steps:
     - name: Update manifest.json version number
       uses: jossef/action-set-json-field@v1
       with:
