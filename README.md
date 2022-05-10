@@ -412,3 +412,4 @@ Run coverage tests
     ./coverage.bat
 
 ![Python package](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/workflows/Python%20package/badge.svg?branch=master)
+[![CodeQL](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/actions/workflows/codeql-analysis.yml)
