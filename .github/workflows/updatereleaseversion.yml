@@ -28,7 +28,7 @@ jobs:
         value: "0.${{ github.run_number }}-${{ github.sha }}"
     
     - name: Commit files
-    - uses: EndBug/add-and-commit@v9
+      uses: EndBug/add-and-commit@v9
       with:
         add: 'src/manifest.json'
         message: "docs(): bumping release to 0.${{ github.run_number }}-${{ github.sha }}"
