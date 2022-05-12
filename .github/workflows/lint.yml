@@ -4,8 +4,11 @@ on:
   # Trigger the workflow on pull request,
   pull_request_target:
     # The branches below must be to the branches below
-    branches:
-      - master
+    branches: [ master ]
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 permissions:
     contents: write
