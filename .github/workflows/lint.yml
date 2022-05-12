@@ -2,19 +2,26 @@ name: Lint
 
 on:
   # Trigger the workflow on pull request,
-  # but only for the main branch
   pull_request:
-    branches:
-      - main
+    # The branches below must be a subset of the branches above
+    branches: [ master ]
+
+permissions:
+      actions: read
+      contents: read
+      checks: read
 
 jobs:
   run-linters:
     name: Run linters
     runs-on: windows-latest
-
+    
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
+        with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Set up Python
         uses: actions/setup-python@v2
@@ -23,7 +30,7 @@ jobs:
           architecture: 'x86' 
 
       - name: Install dependencies
-        run: |
+        run: | 
           py  -3.7-32 -m pip install --upgrade pip
           py  -3.7-32 -m pip install -r requirements/requirements_dev.txt
           py  -3.7-32 -m pip install -r requirements/requirements_dev.txt --target ./src/
@@ -34,3 +41,4 @@ jobs:
         with:
           black: true
           flake8: true
+          
