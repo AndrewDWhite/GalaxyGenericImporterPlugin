@@ -2,7 +2,7 @@ name: Lint
 
 on:
   # Trigger the workflow on pull request,
-  pull_request:
+  pull_request_target:
     # The branches below must be a subset of the branches above
     branches: [ master ]
 
@@ -24,9 +24,10 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v3
         with:
-          #repository: ${{ github.event.pull_request.head.repo.full_name }}
-          #ref: ${{ github.event.pull_request.head.ref }}
-          ref: ${{ github.event.pull_request.head.sha }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          #ref: ${{ github.event.pull_request.head.sha }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v2
