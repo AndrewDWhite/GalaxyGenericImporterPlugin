@@ -4,6 +4,8 @@ on:
     workflows: ["Update release version"]
     types:
       - completed
+  push:
+    branches: [ master ]
 
 jobs:
   build:
