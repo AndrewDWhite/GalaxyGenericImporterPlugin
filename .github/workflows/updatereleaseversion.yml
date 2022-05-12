@@ -2,6 +2,9 @@ name: Update release version
 on:
   pull_request:
     branches: [ master ]
+    types:
+      - opened
+      - reopened
 
 env:
   GITHUB_TOKEN: ${{ github.token }}
