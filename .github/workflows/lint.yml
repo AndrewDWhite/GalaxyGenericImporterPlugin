@@ -8,8 +8,8 @@ on:
 
 permissions:
       actions: read
-      contents: read
-      checks: read
+      contents: write
+      checks: write
 
 jobs:
   run-linters:
