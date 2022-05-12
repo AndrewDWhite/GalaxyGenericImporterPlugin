@@ -6,6 +6,11 @@ on:
       - completed
   push:
     branches: [ master ]
+    
+  pull_request:
+    branches: [ master, dev ]
+    types:
+      - synchronize
 
 jobs:
   build:
