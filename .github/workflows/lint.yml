@@ -7,9 +7,13 @@ on:
     branches: [ master ]
 
 permissions:
-      actions: read
       contents: write
       checks: write
+
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request_target' && github.head_ref || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   run-linters:
@@ -18,10 +22,11 @@ jobs:
     
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          ref: ${{ github.event.pull_request.head.ref }}
+          #repository: ${{ github.event.pull_request.head.repo.full_name }}
+          #ref: ${{ github.event.pull_request.head.ref }}
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v2
