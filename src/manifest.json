@@ -2,7 +2,7 @@
   "name": "importer",
   "platform": "test",
   "guid": "97543122-7785-4444-2254-711233556699",
-  "version": "0.27-9656a9f13df68f1e94ce2677f0de41b1d6739920",
+  "version": "0.28-ff0a6fff5c37301ffcb79e9eca17e84ae2a8de60",
   "description": "Plugin for GOG Galaxy supporting programmatic importation of multiplatform game libraries. Allows for the generic definition of files to be added using user definable regular expressions.",
   "author": "Andrew David White",
   "email": "972757+AndrewDWhite@users.noreply.github.com",

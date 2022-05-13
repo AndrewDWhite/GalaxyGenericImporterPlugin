@@ -16,7 +16,7 @@ Ensure that galaxy is completely exited, including from the system tray, before 
 
 <img alt="installation directory with plugins installed" src="https://user-images.githubusercontent.com/972757/119213521-981b1980-ba8d-11eb-9a13-e8a8a2438c14.png">
 
-###Updating
+### Updating
 If you are updating from a previous version and you wish to keep your game data, ensure that you copy game_cache and game_cache-times files to the updated installation. If you have made any configuration changes that you wish to preserve, ensure to copy the systems.json and config.cfg files to the updated installation. Once you have finished updating the unzipped folder with these old files make sure to completely remove the existing files from the plugin directory before moving the newly uncompressed version into the plugins folder and restarting galaxy.
 
 ## Default directories
