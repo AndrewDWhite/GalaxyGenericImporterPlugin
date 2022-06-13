@@ -412,5 +412,16 @@ Run coverage tests
 
     ./coverage.bat
 
+### Create debugging information page
+To create a page with the information passed back to galaxy and links to what their database says that the game should be. Run the following from the plugin folder to generate the page of info.
+
+    py -3.7-32 -m pip install --upgrade pip
+    py -3.7-32 -m pip install pip-tools
+    py -3.7-32 BackendInfoPage.py
+
+(You can also install the dependency using `requirements_dev.txt` instead.) Then open the generated cache.html to see the info. Clicking on the hash digest field for a program will open the galaxy db entry for the application. (The links may be out dated).
+<img width="894" alt="cache.html" src="https://user-images.githubusercontent.com/972757/132164982-8acad35b-3118-4497-9b63-cd05f2c515b2.png">
+
+
 ![Python package](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/workflows/Python%20package/badge.svg?branch=master)
 [![CodeQL](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/AndrewDWhite/GalaxyGenericImporterPlugin/actions/workflows/codeql-analysis.yml)
