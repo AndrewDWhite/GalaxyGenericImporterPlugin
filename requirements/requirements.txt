@@ -1,6 +1,5 @@
 escapejson
-galaxy.plugin.api
+galaxy.plugin.api>=0.70
 galaxyutils
 parameterized
-pywin32
 aiounittest

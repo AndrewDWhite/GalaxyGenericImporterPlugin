@@ -7,6 +7,7 @@ import unittest, logging
 import asyncio
 import os
 from shutil import rmtree
+from tempfile import TemporaryDirectory
 
 import threading
 import time
@@ -221,17 +222,13 @@ class UnittestProject(aiounittest.AsyncTestCase):
         self.assertEqual(execution_command,"\"\"%APPDATA%\\RetroArch\\retroarch.exe\" -f -L \"%APPDATA%\\RetroArch\\cores\\flycast_libretro.dll\" \"" + os.path.abspath(os.path.join(os.getcwd(),"TestDirectory4\\dreamcast0\\mygame\\disc.gdi")) + "\"\"")
     
     async def test_setup_and_shutdown_folder_listeners(self):
-        systems=await setup_folders_for_testing(self, "TestDirectory9")
+        systems = await setup_folders_for_testing(self, "TestDirectory9")
         my_queue_folder_awaiting_scan = queue.Queue()
         await systems.setup_folder_listeners(my_queue_folder_awaiting_scan)
-        insert_file_into_folder (self, systems, "gbc0", "mygame.gb","")
-        insert_file_into_folder (self, systems, "dos0", "mygame.exe","mygame")
-        #Number of folders created by setup + 2 for subfolders
-        self.assertEqual(91, len(systems.my_folder_monitor_threads) )
+        self.assertEqual(91, len(systems.my_folder_monitor_threads))
         await systems.shutdown_folder_listeners()
-        self.assertEqual(False, my_queue_folder_awaiting_scan.empty())
-        self.assertEqual(os.path.abspath(os.path.join(os.getcwd(),"TestDirectory9\\gbc0")),my_queue_folder_awaiting_scan.get())
-        self.assertEqual(os.path.abspath(os.path.join(os.getcwd(),"TestDirectory9\\dos0")),my_queue_folder_awaiting_scan.get())
+        self.assertFalse(any(thread.is_alive() for thread in systems.my_folder_monitor_threads))
+        self.assertTrue(my_queue_folder_awaiting_scan.empty())
 
     #def test_returned_real_dir_data(self):        
     #    systems = ListGames()
@@ -330,6 +327,7 @@ class UnittestProject(aiounittest.AsyncTestCase):
     async def test_insert_file_into_folder_watch(self): 
         my_dir = "TestDirectory2"
         systems=await setup_folders_for_testing(self, my_dir)
+        systems.monitor_poll_interval = 0.1
         
         my_dir_path = os.getcwd() + "\\"+ my_dir
         
@@ -372,6 +370,36 @@ class UnittestProject(aiounittest.AsyncTestCase):
         #todo add testing
         self.assertEqual(False, my_queue_folder_awaiting_scan.empty())
         
+    async def test_disable_monitoring_interrupts_wait(self):
+        systems = ListGames()
+        my_queue_folder_awaiting_scan = queue.Queue()
+        waiting = threading.Event()
+        original_wait = systems._monitor_stop_event.wait
+
+        def tracked_wait(timeout):
+            waiting.set()
+            return original_wait(timeout)
+
+        systems._monitor_stop_event.wait = tracked_wait
+
+        with TemporaryDirectory() as watch_path:
+            watcher = threading.Thread(
+                target=systems.watcher_update,
+                args=(watch_path, my_queue_folder_awaiting_scan),
+            )
+            watcher.start()
+            try:
+                self.assertTrue(waiting.wait(2), "Watcher did not reach polling wait")
+                with open(os.path.join(watch_path, "added.gb"), "w") as file_pointer:
+                    file_pointer.write("test")
+                systems.disable_monitoring()
+                watcher.join(2)
+                self.assertFalse(watcher.is_alive())
+                self.assertTrue(my_queue_folder_awaiting_scan.empty())
+            finally:
+                systems.disable_monitoring()
+                watcher.join(2)
+
     async def test_start_and_stop_library(self):
         #loop = asyncio.new_event_loop()
         #self.my_library_started = False

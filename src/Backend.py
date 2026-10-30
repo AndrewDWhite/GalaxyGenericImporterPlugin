@@ -111,8 +111,10 @@ async def send_events(self):
 def library_thread(self):
     logging.debug("TODO start up thread for library, we may wait for the backend to startup")
     #Wait for backend to be setup and then we can go
-    while not self.backend.backend_setup:
-        pass
+    while not self.backend.backend_setup and self.keep_ticking:
+        threading.Event().wait(0.1)
+    if not self.backend.backend_setup:
+        return
     self.backend.library_run = True
     
     if not self.my_library_started:

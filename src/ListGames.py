@@ -40,11 +40,7 @@ if SYSTEM == System.WINDOWS:
         
         win32_lib_path = os.path.abspath(os.path.join(my_program_dir,"win32"))
         
-        import imp
-        win32file = imp.load_dynamic('win32file', win32_lib_path+'\\win32file.pyd')
-        win32event = imp.load_dynamic('win32event', win32_lib_path+'\\win32event.pyd')
-        my_module, my_module_filename, my_module_description = imp.find_module('win32con', [win32_lib_path+'\\lib'])#\\win32con.py
-        win32con = imp.load_module('win32con', my_module, my_module_filename, my_module_description)
+        # Python 3.12+ removed imp; monitor folders without bundled pywin32 binaries.
 
 class ListGames():
     '''
@@ -65,6 +61,9 @@ class ListGames():
         logging.debug("loading emulators configuration completed")
         logging.debug(len(self.loaded_systems_configuration))
         self.continue_monitoring = True
+        self._monitor_stop_event = threading.Event()
+        self._monitor_lock = threading.Lock()
+        self.monitor_poll_interval = 10
         self.my_folder_monitor_threads = []
     
     def write_to_cache(self, data):
@@ -212,38 +211,38 @@ class ListGames():
     
     def disable_monitoring(self):
         logging.debug("disabling monitoring")
-        self.continue_monitoring = False
+        with self._monitor_lock:
+            self.continue_monitoring = False
+            self._monitor_stop_event.set()
     
     def watcher_update(self, path_to_watch, my_queue_folder_awaiting_scan):
-        logging.debug("watcher update")
-        
-        #Monitor the directories if they exist TODO determine if we also want to monitor them if they don't
-        if (os.path.exists(path_to_watch)) :
-            logging.debug ("EXISTS")
-            change_handle = win32file.FindFirstChangeNotification (
-              path_to_watch,
-              True, #watch tree
-              win32con.FILE_NOTIFY_CHANGE_FILE_NAME | win32con.FILE_NOTIFY_CHANGE_LAST_WRITE | win32con.FILE_NOTIFY_CHANGE_ATTRIBUTES | win32con.FILE_NOTIFY_CHANGE_DIR_NAME | win32con.FILE_NOTIFY_CHANGE_SIZE | win32con.FILE_NOTIFY_CHANGE_SECURITY 
-            )
-            
-            logging.debug("starting to monitor")
-            logging.debug(path_to_watch)
-            try:
-                while self.continue_monitoring:
-                    logging.debug("still monitoring")
-                    logging.debug(path_to_watch)
-                    result =  win32event.WaitForSingleObject (change_handle, 500)
-            
-                    if result == win32con.WAIT_OBJECT_0:
-                        #something was updated
-                        logging.debug("Update in folder")
-                        logging.debug(path_to_watch)
-                        my_queue_folder_awaiting_scan.put(path_to_watch)
-                        win32file.FindNextChangeNotification (change_handle)
-    
-            finally:
-                win32file.FindCloseChangeNotification (change_handle)
-        logging.debug("done this")
+        """Watch directory changes via portable polling until stopped."""
+
+        def fingerprint():
+            items = []
+            for directory, dirs, files in os.walk(path_to_watch):
+                for name in files:
+                    path = os.path.join(directory, name)
+                    try:
+                        stat = os.stat(path)
+                        items.append((path, stat.st_mtime_ns, stat.st_size))
+                    except OSError:
+                        continue
+            return tuple(sorted(items))
+
+        previous = fingerprint()
+        while self.continue_monitoring:
+            if self._monitor_stop_event.wait(self.monitor_poll_interval):
+                break
+            if not self.continue_monitoring:
+                break
+            current = fingerprint()
+            with self._monitor_lock:
+                if not self.continue_monitoring:
+                    break
+                if current != previous:
+                    previous = current
+                    my_queue_folder_awaiting_scan.put(path_to_watch)
 
     async def shutdown_folder_listeners(self):
         logging.debug("shutdown folder listeners")
